@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>3sDreamscape</title>
+  <title>Dreamscape</title>
 
   <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
   <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -296,7 +296,7 @@
         height: 100%;
         width: auto;
       }
-      
+
       .fixed-image {
         border-left: none;
         border-right: none;
@@ -305,6 +305,12 @@
 
     /* ===== PC ===== */
     @media (min-width: 769px) {
+
+      /* ⭐ 웹형에서만 3열 */
+      .content {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
       html,
       body {
         width: 100%;
@@ -316,10 +322,10 @@
         display: grid;
         height: 100%;
         grid-template-columns:
-    12%
-    43%
-    19%
-    26%;
+          12%
+          43%
+          19%
+          26%;
         gap: 0;
       }
 
