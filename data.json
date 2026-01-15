@@ -1,0 +1,304 @@
+[
+  {
+    "title": "te cura",
+    "category": "brand design",
+    "year": "2022",
+    "thumbnail": "/test/images/thumb1.png",
+    "captions": {
+      "caption1": "te cura",
+      "caption2": "2022, brand design",
+      "caption3": "-",
+      "caption4": "personal project",
+      "caption5": "package, book, poster, pattern"
+    },
+    "images": [
+      "/test/images/1-te cura/tecura1.png",
+      "/test/images/1-te cura/tecura2.png",
+      "/test/images/1-te cura/tecura3.png",
+      "/test/images/1-te cura/tecura5-2.png"
+    ]
+  },
+  {
+    "title": "lost romance",
+    "category": "graphic design",
+    "year": "2023",
+    "thumbnail": "/test/images/thumb2.png",
+    "captions": {
+      "caption1": "a generation that has lost romance",
+      "caption2": "2023, graphic design",
+      "caption3": "-",
+      "caption4": "2023 graduation exhibition",
+      "caption5": "package, book, poster, postcard, cd"
+    },
+    "images": [
+      "/test/images/2-romance/romance1.png",
+      "/test/images/2-romance/romance2.png",
+      "/test/images/2-romance/romance3.png",
+      "/test/images/2-romance/romance4.png",
+      "/test/images/2-romance/romance5.png",
+      "/test/images/2-romance/romance6.png",
+      "/test/images/2-romance/romance8-1.gif",
+      "/test/images/2-romance/romance7.png"
+    ]
+  },
+  {
+    "title": "blish",
+    "category": "brand design",
+    "year": "2023",
+    "thumbnail": "/test/images/thumb3.png",
+    "captions": {
+      "caption1": "blish",
+      "caption2": "2023, brand design",
+      "caption3": "-",
+      "caption4": "2023 graduation exhibition",
+      "caption5": "package, book, poster, postcard"
+    },
+    "images": [
+      "/test/images/3-blish/blish1.png",
+      "/test/images/3-blish/blish2.png",
+      "/test/images/3-blish/blish3.png",
+      "/test/images/3-blish/blish4.png",
+      "/test/images/3-blish/blish5.png",
+      "/test/images/3-blish/blish6.png",
+      "/test/images/3-blish/blish7.png",
+      "/test/images/3-blish/blish8.png"
+    ]
+  },
+  {
+    "title": "An inverted realtionship",
+    "category": "editorial",
+    "year": "2023",
+    "thumbnail": "/test/images/thumb4.png",
+    "captions": {
+      "caption1": "An inverted realtionship",
+      "caption2": "2023, editorial",
+      "caption3": "-",
+      "caption4": "personal project",
+      "caption5": "research book"
+    },
+    "images": [
+      "/test/images/4-inverted/inverted1.png",
+      "/test/images/4-inverted/inverted2.png",
+      "/test/images/4-inverted/inverted3.png",
+      "/test/images/4-inverted/inverted4.png",
+      "/test/images/4-inverted/inverted5.png",
+      "/test/images/4-inverted/inverted6.png",
+      "/test/images/4-inverted/inverted7.png"
+    ]
+  },
+  {
+    "title": "Immortality : The Death of Death",
+    "category": "brand design",
+    "year": "2024",
+    "thumbnail": "/test/images/thumb5.png",
+    "captions": {
+      "caption1": "Immortality : The Death of Death",
+      "caption2": "2024, brand design",
+      "caption3": "-",
+      "caption4": "personal project",
+      "caption5": "brochure, entrance bracelet, merchandise"
+    },
+    "images": [
+      "/test/images/5-Immortality/Immortality1-1.png",
+      "/test/images/5-Immortality/Immortality2-1.png",
+      "/test/images/5-Immortality/Immortality3.png",
+      "/test/images/5-Immortality/Immortality4-1.png"
+    ]
+  },
+  {
+    "title": "Heaven",
+    "category": "graphic design",
+    "year": "2024",
+    "thumbnail": "/test/images/thumb6.png",
+    "captions": {
+      "caption1": "Heaven",
+      "caption2": "2024, graphic design",
+      "caption3": "-",
+      "caption4": "interview task",
+      "caption5": "2 types album, out box, photo book, cdr, poster"
+    },
+    "images": [
+      "/test/images/6-heaven/heaven1.png",
+      "/test/images/6-heaven/heaven2.png",
+      "/test/images/6-heaven/heaven3.png",
+      "/test/images/6-heaven/heaven4.png",
+      "/test/images/6-heaven/heaven5.png",
+      "/test/images/6-heaven/heaven6.png",
+      "/test/images/6-heaven/heaven7.png"
+      
+    ]
+  },
+  {
+    "title": "Everybody",
+    "category": "graphic design",
+    "year": "2024",
+    "thumbnail": "/test/images/thumb7.png",
+    "captions": {
+      "caption1": "Everybody",
+      "caption2": "2024, graphic design",
+      "caption3": "-",
+      "caption4": "interview task",
+      "caption5": "3 types album, out box, photo book, cdr, photocard"
+    },
+    "images": [
+      "/test/images/7-everybody/everybody1.png",
+      "/test/images/7-everybody/everybody2.png",
+      "/test/images/7-everybody/everybody3.png",
+      "/test/images/7-everybody/everybody4.png",
+      "/test/images/7-everybody/everybody5-1.png",
+      "/test/images/7-everybody/everybody6.png",
+      "/test/images/7-everybody/everybody7.png",
+      "/test/images/7-everybody/everybody8.png",
+      "/test/images/7-everybody/everybody9.png",
+      "/test/images/7-everybody/everybody10.png",
+      "/test/images/7-everybody/everybody11.png",
+      "/test/images/7-everybody/everybody12.png",
+      "/test/images/7-everybody/everybody13.png",
+      "/test/images/7-everybody/everybody15.png"
+    ]
+  },
+  {
+    "title": "Monster",
+    "category": "graphic design",
+    "year": "2024",
+    "thumbnail": "/test/images/thumb8.png",
+    "captions": {
+      "caption1": "Monster",
+      "caption2": "2024, graphic design",
+      "caption3": "-",
+      "caption4": "interview task",
+      "caption5": "3types album, out box, photo book, profile book, cd"
+    },
+    "images": [
+      "/test/images/8-monster/monster2-1.png",
+      "/test/images/8-monster/monster1.png",
+      "/test/images/8-monster/monster3.png",
+      "/test/images/8-monster/monster4.png",
+      "/test/images/8-monster/monster5.png",
+      "/test/images/8-monster/monster6.png",
+      "/test/images/8-monster/monster7.png",
+      "/test/images/8-monster/monster8.png",
+      "/test/images/8-monster/monster9.png"
+    ]
+  },
+  {
+    "title": "Ideal Expression",
+    "category": "graphic design",
+    "year": "2024",
+    "thumbnail": "/test/images/thumb9.png",
+    "captions": {
+      "caption1": "Ideal Expression",
+      "caption2": "2024, graphic design",
+      "caption3": "-",
+      "caption4": "ORGD 2024",
+      "caption5": "graphic poster"
+    },
+    "images": [
+      "/test/images/9-ideal expression/expression1.png",
+      "/test/images/9-ideal expression/expression2.png",
+      "/test/images/9-ideal expression/expression3.png"
+    ]
+  },
+  {
+    "title": "alfoze",
+    "category": "brand design",
+    "year": "2025",
+    "thumbnail": "/test/images/thumb10.png",
+    "captions": {
+      "caption1": "alfoze",
+      "caption2": "2025, brand design",
+      "caption3": "-",
+      "caption4": "personal project",
+      "caption5": "logo, tag, system book"
+    },
+    "images": [
+      "/test/images/10-alfoze/alfoze1-1.png",
+      "/test/images/10-alfoze/alfoze3.png",
+      "/test/images/10-alfoze/alfoze2-1.png",
+      "/test/images/10-alfoze/alfoze4-1.png"
+    ]
+  },
+  {
+    "title": "Valentine",
+    "category": "graphic design",
+    "year": "2025",
+    "thumbnail": "/test/images/thumb11.png",
+    "captions": {
+      "caption1": "Valentine",
+      "caption2": "2025, graphic design",
+      "caption3": "-",
+      "caption4": "personal project",
+      "caption5": "postcard"
+    },
+    "images": [
+      "/test/images/11-valentine/valen5.png",
+      "/test/images/11-valentine/valen2-1.png",
+      "/test/images/11-valentine/valen1-1.png",
+      "/test/images/11-valentine/valen9.png"
+    ]
+  },
+  {
+    "title": "Forever",
+    "category": "graphic design",
+    "year": "2025",
+    "thumbnail": "/test/images/thumb12.png",
+    "captions": {
+      "caption1": "Forever",
+      "caption2": "2025, graphic design",
+      "caption3": "-",
+      "caption4": "interview task",
+      "caption5": "2 types album, out box, photo book, ornament, cdr"
+    },
+    "images": [
+      "/test/images/12-Forever/forever1.png",
+      "/test/images/12-Forever/forever2.gif",
+      "/test/images/12-Forever/forever5.png",
+      "/test/images/12-Forever/forever7.png"
+    ]
+  },
+  {
+    "title": "Lov",
+    "category": "brand design",
+    "year": "2025",
+    "thumbnail": "/test/images/thumb13.png",
+    "captions": {
+      "caption1": "Lov",
+      "caption2": "2025, brand design",
+      "caption3": "-",
+      "caption4": "client work",
+      "caption5": "brand system, logo, graphic, stuff"
+    },
+    "images": [
+      "/test/images/13-lov/lov1-1.png",
+      "/test/images/13-lov/lov2.png",
+      "/test/images/13-lov/lov10.png",
+      "/test/images/13-lov/lov8-1.png",
+      "/test/images/13-lov/lov12.png",
+      "/test/images/13-lov/lov4.png",
+      "/test/images/13-lov/lov5-1.png",
+      "/test/images/13-lov/lov6.png"
+    ]
+  },
+  {
+    "title": "Dreamscape",
+    "category": "graphic design",
+    "year": "2025",
+    "thumbnail": "/test/images/thumb14.png",
+    "captions": {
+      "caption1": "Dreamscape",
+      "caption2": "2025, graphic design",
+      "caption3": "-",
+      "caption4": "interview task",
+      "caption5": "2 types album, outbox, photobook, poster, stuff"
+    },
+    "images": [
+      "/test/images/14-dreamscape/dreamscape4.png",
+      "/test/images/14-dreamscape/dreamscape6.png",
+      "/test/images/14-dreamscape/dreamscape7.png",
+      "/test/images/14-dreamscape/dreamscape8.png",
+      "/test/images/14-dreamscape/dreamscape10.png",
+      "/test/images/14-dreamscape/dreamscape12.png",
+      "/test/images/14-dreamscape/dreamscape11.png"
+    ]
+  }
+]
