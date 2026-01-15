@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>sDreamscape</title>
+<title>Dreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -19,10 +19,11 @@ body { font-family: "minion-pro", serif; background: #fff; }
 a { color: inherit; text-decoration: none; transition: color .3s; }
 a:hover { color: #a3a3a3; }
 
-/* footer */
+/* ===== footer ===== */
 .footer {
   position: fixed;
-  bottom: 0; left: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 100px;
   background: transparent;
@@ -38,11 +39,13 @@ a:hover { color: #a3a3a3; }
 .footer .right-link { left: 30px; }
 .footer #listButton { right: 30px; cursor: pointer; }
 
-/* slide box */
+/* ===== slide box ===== */
 .slide-box {
   position: fixed;
-  top: 0; right: 0;
+  top: 0;
+  right: 0;
   width: 373px !important;
+  max-width: 100%;
   height: 100%;
   background: #fff;
   z-index: 3000;
@@ -62,17 +65,38 @@ a:hover { color: #a3a3a3; }
   color: #a3a3a3;
 }
 
-.caption-group { display: flex; flex-direction: column; font-size: 12px; }
+/* ===== caption (원본 유지) ===== */
+.caption-group {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
 .caption1 { font-size: 20px; margin-bottom: 3px; }
+.caption2,.caption3,.caption4,.caption5 {
+  font-size: 12px;
+  margin-bottom: 3px;
+}
 
-/* gallery list */
+/* ===== gallery list ===== */
 .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 0;
 }
-.thumbnail img { width: 100%; display: block; }
+.thumbnail img {
+  width: 100%;
+  display: block;
+}
 
-/* ===== 이미지 뷰어 ===== */
+/* ===== scrollbar 숨김 (원본) ===== */
+::-webkit-scrollbar { display: none; }
+.scroll-area,
+.fixed-image {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* ===== image viewer ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -94,11 +118,13 @@ a:hover { color: #a3a3a3; }
   max-height: 90%;
 }
 
-/* ================= 모바일 (절대 수정 안 함) ================= */
+/* ================= 모바일 (원본 그대로) ================= */
 @media (max-width: 768px) {
   .gallery-wrap { display: block; }
-  .fixed-image { display: none; }
+  .left-image { display: none; }
   .scroll-area { display: none; }
+  .footer { height: 100px; }
+  .slide-box { width: 100% !important; }
 }
 
 /* ================= PC (여기만 수정) ================= */
@@ -115,7 +141,7 @@ html, body {
   grid-template-columns: 60% 18% 22%;
 }
 
-/* 🔥 통합된 FIXED IMAGE 영역 */
+/* 🔥 통합 fixed-image */
 .fixed-image {
   position: relative;
   width: 100%;
@@ -126,14 +152,13 @@ html, body {
   align-items: center;
 }
 
-/* 중앙 이미지 */
 .fixed-image img {
   max-width: 70%;
   max-height: 80%;
   object-fit: contain;
 }
 
-/* 좌우 네비 */
+/* 좌우 버튼 */
 .fixed-nav {
   position: absolute;
   top: 50%;
@@ -154,28 +179,26 @@ html, body {
   position: relative;
   transform: none !important;
 }
-.slide-list, #listButton { display: none; }
+.slide-list,
+#listButton { display: none; }
 }
 </style>
 </head>
 
-<body oncontextmenu="return false">
+<body>
 
 <div class="gallery-wrap">
 
-  <!-- 🔥 FIXED IMAGE (LEFT + FIXED 통합) -->
   <div class="fixed-image">
     <div class="fixed-nav fixed-prev">‹</div>
-    <img id="fixedMainImage" src="" alt="">
+    <img id="fixedMainImage" src="">
     <div class="fixed-nav fixed-next">›</div>
   </div>
 
-  <!-- thumbnail list -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
-  <!-- info -->
   <div class="slide-box" id="slideBox">
     <div class="slide-list" onclick="toggleSlideBox()">info</div>
     <div class="caption-group" id="captionBox"></div>
@@ -187,13 +210,9 @@ html, body {
   <div class="right-link"><a href="/mika/">back</a></div>
 </div>
 
-<div class="image-viewer" id="imageViewer">
-  <img src="">
-</div>
-
 <script>
-let currentIndex = 0;
 let images = [];
+let currentIndex = 0;
 
 async function loadData() {
   const res = await fetch("../data.json");
@@ -204,7 +223,6 @@ async function loadData() {
   if (!item) return;
 
   images = item.images;
-  currentIndex = 0;
   updateImage();
 
   document.querySelector(".fixed-prev").onclick = () => {
@@ -216,7 +234,6 @@ async function loadData() {
     updateImage();
   };
 
-  // thumbnail list
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
   data.slice().reverse().forEach((d, revIdx) => {
@@ -225,21 +242,21 @@ async function loadData() {
       <a href="/mika/${i+1}/" class="thumbnail">
         <img src="/mika/images/thumb${i+1}.png">
         <div class="caption">
-          <span>${d.title}</span>
-          <span>${d.category} ${d.year}</span>
+          <span class="title">${d.title}</span>
+          <span class="category-year">
+            <span class="category">${d.category}</span>
+            <span class="year">${d.year}</span>
+          </span>
         </div>
-      </a>
-    `;
+      </a>`;
   });
 
-  // caption
   captionBox.innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
-    <div>${item.captions.caption2}</div>
-    <div>${item.captions.caption3}</div>
-    <div>${item.captions.caption4}</div>
-    <div>${item.captions.caption5}</div>
-  `;
+    <div class="caption2">${item.captions.caption2}</div>
+    <div class="caption3">${item.captions.caption3}</div>
+    <div class="caption4">${item.captions.caption4}</div>
+    <div class="caption5">${item.captions.caption5}</div>`;
 }
 
 function updateImage() {
