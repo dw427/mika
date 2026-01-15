@@ -13,30 +13,43 @@
 @import url("https://use.typekit.net/zuk4pzv.css");
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "minion-pro", serif; background: #fff; }
-a { color: inherit; text-decoration: none; transition: color .3s; }
+
+body {
+  font-family: "minion-pro", serif;
+  background: #fff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color .3s;
+}
+
 a:hover { color: #a3a3a3; }
 
-/* footer */
+/* ===== footer ===== */
 .footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 100px;
+  background: transparent;
   z-index: 1000;
   color: #a3a3a3;
 }
+
 .footer .right-link,
 .footer #listButton {
   position: absolute;
   bottom: 10px;
   font-size: 12px;
 }
+
 .footer .right-link { left: 30px; }
 .footer #listButton { right: 30px; cursor: pointer; }
 
-/* slide */
+/* ===== slide ===== */
 .slide-box {
   position: fixed;
   top: 0;
@@ -45,23 +58,39 @@ a:hover { color: #a3a3a3; }
   height: 100%;
   background: #fff;
   z-index: 3000;
-  transform: translateX(100%);
-  transition: transform .3s;
   overflow-y: auto;
   padding: 10px;
 }
-.slide-box.active { transform: translateX(0); }
 
-.caption-group { font-size: 12px; }
-.caption1 { font-size: 20px; margin-bottom: 6px; }
+.slide-list { display: none; }
 
-/* gallery */
+/* ===== caption ===== */
+.caption-group {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.caption1 { font-size: 20px; margin-bottom: 3px; }
+.caption2, .caption3, .caption4, .caption5 { margin-bottom: 3px; }
+
+/* ===== gallery ===== */
 .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-/* ===== FIXED IMAGE (통합 영역) ===== */
+.thumbnail img {
+  width: 100%;
+  display: block;
+}
+
+.caption {
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+/* ===== fixed image (PC 통합 영역) ===== */
 .fixed-image {
   position: relative;
   width: 100%;
@@ -73,30 +102,27 @@ a:hover { color: #a3a3a3; }
   justify-content: center;
   overflow: hidden;
 }
+
 .fixed-image img {
-  max-width: 85%;
-  max-height: 85%;
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
 }
 
-/* nav */
-.nav {
+/* arrows */
+.fixed-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 42px;
+  font-size: 40px;
   cursor: pointer;
+  color: #000;
+  z-index: 10;
   user-select: none;
 }
-.nav.prev { left: 20px; }
-.nav.next { right: 20px; }
 
-/* ===== 모바일 (절대 수정 안 함) ===== */
-@media (max-width: 768px) {
-  .gallery-wrap { display: block; }
-  .scroll-area { display: none; }
-  .fixed-image { border: none; }
-}
+.fixed-prev { left: 20px; }
+.fixed-next { right: 20px; }
 
 /* ===== PC ===== */
 @media (min-width: 769px) {
@@ -105,43 +131,46 @@ a:hover { color: #a3a3a3; }
     height: 100%;
     overflow: hidden;
   }
+
   .gallery-wrap {
     display: grid;
-    height: 100%;
     grid-template-columns: 60% 18% 22%;
-  }
-  .scroll-area {
     height: 100%;
+  }
+
+  .scroll-area {
     overflow-y: auto;
     border-right: 1px solid #9fa0a0;
   }
-  .slide-box {
-    transform: none !important;
-    position: relative;
-  }
+
   #listButton { display: none; }
+}
+
+/* ===== 모바일 (절대 수정 금지) ===== */
+@media (max-width: 768px) {
+  .fixed-image { border: none; }
 }
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
 <div class="gallery-wrap">
 
-  <!-- FIXED IMAGE -->
+  <!-- FIXED IMAGE (LEFT + FIXED 통합) -->
   <div class="fixed-image">
-    <div class="nav prev" onclick="prevImg()">‹</div>
-    <img id="mainImg" src="" />
-    <div class="nav next" onclick="nextImg()">›</div>
+    <div class="fixed-nav fixed-prev" onclick="prevImage()">‹</div>
+    <img id="fixedMainImage" src="" alt="">
+    <div class="fixed-nav fixed-next" onclick="nextImage()">›</div>
   </div>
 
-  <!-- THUMB -->
+  <!-- thumbnail -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
-  <!-- INFO -->
-  <div class="slide-box" id="slideBox">
+  <!-- info -->
+  <div class="slide-box">
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -149,51 +178,61 @@ a:hover { color: #a3a3a3; }
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
-  <div id="listButton" onclick="toggleSlideBox()">info</div>
 </div>
 
 <script>
-let imgs = [];
-let idx = 0;
+let currentIndex = 0;
+let images = [];
 
 async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
-  const p = location.pathname.split("/");
-  const n = parseInt(p[p.length - 2], 10) - 1;
-  const item = data[n];
 
-  imgs = item.images;
-  document.getElementById("mainImg").src = imgs[0];
+  const pathParts = location.pathname.split("/");
+  const idx = parseInt(pathParts[pathParts.length - 2], 10) - 1;
+  const item = data[idx];
 
-  const g = document.getElementById("gallery");
-  data.slice().reverse().forEach((d, r) => {
-    const i = data.length - 1 - r;
-    g.innerHTML += `<a href="/mika/${i+1}/"><img src="/mika/images/thumb${i+1}.png"></a>`;
+  images = item.images;
+  currentIndex = 0;
+  updateImage();
+
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  data.slice().reverse().forEach((d, revIdx) => {
+    const i = data.length - 1 - revIdx;
+    const a = document.createElement("a");
+    a.href = `/mika/${i + 1}/`;
+    a.innerHTML = `
+      <img src="/mika/images/thumb${i + 1}.png">
+      <div class="caption">
+        <span>${d.title}</span>
+        <span>${d.category} ${d.year}</span>
+      </div>`;
+    gallery.appendChild(a);
   });
 
+  const c = item.captions;
   document.getElementById("captionBox").innerHTML = `
-    <div class="caption1">${item.captions.caption1}</div>
-    <div>${item.captions.caption2}</div>
-    <div>${item.captions.caption3}</div>
-    <div>${item.captions.caption4}</div>
-    <div>${item.captions.caption5}</div>
-  `;
+    <div class="caption1">${c.caption1}</div>
+    <div class="caption2">${c.caption2}</div>
+    <div class="caption3">${c.caption3}</div>
+    <div class="caption4">${c.caption4}</div>
+    <div class="caption5">${c.caption5}</div>`;
 }
 
-function prevImg() {
-  idx = (idx - 1 + imgs.length) % imgs.length;
-  document.getElementById("mainImg").src = imgs[idx];
-}
-function nextImg() {
-  idx = (idx + 1) % imgs.length;
-  document.getElementById("mainImg").src = imgs[idx];
+function updateImage() {
+  document.getElementById("fixedMainImage").src = images[currentIndex];
 }
 
-function toggleSlideBox() {
-  if (innerWidth <= 768) {
-    document.getElementById("slideBox").classList.toggle("active");
-  }
+function prevImage() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImage();
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
