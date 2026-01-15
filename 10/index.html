@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>sDreamscape</title>
+<title>ㄴDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -18,7 +18,7 @@ body { font-family: "minion-pro", serif; background: #fff; }
 a { color: inherit; text-decoration: none; transition: color .3s; }
 a:hover { color: #a3a3a3; }
 
-/* ===== footer (원본) ===== */
+/* ===== footer ===== */
 .footer {
   position: fixed;
   bottom: 0; left: 0;
@@ -37,12 +37,11 @@ a:hover { color: #a3a3a3; }
 .footer .right-link { left: 30px; }
 .footer #listButton { right: 30px; cursor: pointer; }
 
-/* ===== slide box (원본) ===== */
+/* ===== slide box ===== */
 .slide-box {
   position: fixed;
   top: 0; right: 0;
   width: 373px !important;
-  max-width: 100%;
   height: 100%;
   background: #fff;
   z-index: 3000;
@@ -53,32 +52,55 @@ a:hover { color: #a3a3a3; }
 }
 .slide-box.active { transform: translateX(0); }
 
-.slide-box .slide-list {
-  position: fixed;
-  bottom: 10px;
-  right: 30px;
+.caption-group {
+  display: flex;
+  flex-direction: column;
   font-size: 12px;
+}
+.caption1 { font-size: 20px; margin-bottom: 6px; }
+.caption2, .caption3, .caption4, .caption5 { margin-bottom: 4px; }
+
+/* ===== gallery ===== */
+.content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.thumbnail img {
+  width: 100%;
+  display: block;
+}
+
+/* ===== fixed image (PC slider) ===== */
+.fixed-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-left: 1px solid #9fa0a0;
+  border-right: 1px solid #9fa0a0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fixed-image img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+/* arrows */
+.fixed-image .nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
   cursor: pointer;
-  color: #a3a3a3;
+  user-select: none;
 }
+.fixed-image .prev { left: 20px; }
+.fixed-image .next { right: 20px; }
 
-/* ===== captions (원본 그대로) ===== */
-.caption-group { display: flex; flex-direction: column; font-size: 12px; }
-.caption1 { font-size: 20px; margin-bottom: 3px; }
-.caption2,.caption3,.caption4,.caption5 { font-size: 12px; margin-bottom: 3px; }
-
-/* ===== gallery list (원본) ===== */
-.content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
-.thumbnail img { width: 100%; display: block; }
-
-/* ===== scrollbar 숨김 (원본) ===== */
-::-webkit-scrollbar { display: none; }
-.scroll-area, .fixed-image {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-/* ===== image viewer (원본) ===== */
+/* ===== image viewer ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -91,114 +113,59 @@ a:hover { color: #a3a3a3; }
   transition: .3s;
   z-index: 5000;
 }
-.image-viewer.active { opacity: 1; visibility: visible; }
-.image-viewer img { max-width: 90%; max-height: 90%; }
+.image-viewer.active {
+  opacity: 1;
+  visibility: visible;
+}
+.image-viewer img {
+  max-width: 90%;
+  max-height: 90%;
+}
 
-/* ================= 모바일 (원본 절대 변경 없음) ================= */
+/* ===== 모바일 (절대 수정 안함) ===== */
 @media (max-width: 768px) {
   .gallery-wrap { display: block; }
-  .left-image { display: none; }
-  .scroll-area { display: none; }
+  .fixed-image { display: none; }
+}
 
-  .footer { height: 100px; }
-  .footer .right-link { bottom: 20px; left: 20px; }
-  .footer #listButton { bottom: 20px; right: 20px; }
+/* ===== PC ===== */
+@media (min-width: 769px) {
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .gallery-wrap {
+    display: grid;
+    grid-template-columns: 50% 28% 22%;
+    height: 100%;
+  }
+
+  .scroll-area {
+    overflow-y: auto;
+    border-right: 1px solid #9fa0a0;
+  }
 
   .slide-box {
-    width: 100% !important;
-    padding: 40px 20px;
-    transform: translateX(100%) !important;
+    position: relative;
+    transform: none !important;
   }
-  .slide-box.active { transform: translateX(0) !important; }
-}
 
-/* ================= PC (여기만 수정) ================= */
-@media (min-width: 769px) {
-html, body { width: 100%; height: 100%; overflow: hidden; }
-
-.gallery-wrap {
-  display: grid;
-  height: 100%;
-  grid-template-columns: 25% 35% 18% 22%;
-}
-
-/* 기존 left-image 유지 (보이기만) */
-.left-image {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-.left-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ===== fixed-image : 단일 슬라이드 ===== */
-.fixed-image {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  border-left: 1px solid #9fa0a0;
-  border-right: 1px solid #9fa0a0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.fixed-image img {
-  max-width: 70%;
-  max-height: 80%;
-  object-fit: contain;
-  cursor: pointer;
-}
-
-/* 좌우 버튼 */
-.fixed-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 40px;
-  cursor: pointer;
-  user-select: none;
-}
-.fixed-prev { left: 20px; }
-.fixed-next { right: 20px; }
-
-/* 스크롤 리스트 (원본 동작) */
-.scroll-area {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  border-right: 1px solid #9fa0a0;
-}
-
-.slide-box {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  position: relative;
-  transform: none !important;
-}
-.slide-list, #listButton { display: none; }
+  #listButton { display: none; }
 }
 </style>
 </head>
 
-<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+<body oncontextmenu="return false">
 
 <div class="gallery-wrap">
 
-  <!-- PC 좌측 이미지 (원본 유지) -->
-  <div class="left-image">
-    <img src="/alfoze/images/leftimage.png" alt="">
-  </div>
-
-  <!-- fixed-image (PC: 단일 슬라이드 / 모바일: 원본 스크롤 이미지) -->
-  <div class="fixed-image" id="fixedImage">
-    <div class="fixed-nav fixed-prev">‹</div>
-    <img id="fixedMainImage" src="" alt="">
-    <div class="fixed-nav fixed-next">›</div>
+  <!-- ✅ 통합된 fixed-image -->
+  <div class="fixed-image">
+    <div class="nav prev" onclick="prevImage()">‹</div>
+    <img id="mainImage" src="" />
+    <div class="nav next" onclick="nextImage()">›</div>
   </div>
 
   <div class="scroll-area">
@@ -206,7 +173,6 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
   </div>
 
   <div class="slide-box" id="slideBox">
-    <div class="slide-list" id="slideToggleText" onclick="toggleSlideBox()">info</div>
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -214,11 +180,10 @@ html, body { width: 100%; height: 100%; overflow: hidden; }
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
-  <div id="listButton" onclick="toggleSlideBox()">info</div>
 </div>
 
 <div class="image-viewer" id="imageViewer">
-  <img src="" alt="">
+  <img src="" />
 </div>
 
 <script>
@@ -229,77 +194,49 @@ async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
 
-  const pathParts = window.location.pathname.split("/");
-  const idx = parseInt(pathParts[pathParts.length - 2], 10) - 1;
+  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
   const item = data[idx];
-  if (!item) return;
 
-  images = item.images.slice();
+  images = item.images;
   currentIndex = 0;
+  updateImage();
 
-  const fixedImage = document.getElementById("fixedImage");
-  const mainImg = document.getElementById("fixedMainImage");
-
-  // 모바일: 원본처럼 스크롤 이미지 전부 출력
-  if (window.innerWidth <= 768) {
-    fixedImage.innerHTML = "";
-    images.forEach(src => {
-      const im = document.createElement("img");
-      im.src = src;
-      fixedImage.appendChild(im);
-    });
-  } else {
-    updateImage();
-    document.querySelector(".fixed-prev").onclick = () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateImage();
-    };
-    document.querySelector(".fixed-next").onclick = () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateImage();
-    };
-  }
-
-  // 썸네일 리스트 (원본 구조)
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
-  data.slice().reverse().forEach((d, revIdx) => {
-    const i = data.length - 1 - revIdx;
+
+  data.slice().reverse().forEach((d, r) => {
+    const i = data.length - r;
     gallery.innerHTML += `
-      <a href="/mika/${i+1}/" class="thumbnail">
-        <img src="/mika/images/thumb${i+1}.png">
+      <a href="/mika/${i}/" class="thumbnail">
+        <img src="/mika/images/thumb${i}.png">
         <div class="caption">
-          <span class="title">${d.title}</span>
-          <span class="category-year">
-            <span class="category">${d.category}</span>
-            <span class="year">${d.year}</span>
-          </span>
+          <span>${d.title}</span>
+          <span>${d.category} ${d.year}</span>
         </div>
       </a>`;
   });
 
-  // 캡션 (원본 폰트/크기)
-  captionBox.innerHTML = `
-    <div class="caption1">${item.captions.caption1}</div>
-    <div class="caption2">${item.captions.caption2}</div>
-    <div class="caption3">${item.captions.caption3}</div>
-    <div class="caption4">${item.captions.caption4}</div>
-    <div class="caption5">${item.captions.caption5}</div>`;
+  const cap = item.captions;
+  document.getElementById("captionBox").innerHTML = `
+    <div class="caption1">${cap.caption1}</div>
+    <div>${cap.caption2}</div>
+    <div>${cap.caption3}</div>
+    <div>${cap.caption4}</div>
+    <div>${cap.caption5}</div>`;
 }
 
 function updateImage() {
-  document.getElementById("fixedMainImage").src = images[currentIndex];
+  document.getElementById("mainImage").src = images[currentIndex];
 }
 
-function toggleSlideBox() {
-  if (window.innerWidth <= 768) {
-    const sb = document.getElementById("slideBox");
-    const txt = document.getElementById("slideToggleText");
-    sb.classList.toggle("active");
-    const v = sb.classList.contains("active") ? "close" : "info";
-    txt.textContent = v;
-    document.getElementById("listButton").textContent = v;
-  }
+function prevImage() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImage();
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
