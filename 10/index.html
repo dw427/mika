@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Dreamscape</title>
+<title>sDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -19,11 +18,10 @@ body { font-family: "minion-pro", serif; background: #fff; }
 a { color: inherit; text-decoration: none; transition: color .3s; }
 a:hover { color: #a3a3a3; }
 
-/* ===== footer ===== */
+/* ===== footer (원본) ===== */
 .footer {
   position: fixed;
-  bottom: 0;
-  left: 0;
+  bottom: 0; left: 0;
   width: 100%;
   height: 100px;
   background: transparent;
@@ -39,11 +37,10 @@ a:hover { color: #a3a3a3; }
 .footer .right-link { left: 30px; }
 .footer #listButton { right: 30px; cursor: pointer; }
 
-/* ===== slide box ===== */
+/* ===== slide box (원본) ===== */
 .slide-box {
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 0; right: 0;
   width: 373px !important;
   max-width: 100%;
   height: 100%;
@@ -65,38 +62,23 @@ a:hover { color: #a3a3a3; }
   color: #a3a3a3;
 }
 
-/* ===== caption (원본 유지) ===== */
-.caption-group {
-  display: flex;
-  flex-direction: column;
-  font-size: 12px;
-}
+/* ===== captions (원본 그대로) ===== */
+.caption-group { display: flex; flex-direction: column; font-size: 12px; }
 .caption1 { font-size: 20px; margin-bottom: 3px; }
-.caption2,.caption3,.caption4,.caption5 {
-  font-size: 12px;
-  margin-bottom: 3px;
-}
+.caption2,.caption3,.caption4,.caption5 { font-size: 12px; margin-bottom: 3px; }
 
-/* ===== gallery list ===== */
-.content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-}
-.thumbnail img {
-  width: 100%;
-  display: block;
-}
+/* ===== gallery list (원본) ===== */
+.content { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; }
+.thumbnail img { width: 100%; display: block; }
 
 /* ===== scrollbar 숨김 (원본) ===== */
 ::-webkit-scrollbar { display: none; }
-.scroll-area,
-.fixed-image {
+.scroll-area, .fixed-image {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-/* ===== image viewer ===== */
+/* ===== image viewer (원본) ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -109,53 +91,66 @@ a:hover { color: #a3a3a3; }
   transition: .3s;
   z-index: 5000;
 }
-.image-viewer.active {
-  opacity: 1;
-  visibility: visible;
-}
-.image-viewer img {
-  max-width: 90%;
-  max-height: 90%;
-}
+.image-viewer.active { opacity: 1; visibility: visible; }
+.image-viewer img { max-width: 90%; max-height: 90%; }
 
-/* ================= 모바일 (원본 그대로) ================= */
+/* ================= 모바일 (원본 절대 변경 없음) ================= */
 @media (max-width: 768px) {
   .gallery-wrap { display: block; }
   .left-image { display: none; }
   .scroll-area { display: none; }
+
   .footer { height: 100px; }
-  .slide-box { width: 100% !important; }
+  .footer .right-link { bottom: 20px; left: 20px; }
+  .footer #listButton { bottom: 20px; right: 20px; }
+
+  .slide-box {
+    width: 100% !important;
+    padding: 40px 20px;
+    transform: translateX(100%) !important;
+  }
+  .slide-box.active { transform: translateX(0) !important; }
 }
 
 /* ================= PC (여기만 수정) ================= */
 @media (min-width: 769px) {
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
+html, body { width: 100%; height: 100%; overflow: hidden; }
 
 .gallery-wrap {
   display: grid;
   height: 100%;
-  grid-template-columns: 60% 18% 22%;
+  grid-template-columns: 25% 35% 18% 22%;
 }
 
-/* 🔥 통합 fixed-image */
+/* 기존 left-image 유지 (보이기만) */
+.left-image {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.left-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== fixed-image : 단일 슬라이드 ===== */
 .fixed-image {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  border-left: 1px solid #9fa0a0;
   border-right: 1px solid #9fa0a0;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
 .fixed-image img {
   max-width: 70%;
   max-height: 80%;
   object-fit: contain;
+  cursor: pointer;
 }
 
 /* 좌우 버튼 */
@@ -167,31 +162,42 @@ html, body {
   cursor: pointer;
   user-select: none;
 }
-.fixed-prev { left: 30px; }
-.fixed-next { right: 30px; }
+.fixed-prev { left: 20px; }
+.fixed-next { right: 20px; }
 
+/* 스크롤 리스트 (원본 동작) */
 .scroll-area {
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
   border-right: 1px solid #9fa0a0;
 }
 
 .slide-box {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
   position: relative;
   transform: none !important;
 }
-.slide-list,
-#listButton { display: none; }
+.slide-list, #listButton { display: none; }
 }
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
 <div class="gallery-wrap">
 
-  <div class="fixed-image">
+  <!-- PC 좌측 이미지 (원본 유지) -->
+  <div class="left-image">
+    <img src="/alfoze/images/leftimage.png" alt="">
+  </div>
+
+  <!-- fixed-image (PC: 단일 슬라이드 / 모바일: 원본 스크롤 이미지) -->
+  <div class="fixed-image" id="fixedImage">
     <div class="fixed-nav fixed-prev">‹</div>
-    <img id="fixedMainImage" src="">
+    <img id="fixedMainImage" src="" alt="">
     <div class="fixed-nav fixed-next">›</div>
   </div>
 
@@ -200,7 +206,7 @@ html, body {
   </div>
 
   <div class="slide-box" id="slideBox">
-    <div class="slide-list" onclick="toggleSlideBox()">info</div>
+    <div class="slide-list" id="slideToggleText" onclick="toggleSlideBox()">info</div>
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -208,6 +214,11 @@ html, body {
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
+  <div id="listButton" onclick="toggleSlideBox()">info</div>
+</div>
+
+<div class="image-viewer" id="imageViewer">
+  <img src="" alt="">
 </div>
 
 <script>
@@ -218,22 +229,38 @@ async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
 
-  const idx = parseInt(location.pathname.split("/").slice(-2)[0]) - 1;
+  const pathParts = window.location.pathname.split("/");
+  const idx = parseInt(pathParts[pathParts.length - 2], 10) - 1;
   const item = data[idx];
   if (!item) return;
 
-  images = item.images;
-  updateImage();
+  images = item.images.slice();
+  currentIndex = 0;
 
-  document.querySelector(".fixed-prev").onclick = () => {
-    currentIndex = (currentIndex - 1 + images.length) % images.length;
-    updateImage();
-  };
-  document.querySelector(".fixed-next").onclick = () => {
-    currentIndex = (currentIndex + 1) % images.length;
-    updateImage();
-  };
+  const fixedImage = document.getElementById("fixedImage");
+  const mainImg = document.getElementById("fixedMainImage");
 
+  // 모바일: 원본처럼 스크롤 이미지 전부 출력
+  if (window.innerWidth <= 768) {
+    fixedImage.innerHTML = "";
+    images.forEach(src => {
+      const im = document.createElement("img");
+      im.src = src;
+      fixedImage.appendChild(im);
+    });
+  } else {
+    updateImage();
+    document.querySelector(".fixed-prev").onclick = () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateImage();
+    };
+    document.querySelector(".fixed-next").onclick = () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateImage();
+    };
+  }
+
+  // 썸네일 리스트 (원본 구조)
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
   data.slice().reverse().forEach((d, revIdx) => {
@@ -251,6 +278,7 @@ async function loadData() {
       </a>`;
   });
 
+  // 캡션 (원본 폰트/크기)
   captionBox.innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
     <div class="caption2">${item.captions.caption2}</div>
@@ -261,6 +289,17 @@ async function loadData() {
 
 function updateImage() {
   document.getElementById("fixedMainImage").src = images[currentIndex];
+}
+
+function toggleSlideBox() {
+  if (window.innerWidth <= 768) {
+    const sb = document.getElementById("slideBox");
+    const txt = document.getElementById("slideToggleText");
+    sb.classList.toggle("active");
+    const v = sb.classList.contains("active") ? "close" : "info";
+    txt.textContent = v;
+    document.getElementById("listButton").textContent = v;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
