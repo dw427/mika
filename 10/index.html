@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ㄴDreamscape</title>
+<title>sDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -13,34 +13,47 @@
 @import url("https://use.typekit.net/zuk4pzv.css");
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "minion-pro", serif; background: #fff; }
 
-a { color: inherit; text-decoration: none; transition: color .3s; }
+body {
+  font-family: "minion-pro", serif;
+  background: #fff;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color .3s;
+}
+
 a:hover { color: #a3a3a3; }
 
-/* ===== footer ===== */
+/* ===== FOOTER ===== */
 .footer {
   position: fixed;
-  bottom: 0; left: 0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 100px;
   background: transparent;
   z-index: 1000;
   color: #a3a3a3;
 }
+
 .footer .right-link,
 .footer #listButton {
   position: absolute;
   bottom: 10px;
   font-size: 12px;
 }
+
 .footer .right-link { left: 30px; }
 .footer #listButton { right: 30px; cursor: pointer; }
 
-/* ===== slide box ===== */
+/* ===== SLIDE BOX ===== */
 .slide-box {
   position: fixed;
-  top: 0; right: 0;
+  top: 0;
+  right: 0;
   width: 373px !important;
   height: 100%;
   background: #fff;
@@ -50,36 +63,43 @@ a:hover { color: #a3a3a3; }
   overflow-y: auto;
   padding: 10px;
 }
+
 .slide-box.active { transform: translateX(0); }
 
-.caption-group {
-  display: flex;
-  flex-direction: column;
+.slide-box .slide-list {
+  position: fixed;
+  bottom: 10px;
+  right: 30px;
   font-size: 12px;
+  cursor: pointer;
+  z-index: 4001;
+  color: #a3a3a3;
 }
-.caption1 { font-size: 20px; margin-bottom: 6px; }
-.caption2, .caption3, .caption4, .caption5 { margin-bottom: 4px; }
 
-/* ===== gallery ===== */
+.caption-group { font-size: 12px; }
+.caption1 { font-size: 20px; margin-bottom: 6px; }
+
+/* ===== GALLERY ===== */
 .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
+
 .thumbnail img {
   width: 100%;
   display: block;
 }
 
-/* ===== fixed image (PC slider) ===== */
+/* ===== FIXED IMAGE (통합 영역) ===== */
 .fixed-image {
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-left: 1px solid #9fa0a0;
   border-right: 1px solid #9fa0a0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .fixed-image img {
@@ -88,8 +108,8 @@ a:hover { color: #a3a3a3; }
   object-fit: contain;
 }
 
-/* arrows */
-.fixed-image .nav {
+/* 좌우 네비 */
+.nav-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -97,35 +117,15 @@ a:hover { color: #a3a3a3; }
   cursor: pointer;
   user-select: none;
 }
-.fixed-image .prev { left: 20px; }
-.fixed-image .next { right: 20px; }
 
-/* ===== image viewer ===== */
-.image-viewer {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.85);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: .3s;
-  z-index: 5000;
-}
-.image-viewer.active {
-  opacity: 1;
-  visibility: visible;
-}
-.image-viewer img {
-  max-width: 90%;
-  max-height: 90%;
-}
+.nav-prev { left: 20px; }
+.nav-next { right: 20px; }
 
-/* ===== 모바일 (절대 수정 안함) ===== */
+/* ===== MOBILE (절대 수정 금지) ===== */
 @media (max-width: 768px) {
   .gallery-wrap { display: block; }
-  .fixed-image { display: none; }
+  .footer { height: 100px; }
+  .slide-box { width: 100% !important; }
 }
 
 /* ===== PC ===== */
@@ -138,8 +138,8 @@ a:hover { color: #a3a3a3; }
 
   .gallery-wrap {
     display: grid;
-    grid-template-columns: 50% 28% 22%;
     height: 100%;
+    grid-template-columns: 60% 18% 22%;
   }
 
   .scroll-area {
@@ -148,30 +148,35 @@ a:hover { color: #a3a3a3; }
   }
 
   .slide-box {
-    position: relative;
     transform: none !important;
+    position: relative;
   }
 
-  #listButton { display: none; }
+  .slide-list,
+  #listButton {
+    display: none;
+  }
 }
 </style>
 </head>
 
-<body oncontextmenu="return false">
+<body>
 
 <div class="gallery-wrap">
 
-  <!-- ✅ 통합된 fixed-image -->
+  <!-- FIXED IMAGE (통합) -->
   <div class="fixed-image">
-    <div class="nav prev" onclick="prevImage()">‹</div>
+    <div class="nav-btn nav-prev" onclick="prevImage()">‹</div>
     <img id="mainImage" src="" />
-    <div class="nav next" onclick="nextImage()">›</div>
+    <div class="nav-btn nav-next" onclick="nextImage()">›</div>
   </div>
 
+  <!-- THUMB -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
+  <!-- INFO -->
   <div class="slide-box" id="slideBox">
     <div class="caption-group" id="captionBox"></div>
   </div>
@@ -180,10 +185,7 @@ a:hover { color: #a3a3a3; }
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
-</div>
-
-<div class="image-viewer" id="imageViewer">
-  <img src="" />
+  <div id="listButton" onclick="toggleSlideBox()">info</div>
 </div>
 
 <script>
@@ -194,49 +196,40 @@ async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
 
-  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
-  const item = data[idx];
+  const pathParts = window.location.pathname.split("/");
+  const idx = parseInt(pathParts[pathParts.length - 2], 10);
+  const item = data[idx - 1];
 
   images = item.images;
-  currentIndex = 0;
-  updateImage();
+  document.getElementById("mainImage").src = images[0];
 
   const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  data.slice().reverse().forEach((d, r) => {
-    const i = data.length - r;
+  data.slice().reverse().forEach((d, revIdx) => {
+    const i = data.length - 1 - revIdx;
     gallery.innerHTML += `
-      <a href="/mika/${i}/" class="thumbnail">
-        <img src="/mika/images/thumb${i}.png">
-        <div class="caption">
-          <span>${d.title}</span>
-          <span>${d.category} ${d.year}</span>
-        </div>
-      </a>`;
+      <a href="/mika/${i+1}/">
+        <img src="/mika/images/thumb${i+1}.png">
+      </a>
+    `;
   });
 
-  const cap = item.captions;
   document.getElementById("captionBox").innerHTML = `
-    <div class="caption1">${cap.caption1}</div>
-    <div>${cap.caption2}</div>
-    <div>${cap.caption3}</div>
-    <div>${cap.caption4}</div>
-    <div>${cap.caption5}</div>`;
-}
-
-function updateImage() {
-  document.getElementById("mainImage").src = images[currentIndex];
+    <div class="caption1">${item.captions.caption1}</div>
+    <div>${item.captions.caption2}</div>
+    <div>${item.captions.caption3}</div>
+    <div>${item.captions.caption4}</div>
+    <div>${item.captions.caption5}</div>
+  `;
 }
 
 function prevImage() {
   currentIndex = (currentIndex - 1 + images.length) % images.length;
-  updateImage();
+  document.getElementById("mainImage").src = images[currentIndex];
 }
 
 function nextImage() {
   currentIndex = (currentIndex + 1) % images.length;
-  updateImage();
+  document.getElementById("mainImage").src = images[currentIndex];
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
