@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Dreamscape</title>
+  <title>sㄴDreamscape</title>
 
   <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
   <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -13,20 +13,35 @@
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ===== RESET ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: "minion-pro", serif;
       background: #fff;
     }
 
-    a { color: inherit; text-decoration: none; transition: color .3s; }
-    a:hover { color: #a3a3a3; }
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color .3s;
+    }
 
+    a:hover {
+      color: #a3a3a3;
+    }
+
+    /* ===== FOOTER ===== */
     .footer {
       position: fixed;
-      bottom: 0; left: 0;
-      width: 100%; height: 100px;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
       z-index: 1000;
       color: #a3a3a3;
     }
@@ -38,23 +53,33 @@
       font-size: 12px;
     }
 
-    .footer .right-link { left: 30px; }
-    .footer #listButton { right: 30px; cursor: pointer; }
+    .footer .right-link {
+      left: 30px;
+    }
 
+    .footer #listButton {
+      right: 30px;
+      cursor: pointer;
+    }
+
+    /* ===== SLIDE BOX ===== */
     .slide-box {
       position: fixed;
-      top: 0; right: 0;
+      top: 0;
+      right: 0;
       width: 373px;
       height: 100%;
       background: #fff;
       z-index: 3000;
       transform: translateX(100%);
-      transition: .3s;
+      transition: transform .3s;
       overflow-y: auto;
       padding: 10px;
     }
 
-    .slide-box.active { transform: translateX(0); }
+    .slide-box.active {
+      transform: translateX(0);
+    }
 
     .slide-box .slide-list {
       position: fixed;
@@ -65,12 +90,24 @@
       color: #a3a3a3;
     }
 
-    .caption-group { font-size: 12px; }
-    .caption1 { font-size: 20px; margin-bottom: 5px; }
+    .caption-group div {
+      font-size: 12px;
+      margin-bottom: 3px;
+    }
 
-    /* ===== GALLERY ===== */
+    .caption1 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    /* ===== PC LAYOUT ===== */
     @media (min-width: 769px) {
-      html, body { width: 100%; height: 100%; overflow: hidden; }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
 
       .gallery-wrap {
         display: grid;
@@ -78,8 +115,16 @@
         height: 100%;
       }
 
-      .slide-box { position: relative; transform: none; width: 100%; }
-      .slide-list, #listButton { display: none; }
+      .slide-box {
+        position: relative;
+        transform: none;
+        width: 100%;
+      }
+
+      #listButton,
+      .slide-list {
+        display: none;
+      }
     }
 
     /* ===== FIXED IMAGE SLIDER ===== */
@@ -109,9 +154,15 @@
       cursor: pointer;
     }
 
-    .prev { left: 20px; }
-    .next { right: 20px; }
+    .prev {
+      left: 20px;
+    }
 
+    .next {
+      right: 20px;
+    }
+
+    /* ===== SCROLL THUMBNAILS ===== */
     .scroll-area {
       overflow-y: auto;
       border-right: 1px solid #9fa0a0;
@@ -122,13 +173,21 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .thumbnail img { width: 100%; display: block; }
-    .caption { font-size: 12px; margin: 8px 0 20px; }
+    .thumbnail img {
+      width: 100%;
+      display: block;
+    }
 
+    .caption {
+      font-size: 12px;
+      margin: 8px 0 20px;
+    }
+
+    /* ===== IMAGE VIEWER ===== */
     .image-viewer {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.85);
+      background: rgba(0, 0, 0, .85);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -150,118 +209,137 @@
   </style>
 </head>
 
-<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
+<body oncontextmenu="return false"
+      ondragstart="return false"
+      onselectstart="return false">
 
-<div class="gallery-wrap">
+  <div class="gallery-wrap">
 
-  <div class="fixed-image">
-    <button class="nav prev">‹</button>
-    <img id="mainImage" src="" alt="">
-    <button class="nav next">›</button>
+    <!-- FIXED IMAGE SLIDER -->
+    <div class="fixed-image">
+      <button class="nav prev">‹</button>
+      <img id="mainImage" src="" alt="" />
+      <button class="nav next">›</button>
+    </div>
+
+    <!-- SCROLL THUMB LIST -->
+    <div class="scroll-area">
+      <div class="content" id="gallery"></div>
+    </div>
+
+    <!-- INFO SLIDE BOX -->
+    <div class="slide-box" id="slideBox">
+      <div class="slide-list"
+           id="slideToggleText"
+           onclick="toggleSlideBox()">info</div>
+      <div class="caption-group" id="captionBox"></div>
+    </div>
+
   </div>
 
-  <div class="scroll-area">
-    <div class="content" id="gallery"></div>
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="right-link">
+      <a href="/mika/">back</a>
+    </div>
+    <div id="listButton" onclick="toggleSlideBox()">info</div>
   </div>
 
-  <div class="slide-box" id="slideBox">
-    <div class="slide-list" onclick="toggleSlideBox()">info</div>
-    <div class="caption-group" id="captionBox"></div>
+  <!-- IMAGE VIEWER -->
+  <div class="image-viewer" id="imageViewer">
+    <img src="" alt="" />
   </div>
 
-</div>
+  <script>
+    let images = [];
+    let currentIndex = 0;
 
-<div class="footer">
-  <div class="right-link"><a href="/mika/">back</a></div>
-  <div id="listButton" onclick="toggleSlideBox()">info</div>
-</div>
+    function showImage() {
+      document.getElementById("mainImage").src = images[currentIndex];
+    }
 
-<div class="image-viewer" id="viewer">
-  <img src="">
-</div>
+    async function loadData() {
+      const res = await fetch("../data.json");
+      const data = await res.json();
 
-<script>
-let images = [];
-let index = 0;
+      const pathParts = location.pathname.split("/");
+      const idx = parseInt(pathParts[pathParts.length - 2], 10) - 1;
+      const item = data[idx];
+      if (!item) return;
 
-function showImage() {
-  document.getElementById("mainImage").src = images[index];
-}
+      images = item.images.slice();
+      currentIndex = 0;
+      showImage();
 
-async function loadData() {
-  const res = await fetch("../data.json");
-  const data = await res.json();
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = "";
 
-  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
-  const item = data[idx];
-  if (!item) return;
+      data.slice().reverse().forEach((d, r) => {
+        const i = data.length - 1 - r;
 
-  images = item.images;
-  index = 0;
-  showImage();
+        gallery.insertAdjacentHTML("beforeend", `
+          <a href="/mika/${i + 1}/" class="thumbnail">
+            <img src="/mika/images/thumb${i + 1}.png" />
+            <div class="caption">
+              <div>${d.title}</div>
+              <div>${d.category} ${d.year}</div>
+            </div>
+          </a>
+        `);
+      });
 
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
+      document.getElementById("captionBox").innerHTML = `
+        <div class="caption1">${item.captions.caption1}</div>
+        <div>${item.captions.caption2}</div>
+        <div>${item.captions.caption3}</div>
+        <div>${item.captions.caption4}</div>
+        <div>${item.captions.caption5}</div>
+      `;
+    }
 
-  data.slice().reverse().forEach((d, r) => {
-    const i = data.length - 1 - r;
-    know
-    gallery.innerHTML += `
-      <a href="/mika/${i+1}/" class="thumbnail">
-        <img src="/mika/images/thumb${i+1}.png">
-        <div class="caption">
-          <div>${d.title}</div>
-          <div>${d.category} ${d.year}</div>
-        </div>
-      </a>
-    `;
-  });
+    function toggleSlideBox() {
+      if (window.innerWidth <= 768) {
+        const sb = document.getElementById("slideBox");
+        const txt = document.getElementById("slideToggleText");
 
-  document.getElementById("captionBox").innerHTML = `
-    <div class="caption1">${item.captions.caption1}</div>
-    <div>${item.captions.caption2}</div>
-    <div>${item.captions.caption3}</div>
-    <div>${item.captions.caption4}</div>
-    <div>${item.captions.caption5}</div>
-  `;
-}
+        sb.classList.toggle("active");
 
-document.querySelector(".prev").onclick = () => {
-  index = (index - 1 + images.length) % images.length;
-  showImage();
-};
+        const value = sb.classList.contains("active") ? "close" : "info";
+        txt.textContent = value;
+        document.getElementById("listButton").textContent = value;
+      }
+    }
 
-document.querySelector(".next").onclick = () => {
-  index = (index + 1) % images.length;
-  showImage();
-};
+    document.querySelector(".prev").onclick = () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      showImage();
+    };
 
-document.getElementById("mainImage").onclick = () => {
-  const v = document.getElementById("viewer");
-  v.querySelector("img").src = images[index];
-  v.classList.add("active");
-};
+    document.querySelector(".next").onclick = () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      showImage();
+    };
 
-document.getElementById("viewer").onclick = () => {
-  document.getElementById("viewer").classList.remove("active");
-};
+    document.getElementById("mainImage").onclick = () => {
+      const viewer = document.getElementById("imageViewer");
+      viewer.querySelector("img").src = images[currentIndex];
+      viewer.classList.add("active");
+    };
 
-function toggleSlideBox() {
-  if (window.innerWidth <= 768) {
-    document.getElementById("slideBox").classList.toggle("active");
-  }
-}
+    document.getElementById("imageViewer").onclick = () => {
+      document.getElementById("imageViewer").classList.remove("active");
+    };
 
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    document.getElementById("viewer").classList.remove("active");
-  }
-  if (e.key === "ArrowLeft") document.querySelector(".prev").click();
-  if (e.key === "ArrowRight") document.querySelector(".next").click();
-});
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        document.getElementById("imageViewer").classList.remove("active");
+      }
+      if (e.key === "ArrowLeft") document.querySelector(".prev").click();
+      if (e.key === "ArrowRight") document.querySelector(".next").click();
+    });
 
-document.addEventListener("DOMContentLoaded", loadData);
-</script>
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
 
 </body>
 </html>
