@@ -5,15 +5,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>sDreamscape</title>
+  <title>Dreamscape</title>
 
   <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
   <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
-
   <meta name="theme-color" content="#ffffff" />
 
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
+
+    /* ================= 기본 ================= */
 
     * {
       box-sizing: border-box;
@@ -29,7 +30,18 @@
     a {
       color: inherit;
       text-decoration: none;
+      transition: color .3s;
     }
+
+    a:hover {
+      color: #a3a3a3;
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ================= Footer ================= */
 
     .footer {
       position: fixed;
@@ -48,23 +60,41 @@
       font-size: 12px;
     }
 
-    .footer .right-link { left: 30px; }
-    .footer #listButton { right: 30px; cursor: pointer; }
-
-    .slide-box {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 373px;
-      height: 100%;
-      background: #fff;
-      z-index: 3000;
-      overflow-y: auto;
-      padding: 10px;
+    .footer .right-link {
+      left: 30px;
     }
 
-    .caption-group { font-size: 12px; }
-    .caption1 { font-size: 20px; margin-bottom: 6px; }
+    .footer #listButton {
+      right: 30px;
+      cursor: pointer;
+    }
+
+    /* ================= Slide Box ================= */
+
+    .slide-box {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .caption-group {
+      font-size: 12px;
+    }
+
+    .caption1 {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    /* ================= Gallery ================= */
+
+    .scroll-area {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      border-right: 1px solid #9fa0a0;
+    }
 
     .content {
       display: grid;
@@ -74,82 +104,75 @@
     .thumbnail img {
       width: 100%;
       display: block;
+      cursor: pointer;
     }
 
     .caption {
       font-size: 12px;
-      margin: 8px 0 20px;
+      padding: 6px 0 14px;
     }
 
-    ::-webkit-scrollbar { display: none; }
+    /* ================= Fixed Image (메인) ================= */
 
     .fixed-image {
       position: relative;
       width: 100%;
       height: 100%;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      overflow: hidden;
       border-left: 1px solid #9fa0a0;
       border-right: 1px solid #9fa0a0;
-      overflow: hidden;
     }
 
     .fixed-image img {
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: contain;
       cursor: pointer;
     }
 
-    .fixed-image .nav {
+    .nav-btn {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background: none;
-      border: none;
       font-size: 40px;
       cursor: pointer;
-      color: #000;
-      padding: 10px;
-      z-index: 10;
+      user-select: none;
+      opacity: .6;
+      transition: opacity .2s;
     }
 
-    .fixed-image .prev { left: 20px; }
-    .fixed-image .next { right: 20px; }
-
-    .image-viewer {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      visibility: hidden;
-      transition: .3s;
-      z-index: 5000;
-    }
-
-    .image-viewer.active {
+    .nav-btn:hover {
       opacity: 1;
-      visibility: visible;
     }
 
-    .image-viewer img {
-      max-width: 90%;
-      max-height: 90%;
+    .nav-prev {
+      left: 20px;
     }
 
-    /* ===== 모바일 그대로 유지 ===== */
+    .nav-next {
+      right: 20px;
+    }
+
+    /* ================= 모바일 (변경 없음) ================= */
+
     @media (max-width: 768px) {
-      .fixed-image { display: none; }
-      .slide-box { width: 100% !important; }
+      .gallery-wrap {
+        display: block;
+      }
+
+      .fixed-image {
+        border: none;
+      }
     }
 
-    /* ===== PC만 수정 ===== */
+    /* ================= PC (수정 대상) ================= */
+
     @media (min-width: 769px) {
-      html, body {
+      html,
+      body {
         width: 100%;
         height: 100%;
         overflow: hidden;
@@ -161,33 +184,30 @@
         grid-template-columns: 60% 18% 22%;
       }
 
-      .scroll-area {
-        overflow-y: auto;
-        border-right: 1px solid #9fa0a0;
+      #listButton {
+        display: none;
       }
-
-      #listButton { display: none; }
     }
   </style>
 </head>
 
-<body>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
   <div class="gallery-wrap">
 
-    <!-- FIXED IMAGE (LEFT + CENTER MERGED) -->
+    <!-- ===== Fixed Image ===== -->
     <div class="fixed-image">
-      <button class="nav prev">‹</button>
-      <img id="mainImage" src="" alt="">
-      <button class="nav next">›</button>
+      <div class="nav-btn nav-prev" id="prevBtn">‹</div>
+      <img id="mainImage" src="" alt="main image" />
+      <div class="nav-btn nav-next" id="nextBtn">›</div>
     </div>
 
-    <!-- THUMB LIST -->
+    <!-- ===== Thumbnail List ===== -->
     <div class="scroll-area">
       <div class="content" id="gallery"></div>
     </div>
 
-    <!-- INFO -->
+    <!-- ===== Info ===== -->
     <div class="slide-box">
       <div class="caption-group" id="captionBox"></div>
     </div>
@@ -195,67 +215,75 @@
   </div>
 
   <div class="footer">
-    <div class="right-link"><a href="/mika/">back</a></div>
-  </div>
-
-  <div class="image-viewer" id="imageViewer">
-    <img src="">
+    <div class="right-link">
+      <a href="/mika/">back</a>
+    </div>
   </div>
 
   <script>
+    let images = [];
     let currentIndex = 0;
-    let imageList = [];
-
-    function updateMainImage() {
-      document.getElementById("mainImage").src = imageList[currentIndex];
-    }
 
     async function loadData() {
       const res = await fetch("../data.json");
       const data = await res.json();
 
-      const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
+      const path = location.pathname.split("/");
+      const idx = parseInt(path[path.length - 2], 10) - 1;
       const item = data[idx];
       if (!item) return;
 
-      imageList = item.images;
+      images = item.images;
       currentIndex = 0;
-      updateMainImage();
+      updateImage();
 
       const gallery = document.getElementById("gallery");
       gallery.innerHTML = "";
 
-      data.slice().reverse().forEach((d, r) => {
-        const i = data.length - 1 - r;
-        gallery.innerHTML += `
-          <a href="/mika/${i + 1}/">
+      data.slice().reverse().forEach((d, revIdx) => {
+        const i = data.length - 1 - revIdx;
+        gallery.insertAdjacentHTML("beforeend", `
+          <a class="thumbnail" href="/mika/${i + 1}/">
             <img src="/mika/images/thumb${i + 1}.png">
             <div class="caption">
               <div>${d.title}</div>
               <div>${d.category} ${d.year}</div>
             </div>
           </a>
-        `;
+        `);
       });
 
+      const c = item.captions;
       document.getElementById("captionBox").innerHTML = `
-        <div class="caption1">${item.captions.caption1}</div>
-        <div>${item.captions.caption2}</div>
-        <div>${item.captions.caption3}</div>
-        <div>${item.captions.caption4}</div>
-        <div>${item.captions.caption5}</div>
+        <div class="caption1">${c.caption1}</div>
+        <div>${c.caption2}</div>
+        <div>${c.caption3}</div>
+        <div>${c.caption4}</div>
+        <div>${c.caption5}</div>
       `;
     }
 
-    document.querySelector(".prev").onclick = () => {
-      currentIndex = (currentIndex - 1 + imageList.length) % imageList.length;
-      updateMainImage();
-    };
+    function updateImage() {
+      document.getElementById("mainImage").src = images[currentIndex];
+    }
 
-    document.querySelector(".next").onclick = () => {
-      currentIndex = (currentIndex + 1) % imageList.length;
-      updateMainImage();
-    };
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateImage();
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateImage();
+    }
+
+    document.getElementById("prevBtn").onclick = prevImage;
+    document.getElementById("nextBtn").onclick = nextImage;
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "ArrowLeft") prevImage();
+      if (e.key === "ArrowRight") nextImage();
+    });
 
     document.addEventListener("DOMContentLoaded", loadData);
   </script>
