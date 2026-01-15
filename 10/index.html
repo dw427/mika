@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>sㄴDreamscape</title>
+  <title>Dreamscape</title>
 
   <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
   <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -90,6 +89,7 @@
       color: #a3a3a3;
     }
 
+    /* ===== CAPTION ===== */
     .caption-group div {
       font-size: 12px;
       margin-bottom: 3px;
@@ -127,7 +127,7 @@
       }
     }
 
-    /* ===== FIXED IMAGE SLIDER ===== */
+    /* ===== FIXED IMAGE ===== */
     .fixed-image {
       position: relative;
       display: flex;
@@ -144,6 +144,7 @@
       cursor: pointer;
     }
 
+    /* ===== NAV ===== */
     .nav {
       position: absolute;
       top: 50%;
@@ -154,15 +155,10 @@
       cursor: pointer;
     }
 
-    .prev {
-      left: 20px;
-    }
+    .prev { left: 20px; }
+    .next { right: 20px; }
 
-    .next {
-      right: 20px;
-    }
-
-    /* ===== SCROLL THUMBNAILS ===== */
+    /* ===== SCROLL LIST ===== */
     .scroll-area {
       overflow-y: auto;
       border-right: 1px solid #9fa0a0;
@@ -209,29 +205,25 @@
   </style>
 </head>
 
-<body oncontextmenu="return false"
-      ondragstart="return false"
-      onselectstart="return false">
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
   <div class="gallery-wrap">
 
-    <!-- FIXED IMAGE SLIDER -->
+    <!-- FIXED IMAGE -->
     <div class="fixed-image">
       <button class="nav prev">‹</button>
       <img id="mainImage" src="" alt="" />
       <button class="nav next">›</button>
     </div>
 
-    <!-- SCROLL THUMB LIST -->
+    <!-- SCROLL THUMB -->
     <div class="scroll-area">
       <div class="content" id="gallery"></div>
     </div>
 
-    <!-- INFO SLIDE BOX -->
+    <!-- SLIDE INFO -->
     <div class="slide-box" id="slideBox">
-      <div class="slide-list"
-           id="slideToggleText"
-           onclick="toggleSlideBox()">info</div>
+      <div class="slide-list" id="slideToggleText" onclick="toggleSlideBox()">info</div>
       <div class="caption-group" id="captionBox"></div>
     </div>
 
@@ -239,9 +231,7 @@
 
   <!-- FOOTER -->
   <div class="footer">
-    <div class="right-link">
-      <a href="/mika/">back</a>
-    </div>
+    <div class="right-link"><a href="/mika/">back</a></div>
     <div id="listButton" onclick="toggleSlideBox()">info</div>
   </div>
 
@@ -276,7 +266,6 @@
 
       data.slice().reverse().forEach((d, r) => {
         const i = data.length - 1 - r;
-
         gallery.insertAdjacentHTML("beforeend", `
           <a href="/mika/${i + 1}/" class="thumbnail">
             <img src="/mika/images/thumb${i + 1}.png" />
@@ -301,12 +290,10 @@
       if (window.innerWidth <= 768) {
         const sb = document.getElementById("slideBox");
         const txt = document.getElementById("slideToggleText");
-
         sb.classList.toggle("active");
-
-        const value = sb.classList.contains("active") ? "close" : "info";
-        txt.textContent = value;
-        document.getElementById("listButton").textContent = value;
+        const v = sb.classList.contains("active") ? "close" : "info";
+        txt.textContent = v;
+        document.getElementById("listButton").textContent = v;
       }
     }
 
