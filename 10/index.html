@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>sDreamscape</title>
+<title>1Dreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -33,15 +33,13 @@ a:hover {
   color: #a3a3a3;
 }
 
-/* ================= footer ================= */
-
+/* ===== footer ===== */
 .footer {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 100px;
-  background: transparent;
   z-index: 1000;
   color: #a3a3a3;
 }
@@ -53,26 +51,15 @@ a:hover {
   font-size: 12px;
 }
 
-.footer .right-link {
-  left: 30px;
-}
+.footer .right-link { left: 30px; }
+.footer #listButton { right: 30px; cursor: pointer; }
 
-.footer #listButton {
-  right: 30px;
-  cursor: pointer;
-}
-
-.footer #listButton:hover {
-  color: #7a7a7a;
-}
-
-/* ================= slide box ================= */
-
+/* ===== slide info ===== */
 .slide-box {
   position: fixed;
   top: 0;
   right: 0;
-  width: 373px !important;
+  width: 373px;
   height: 100%;
   background: #fff;
   z-index: 3000;
@@ -86,39 +73,21 @@ a:hover {
   transform: translateX(0);
 }
 
-.slide-box .slide-list {
-  position: fixed;
-  bottom: 10px;
-  right: 30px;
-  font-size: 12px;
-  cursor: pointer;
-  color: #a3a3a3;
-}
-
 .caption-group {
   display: flex;
   flex-direction: column;
-  font-size: 12px;
 }
 
-.caption1 {
-  font-size: 20px;
-  margin-bottom: 3px;
-}
-
+.caption1 { font-size: 20px; margin-bottom: 4px; }
 .caption2,
 .caption3,
 .caption4,
-.caption5 {
-  margin-bottom: 3px;
-}
+.caption5 { font-size: 12px; margin-bottom: 3px; }
 
-/* ================= gallery ================= */
-
+/* ===== gallery ===== */
 .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0;
 }
 
 .thumbnail img {
@@ -127,12 +96,11 @@ a:hover {
 }
 
 .caption {
-  margin-top: 8px;
   font-size: 12px;
+  margin-top: 6px;
 }
 
-/* ================= fixed image (PC slider) ================= */
-
+/* ===== fixed image (PC slider) ===== */
 .fixed-image {
   position: relative;
   width: 100%;
@@ -146,34 +114,31 @@ a:hover {
 }
 
 .fixed-image img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 90%;
+  max-height: 90%;
   object-fit: contain;
+  display: none;
+}
+
+.fixed-image img.active {
+  display: block;
 }
 
 /* arrows */
-
-.arrow {
+.fixed-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 40px;
-  color: #000;
+  font-size: 30px;
   cursor: pointer;
   user-select: none;
-  z-index: 10;
+  color: #000;
 }
 
-.arrow.left {
-  left: 20px;
-}
+.fixed-arrow.left { left: 20px; }
+.fixed-arrow.right { right: 20px; }
 
-.arrow.right {
-  right: 20px;
-}
-
-/* ================= image viewer ================= */
-
+/* ===== image viewer ===== */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -197,49 +162,47 @@ a:hover {
   max-height: 90%;
 }
 
-/* ================= mobile ================= */
-
+/* ===== mobile (절대 변경 안 함) ===== */
 @media (max-width: 768px) {
 
-  .gallery-wrap {
-    display: block;
-  }
-
   .fixed-image {
-    display: none;
+    flex-direction: column;
+    overflow-y: auto;
+    border: none;
   }
 
-  .scroll-area {
-    display: none;
+  .fixed-image img {
+    display: block;
+    max-width: 100%;
+    max-height: none;
+    margin-bottom: 10px;
   }
 
-  .slide-box {
-    width: 100% !important;
-    padding: 40px 20px;
+  .fixed-arrow {
+    display: none;
   }
 }
 
-/* ================= PC ================= */
-
+/* ===== PC ===== */
 @media (min-width: 769px) {
 
   html, body {
+    width: 100%;
     height: 100%;
     overflow: hidden;
   }
 
   .gallery-wrap {
     display: grid;
-    height: 100%;
     grid-template-columns: 60% 18% 22%;
+    height: 100%;
   }
 
   .scroll-area {
-    border-right: 1px solid #9fa0a0;
     overflow-y: auto;
+    border-right: 1px solid #9fa0a0;
   }
 
-  .slide-list,
   #listButton {
     display: none;
   }
@@ -251,21 +214,19 @@ a:hover {
 
 <div class="gallery-wrap">
 
-  <!-- FIXED IMAGE (LEFT + CENTER MERGED) -->
-  <div class="fixed-image">
-    <div class="arrow left" id="prevBtn">‹</div>
-    <img id="fixedMainImage" src="" alt="">
-    <div class="arrow right" id="nextBtn">›</div>
+  <!-- fixed image (left + fixed merged) -->
+  <div class="fixed-image" id="fixedImage">
+    <div class="fixed-arrow left" onclick="prevImage()">‹</div>
+    <div class="fixed-arrow right" onclick="nextImage()">›</div>
   </div>
 
-  <!-- THUMB LIST -->
+  <!-- thumbnail -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
-  <!-- INFO -->
+  <!-- info -->
   <div class="slide-box" id="slideBox">
-    <div class="slide-list" id="slideToggleText" onclick="toggleSlideBox()">info</div>
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -273,74 +234,86 @@ a:hover {
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
-  <div id="listButton" onclick="toggleSlideBox()">info</div>
 </div>
 
 <div class="image-viewer" id="imageViewer">
-  <img src="" alt="">
+  <img />
 </div>
 
 <script>
-let images = [];
 let currentIndex = 0;
+let fixedImgs = [];
 
 async function loadData() {
-
   const res = await fetch("../data.json");
   const data = await res.json();
 
-  const path = location.pathname.split("/");
-  const idx = parseInt(path[path.length - 2], 10) - 1;
+  const pathParts = location.pathname.split("/");
+  const idx = parseInt(pathParts[pathParts.length - 2], 10) - 1;
   const item = data[idx];
+  if (!item) return;
 
-  images = item.images;
+  const fixed = document.getElementById("fixedImage");
+  fixedImgs = [];
 
-  const mainImg = document.getElementById("fixedMainImage");
-  mainImg.src = images[0];
+  item.images.forEach((src, i) => {
+    const img = document.createElement("img");
+    img.src = src;
+    if (i === 0) img.classList.add("active");
+    fixed.appendChild(img);
+    fixedImgs.push(img);
 
-  document.getElementById("prevBtn").onclick = () => changeImage(-1);
-  document.getElementById("nextBtn").onclick = () => changeImage(1);
+    img.onclick = () => {
+      const viewer = document.getElementById("imageViewer");
+      viewer.querySelector("img").src = src;
+      viewer.classList.add("active");
+    };
+  });
 
   const gallery = document.getElementById("gallery");
   gallery.innerHTML = "";
 
-  data.slice().reverse().forEach((d, i) => {
-    const real = data.length - 1 - i;
-    gallery.innerHTML += `
-      <a href="/mika/${real+1}/" class="thumbnail">
-        <img src="/mika/images/thumb${real+1}.png">
-        <div class="caption">
-          <span>${d.title}</span>
-          <span>${d.category} ${d.year}</span>
-        </div>
-      </a>
-    `;
+  data.slice().reverse().forEach((d, rev) => {
+    const i = data.length - 1 - rev;
+    const a = document.createElement("a");
+    a.href = `/mika/${i+1}/`;
+    a.innerHTML = `
+      <img src="/mika/images/thumb${i+1}.png">
+      <div class="caption">
+        <span>${d.title}</span>
+        <span>${d.category} ${d.year}</span>
+      </div>`;
+    gallery.appendChild(a);
   });
 
-  const c = item.captions;
   document.getElementById("captionBox").innerHTML = `
-    <div class="caption1">${c.caption1}</div>
-    <div>${c.caption2}</div>
-    <div>${c.caption3}</div>
-    <div>${c.caption4}</div>
-    <div>${c.caption5}</div>
-  `;
+    <div class="caption1">${item.captions.caption1}</div>
+    <div class="caption2">${item.captions.caption2}</div>
+    <div class="caption3">${item.captions.caption3}</div>
+    <div class="caption4">${item.captions.caption4}</div>
+    <div class="caption5">${item.captions.caption5}</div>`;
 }
 
-function changeImage(dir) {
-  currentIndex += dir;
-  if (currentIndex < 0) currentIndex = images.length - 1;
-  if (currentIndex >= images.length) currentIndex = 0;
-  document.getElementById("fixedMainImage").src = images[currentIndex];
+function showImage(i) {
+  fixedImgs.forEach(img => img.classList.remove("active"));
+  fixedImgs[i].classList.add("active");
 }
 
-function toggleSlideBox() {
-  if (innerWidth <= 768) {
-    slideBox.classList.toggle("active");
-  }
+function prevImage() {
+  currentIndex = (currentIndex - 1 + fixedImgs.length) % fixedImgs.length;
+  showImage(currentIndex);
+}
+
+function nextImage() {
+  currentIndex = (currentIndex + 1) % fixedImgs.length;
+  showImage(currentIndex);
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
+
+document.getElementById("imageViewer").onclick = e => {
+  e.currentTarget.classList.remove("active");
+};
 </script>
 
 </body>
