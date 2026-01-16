@@ -3,151 +3,197 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>sDreamscape</title>
+<title>sㅁDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
+<meta name="theme-color" content="#ffffff" />
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
 
-* { box-sizing:border-box; margin:0; padding:0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-  font-family:"minion-pro", serif;
-  background:#fff;
+  font-family: "minion-pro", serif;
+  background: #fff;
 }
 
-/* ===== 기본 ===== */
-a { color:inherit; text-decoration:none; }
-::-webkit-scrollbar { display:none; }
+a { color: inherit; text-decoration: none; transition: color .3s; }
+a:hover { color: #a3a3a3; }
 
+/* ===== FOOTER ===== */
 .footer {
-  position:fixed;
-  bottom:0; left:0;
-  width:100%;
-  height:100px;
-  z-index:1000;
-  font-size:12px;
-  color:#a3a3a3;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 1000;
+  color: #a3a3a3;
 }
-.footer .right-link { position:absolute; left:30px; bottom:10px; }
-.footer #listButton { position:absolute; right:30px; bottom:10px; cursor:pointer; }
-
-.header { display:none; }
-
-/* ===== 레이아웃 ===== */
-.gallery-wrap {
-  display:grid;
-  height:100vh;
+.footer .right-link,
+.footer #listButton {
+  position: absolute;
+  bottom: 10px;
+  font-size: 12px;
 }
+.footer .right-link { left: 30px; }
+.footer #listButton { right: 30px; cursor: pointer; }
 
-/* ===== FIXED IMAGE (PC: 슬라이드 / 모바일: 스크롤) ===== */
-.fixed-image {
-  position:relative;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  border-left:1px solid #9fa0a0;
-  border-right:1px solid #9fa0a0;
-}
-
-/* PC 슬라이드 이미지 */
-.fixed-image img {
-  max-width:100%;
-  max-height:100%;
-  object-fit:contain;
-}
-
-/* 슬라이드 버튼 */
-.slide-arrow {
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:40px;
-  cursor:pointer;
-  user-select:none;
-  z-index:10;
-}
-.slide-arrow.left { left:20px; }
-.slide-arrow.right { right:20px; }
-
-/* ===== 썸네일 ===== */
-.scroll-area {
-  overflow-y:auto;
-  border-right:1px solid #9fa0a0;
-}
-.content {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-}
-.thumbnail img { width:100%; display:block; }
-
-/* ===== 캡션 ===== */
+/* ===== SLIDE BOX ===== */
 .slide-box {
-  padding:20px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 373px;
+  height: 100%;
+  background: #fff;
+  transform: translateX(100%);
+  transition: transform .3s;
+  overflow-y: auto;
+  padding: 10px;
+  z-index: 3000;
 }
-.caption-group {
-  font-size:12px;
+.slide-box.active { transform: translateX(0); }
+
+.slide-box .slide-list {
+  position: fixed;
+  bottom: 10px;
+  right: 30px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #a3a3a3;
 }
-.caption1 { font-size:20px; margin-bottom:10px; }
+
+/* ===== CAPTION ===== */
+.caption-group { font-size: 12px; }
+.caption1 { font-size: 20px; margin-bottom: 5px; }
+
+/* ===== GALLERY ===== */
+.content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.thumbnail img {
+  width: 100%;
+  display: block;
+}
+
+/* ===== FIXED IMAGE (NEW SLIDER) ===== */
+.fixed-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-left: 1px solid #9fa0a0;
+  border-right: 1px solid #9fa0a0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fixed-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* ===== SLIDER BUTTON ===== */
+.slide-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 40px;
+  cursor: pointer;
+  user-select: none;
+  color: #000;
+  padding: 10px;
+}
+.slide-btn.prev { left: 20px; }
+.slide-btn.next { right: 20px; }
+
+/* ===== IMAGE VIEWER ===== */
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+  z-index: 5000;
+}
+.image-viewer.active {
+  opacity: 1;
+  visibility: visible;
+}
+.image-viewer img {
+  max-width: 90%;
+  max-height: 90%;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .gallery-wrap { display: block; }
+  .scroll-area { display: none; }
+
+  .slide-box { width: 100%; padding: 40px 20px; }
+  .fixed-image {
+    border-left: none;
+    border-right: none;
+    height: calc(100vh - 100px);
+  }
+}
 
 /* ===== PC ===== */
-@media (min-width:769px) {
-  html,body { overflow:hidden; }
+@media (min-width: 769px) {
+  html, body { height: 100%; overflow: hidden; }
 
   .gallery-wrap {
-    grid-template-columns: 50% 18% 32%;
+    display: grid;
+    grid-template-columns: 60% 18% 22%;
+    height: 100%;
   }
 
-  #listButton { display:none; }
-}
-
-/* ===== 모바일 ===== */
-@media (max-width:768px) {
-
-  .gallery-wrap {
-    display:block;
+  .scroll-area {
+    border-right: 1px solid #9fa0a0;
+    overflow-y: auto;
   }
 
-  /* 모바일은 스크롤 유지 */
-  .fixed-image {
-    flex-direction:column;
-    overflow-y:auto;
-    height:auto;
-    border:none;
+  .slide-box {
+    position: relative;
+    transform: none;
   }
 
-  .fixed-image img {
-    width:100%;
-    height:auto;
-  }
-
-  .slide-arrow { display:none; }
+  #listButton,
+  .slide-list { display: none; }
 }
 </style>
 </head>
 
-<body>
+<body oncontextmenu="return false" ondragstart="return false" onselectstart="return false">
 
 <div class="gallery-wrap">
 
-  <!-- FIXED IMAGE -->
+  <!-- FIXED IMAGE (LEFT + FIXED MERGED) -->
   <div class="fixed-image">
-    <div class="slide-arrow left" onclick="prevImage()">‹</div>
+    <div class="slide-btn prev" onclick="prevImage()">‹</div>
     <img id="mainImage" src="" />
-    <div class="slide-arrow right" onclick="nextImage()">›</div>
+    <div class="slide-btn next" onclick="nextImage()">›</div>
   </div>
 
-  <!-- THUMB -->
+  <!-- THUMB LIST -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
-  <!-- CAPTION -->
-  <div class="slide-box">
+  <!-- INFO -->
+  <div class="slide-box" id="slideBox">
+    <div class="slide-list" onclick="toggleSlideBox()">info</div>
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -155,6 +201,11 @@ a { color:inherit; text-decoration:none; }
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
+  <div id="listButton" onclick="toggleSlideBox()">info</div>
+</div>
+
+<div class="image-viewer" id="imageViewer">
+  <img />
 </div>
 
 <script>
@@ -165,57 +216,44 @@ async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
 
-  const idx = parseInt(location.pathname.split("/").slice(-2)[0],10);
-  const item = data[idx-1];
-  if(!item) return;
+  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
+  const item = data[idx];
+  if (!item) return;
 
   images = item.images;
-  currentIndex = 0;
-
   document.getElementById("mainImage").src = images[0];
 
-  const captionBox = document.getElementById("captionBox");
-  captionBox.innerHTML = `
+  const gallery = document.getElementById("gallery");
+  data.slice().reverse().forEach((d, i) => {
+    const real = data.length - 1 - i;
+    gallery.innerHTML += `
+      <a href="/mika/${real+1}/">
+        <img src="/mika/images/thumb${real+1}.png">
+      </a>
+    `;
+  });
+
+  document.getElementById("captionBox").innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
     <div>${item.captions.caption2}</div>
     <div>${item.captions.caption3}</div>
     <div>${item.captions.caption4}</div>
     <div>${item.captions.caption5}</div>
   `;
-
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  data.slice().reverse().forEach((d,i)=>{
-    const a = document.createElement("a");
-    a.href = "/mika/"+(data.length-i)+"/";
-    a.className = "thumbnail";
-    a.innerHTML = `
-      <img src="/mika/images/thumb${data.length-i}.png">
-      <div>${d.title}</div>
-    `;
-    gallery.appendChild(a);
-  });
-
-  /* 모바일: 이미지 전부 출력 */
-  if(window.innerWidth <= 768) {
-    const fixed = document.querySelector(".fixed-image");
-    fixed.innerHTML = "";
-    images.forEach(src=>{
-      const img = document.createElement("img");
-      img.src = src;
-      fixed.appendChild(img);
-    });
-  }
 }
 
 function prevImage() {
   currentIndex = (currentIndex - 1 + images.length) % images.length;
   document.getElementById("mainImage").src = images[currentIndex];
 }
+
 function nextImage() {
   currentIndex = (currentIndex + 1) % images.length;
   document.getElementById("mainImage").src = images[currentIndex];
+}
+
+function toggleSlideBox() {
+  document.getElementById("slideBox").classList.toggle("active");
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
