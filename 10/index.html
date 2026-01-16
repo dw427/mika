@@ -3,154 +3,129 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dreamscape</title>
+<title>sDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
-<meta name="theme-color" content="#ffffff" />
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
 
 * { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:"minion-pro", serif; background:#fff; }
-a { color:inherit; text-decoration:none; }
+body {
+  font-family:"minion-pro", serif;
+  background:#fff;
+}
 
-/* ===== footer ===== */
+/* ===== 기본 ===== */
+a { color:inherit; text-decoration:none; }
+::-webkit-scrollbar { display:none; }
+
 .footer {
   position:fixed;
   bottom:0; left:0;
   width:100%;
   height:100px;
   z-index:1000;
-  color:#a3a3a3;
   font-size:12px;
+  color:#a3a3a3;
 }
 .footer .right-link { position:absolute; left:30px; bottom:10px; }
 .footer #listButton { position:absolute; right:30px; bottom:10px; cursor:pointer; }
 
-/* ===== slide box ===== */
-.slide-box {
-  position:fixed;
-  top:0; right:0;
-  width:373px;
-  height:100%;
-  background:#fff;
-  z-index:3000;
-  transform:translateX(100%);
-  transition:.3s;
-  overflow-y:auto;
-  padding:20px;
-}
-.slide-box.active { transform:translateX(0); }
+.header { display:none; }
 
-/* mobile close */
-.slide-close {
-  display:none;
-  font-size:12px;
-  margin-bottom:20px;
-  cursor:pointer;
+/* ===== 레이아웃 ===== */
+.gallery-wrap {
+  display:grid;
+  height:100vh;
 }
 
-/* ===== caption ===== */
-.caption-group { display:flex; flex-direction:column; }
-.caption1 { font-size:20px; margin-bottom:6px; }
-.caption2,.caption3,.caption4,.caption5 {
-  font-size:12px;
-  margin-bottom:4px;
-}
-
-/* ===== fixed image ===== */
+/* ===== FIXED IMAGE (PC: 슬라이드 / 모바일: 스크롤) ===== */
 .fixed-image {
-  display:flex;
-  flex-direction:column;
+  position:relative;
   width:100%;
   height:100%;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
   border-left:1px solid #9fa0a0;
   border-right:1px solid #9fa0a0;
 }
+
+/* PC 슬라이드 이미지 */
 .fixed-image img {
-  width:100%;
-  height:auto;
-  display:block;
-  cursor:pointer;
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
 }
 
-/* ===== thumbnail ===== */
+/* 슬라이드 버튼 */
+.slide-arrow {
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:40px;
+  cursor:pointer;
+  user-select:none;
+  z-index:10;
+}
+.slide-arrow.left { left:20px; }
+.slide-arrow.right { right:20px; }
+
+/* ===== 썸네일 ===== */
 .scroll-area {
   overflow-y:auto;
   border-right:1px solid #9fa0a0;
 }
 .content {
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:1fr 1fr;
 }
 .thumbnail img { width:100%; display:block; }
-.caption { font-size:12px; margin:8px 0 20px; }
 
-/* ===== viewer ===== */
-.image-viewer {
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  visibility:hidden;
-  transition:.3s;
-  z-index:5000;
+/* ===== 캡션 ===== */
+.slide-box {
+  padding:20px;
 }
-.image-viewer.active { opacity:1; visibility:visible; }
-.image-viewer img { max-width:90%; max-height:90%; }
+.caption-group {
+  font-size:12px;
+}
+.caption1 { font-size:20px; margin-bottom:10px; }
+
+/* ===== PC ===== */
+@media (min-width:769px) {
+  html,body { overflow:hidden; }
+
+  .gallery-wrap {
+    grid-template-columns: 50% 18% 32%;
+  }
+
+  #listButton { display:none; }
+}
 
 /* ===== 모바일 ===== */
 @media (max-width:768px) {
 
-  .gallery-wrap { display:block; }
-
-  .scroll-area { display:none; }
-
-  .fixed-image {
-    height:auto;
-    overflow:visible;   /* 🔥 내부 스크롤 제거 */
-    border:none;
-    padding-bottom:120px;
-  }
-
-  .slide-box {
-    width:100%;
-    padding:40px 20px;
-  }
-
-  .slide-close { display:block; }
-}
-
-/* ===== PC ===== */
-@media (min-width:769px) {
-  html, body {
-    width:100%;
-    height:100%;
-    overflow:hidden;
-  }
-
   .gallery-wrap {
-    display:grid;
-    height:100%;
-    grid-template-columns:
-      24.68%
-      33.10%
-      17.55%
-      24.68%;
+    display:block;
   }
 
-  .slide-box {
-    position:relative;
-    transform:none;
+  /* 모바일은 스크롤 유지 */
+  .fixed-image {
+    flex-direction:column;
+    overflow-y:auto;
+    height:auto;
+    border:none;
+  }
+
+  .fixed-image img {
     width:100%;
+    height:auto;
   }
 
-  #listButton { display:none; }
+  .slide-arrow { display:none; }
 }
 </style>
 </head>
@@ -159,18 +134,20 @@ a { color:inherit; text-decoration:none; }
 
 <div class="gallery-wrap">
 
-  <div class="left-image">
-    <img src="/alfoze/images/leftimage.png">
+  <!-- FIXED IMAGE -->
+  <div class="fixed-image">
+    <div class="slide-arrow left" onclick="prevImage()">‹</div>
+    <img id="mainImage" src="" />
+    <div class="slide-arrow right" onclick="nextImage()">›</div>
   </div>
 
-  <div class="fixed-image" id="fixedImage"></div>
-
+  <!-- THUMB -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
-  <div class="slide-box" id="slideBox">
-    <div class="slide-close" id="closeInfo">close</div>
+  <!-- CAPTION -->
+  <div class="slide-box">
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -178,42 +155,68 @@ a { color:inherit; text-decoration:none; }
 
 <div class="footer">
   <div class="right-link"><a href="/mika/">back</a></div>
-  <div id="listButton">info</div>
-</div>
-
-<div class="image-viewer" id="viewer">
-  <img src="">
 </div>
 
 <script>
+let images = [];
+let currentIndex = 0;
+
 async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
-  const idx = parseInt(location.pathname.split("/").slice(-2)[0],10)-1;
-  const item = data[idx];
 
-  const fixed = document.getElementById("fixedImage");
-  item.images.forEach(src=>{
-    const img=document.createElement("img");
-    img.src=src;
-    fixed.appendChild(img);
+  const idx = parseInt(location.pathname.split("/").slice(-2)[0],10);
+  const item = data[idx-1];
+  if(!item) return;
+
+  images = item.images;
+  currentIndex = 0;
+
+  document.getElementById("mainImage").src = images[0];
+
+  const captionBox = document.getElementById("captionBox");
+  captionBox.innerHTML = `
+    <div class="caption1">${item.captions.caption1}</div>
+    <div>${item.captions.caption2}</div>
+    <div>${item.captions.caption3}</div>
+    <div>${item.captions.caption4}</div>
+    <div>${item.captions.caption5}</div>
+  `;
+
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  data.slice().reverse().forEach((d,i)=>{
+    const a = document.createElement("a");
+    a.href = "/mika/"+(data.length-i)+"/";
+    a.className = "thumbnail";
+    a.innerHTML = `
+      <img src="/mika/images/thumb${data.length-i}.png">
+      <div>${d.title}</div>
+    `;
+    gallery.appendChild(a);
   });
 
-  document.getElementById("captionBox").innerHTML = `
-    <div class="caption1">${item.captions.caption1}</div>
-    <div class="caption2">${item.captions.caption2}</div>
-    <div class="caption3">${item.captions.caption3}</div>
-    <div class="caption4">${item.captions.caption4}</div>
-    <div class="caption5">${item.captions.caption5}</div>
-  `;
+  /* 모바일: 이미지 전부 출력 */
+  if(window.innerWidth <= 768) {
+    const fixed = document.querySelector(".fixed-image");
+    fixed.innerHTML = "";
+    images.forEach(src=>{
+      const img = document.createElement("img");
+      img.src = src;
+      fixed.appendChild(img);
+    });
+  }
 }
 
-document.getElementById("listButton").onclick=()=>{
-  document.getElementById("slideBox").classList.add("active");
-};
-document.getElementById("closeInfo").onclick=()=>{
-  document.getElementById("slideBox").classList.remove("active");
-};
+function prevImage() {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  document.getElementById("mainImage").src = images[currentIndex];
+}
+function nextImage() {
+  currentIndex = (currentIndex + 1) % images.length;
+  document.getElementById("mainImage").src = images[currentIndex];
+}
 
 document.addEventListener("DOMContentLoaded", loadData);
 </script>
