@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>1Dreamscape</title>
+<title>sDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -26,14 +26,9 @@ body {
 a {
   color: inherit;
   text-decoration: none;
-  transition: color .3s;
 }
 
-a:hover {
-  color: #a3a3a3;
-}
-
-/* ===== footer ===== */
+/* ================= footer ================= */
 .footer {
   position: fixed;
   bottom: 0;
@@ -44,73 +39,28 @@ a:hover {
   color: #a3a3a3;
 }
 
-.footer .right-link,
-.footer #listButton {
+.footer .right-link {
   position: absolute;
   bottom: 10px;
+  left: 30px;
   font-size: 12px;
 }
 
-.footer .right-link { left: 30px; }
-.footer #listButton { right: 30px; cursor: pointer; }
-
-/* ===== slide info ===== */
-.slide-box {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 373px;
-  height: 100%;
-  background: #fff;
-  z-index: 3000;
-  transform: translateX(100%);
-  transition: transform .3s;
-  overflow-y: auto;
-  padding: 10px;
-}
-
-.slide-box.active {
-  transform: translateX(0);
-}
-
-.caption-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.caption1 { font-size: 20px; margin-bottom: 4px; }
-.caption2,
-.caption3,
-.caption4,
-.caption5 { font-size: 12px; margin-bottom: 3px; }
-
-/* ===== gallery ===== */
-.content {
+/* ================= gallery layout ================= */
+.gallery-wrap {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  height: 100vh;
 }
 
-.thumbnail img {
-  width: 100%;
-  display: block;
-}
-
-.caption {
-  font-size: 12px;
-  margin-top: 6px;
-}
-
-/* ===== fixed image (PC slider) ===== */
+/* ================= fixed image (PC slider) ================= */
 .fixed-image {
   position: relative;
-  width: 100%;
-  height: 100%;
-  border-left: 1px solid #9fa0a0;
-  border-right: 1px solid #9fa0a0;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border-left: 1px solid #9fa0a0;
+  border-right: 1px solid #9fa0a0;
 }
 
 .fixed-image img {
@@ -129,16 +79,53 @@ a:hover {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 30px;
+  font-size: 28px;
   cursor: pointer;
   user-select: none;
-  color: #000;
 }
 
 .fixed-arrow.left { left: 20px; }
 .fixed-arrow.right { right: 20px; }
 
-/* ===== image viewer ===== */
+/* ================= thumbnail ================= */
+.scroll-area {
+  overflow-y: auto;
+  border-right: 1px solid #9fa0a0;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.thumbnail img {
+  width: 100%;
+  display: block;
+}
+
+.caption {
+  font-size: 12px;
+  margin: 6px 0 12px;
+}
+
+/* ================= slide box (info) ================= */
+.slide-box {
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.caption-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.caption1 { font-size: 20px; margin-bottom: 6px; }
+.caption2,
+.caption3,
+.caption4,
+.caption5 { font-size: 12px; margin-bottom: 4px; }
+
+/* ================= image viewer ================= */
 .image-viewer {
   position: fixed;
   inset: 0;
@@ -162,8 +149,12 @@ a:hover {
   max-height: 90%;
 }
 
-/* ===== mobile (절대 변경 안 함) ===== */
+/* ================= MOBILE (유지) ================= */
 @media (max-width: 768px) {
+
+  .gallery-wrap {
+    display: block;
+  }
 
   .fixed-image {
     flex-direction: column;
@@ -174,37 +165,45 @@ a:hover {
   .fixed-image img {
     display: block;
     max-width: 100%;
-    max-height: none;
     margin-bottom: 10px;
   }
 
   .fixed-arrow {
     display: none;
   }
+
+  .slide-box {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform: translateX(100%);
+    transition: transform .3s;
+    z-index: 3000;
+  }
+
+  .slide-box.active {
+    transform: translateX(0);
+  }
 }
 
-/* ===== PC ===== */
+/* ================= PC ================= */
 @media (min-width: 769px) {
 
   html, body {
-    width: 100%;
     height: 100%;
     overflow: hidden;
   }
 
   .gallery-wrap {
-    display: grid;
     grid-template-columns: 60% 18% 22%;
-    height: 100%;
   }
 
-  .scroll-area {
-    overflow-y: auto;
-    border-right: 1px solid #9fa0a0;
-  }
-
-  #listButton {
-    display: none;
+  .slide-box {
+    position: relative;
+    transform: none !important;
   }
 }
 </style>
@@ -214,18 +213,15 @@ a:hover {
 
 <div class="gallery-wrap">
 
-  <!-- fixed image (left + fixed merged) -->
   <div class="fixed-image" id="fixedImage">
     <div class="fixed-arrow left" onclick="prevImage()">‹</div>
     <div class="fixed-arrow right" onclick="nextImage()">›</div>
   </div>
 
-  <!-- thumbnail -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
-  <!-- info -->
   <div class="slide-box" id="slideBox">
     <div class="caption-group" id="captionBox"></div>
   </div>
@@ -248,13 +244,11 @@ async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
 
-  const pathParts = location.pathname.split("/");
-  const idx = parseInt(pathParts[pathParts.length - 2], 10) - 1;
+  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
   const item = data[idx];
   if (!item) return;
 
   const fixed = document.getElementById("fixedImage");
-  fixedImgs = [];
 
   item.images.forEach((src, i) => {
     const img = document.createElement("img");
@@ -264,26 +258,20 @@ async function loadData() {
     fixedImgs.push(img);
 
     img.onclick = () => {
-      const viewer = document.getElementById("imageViewer");
-      viewer.querySelector("img").src = src;
-      viewer.classList.add("active");
+      const v = document.getElementById("imageViewer");
+      v.querySelector("img").src = src;
+      v.classList.add("active");
     };
   });
 
   const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  data.slice().reverse().forEach((d, rev) => {
-    const i = data.length - 1 - rev;
-    const a = document.createElement("a");
-    a.href = `/mika/${i+1}/`;
-    a.innerHTML = `
-      <img src="/mika/images/thumb${i+1}.png">
-      <div class="caption">
-        <span>${d.title}</span>
-        <span>${d.category} ${d.year}</span>
-      </div>`;
-    gallery.appendChild(a);
+  data.slice().reverse().forEach((d, r) => {
+    const i = data.length - 1 - r;
+    gallery.innerHTML += `
+      <a class="thumbnail" href="/mika/${i+1}/">
+        <img src="/mika/images/thumb${i+1}.png">
+        <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
+      </a>`;
   });
 
   document.getElementById("captionBox").innerHTML = `
