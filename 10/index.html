@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Heaㅇㅇven</title>
+<title>Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
@@ -15,12 +15,23 @@ body {
   background: #fff;
 }
 
-/* ===== 기본 ===== */
-.gallery-wrap {
-  height: 100vh;
-}
-
+a { color: inherit; text-decoration: none; }
 ::-webkit-scrollbar { display: none; }
+
+/* ===== PC 기본 레이아웃 ===== */
+@media (min-width: 769px) {
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .gallery-wrap {
+    display: grid;
+    grid-template-columns: 57.78% 17.55% 24.68%;
+    height: 100%;
+  }
+}
 
 /* ===== fixed image ===== */
 .fixed-image {
@@ -41,16 +52,15 @@ body {
   object-fit: contain;
 }
 
-/* PC용 네비 */
+/* PC 넘김 버튼 */
 .nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 42px;
+  font-size: 40px;
   cursor: pointer;
   user-select: none;
 }
-
 .nav.prev { left: 20px; }
 .nav.next { right: 20px; }
 
@@ -62,8 +72,8 @@ body {
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .thumbnail img {
@@ -73,26 +83,14 @@ body {
 
 .caption {
   font-size: 12px;
-  margin: 6px 0 14px;
+  margin: 8px 0 16px;
 }
 
-/* ===== info ===== */
+/* ===== 캡션(info) ===== */
 .slide-box {
   height: 100%;
   padding: 20px;
-}
-
-/* ===== PC ===== */
-@media (min-width: 769px) {
-  html, body { height: 100%; overflow: hidden; }
-
-  .gallery-wrap {
-    display: grid;
-    grid-template-columns:
-      57.78%
-      17.55%
-      24.68%;
-  }
+  overflow-y: auto;
 }
 
 /* ===== 모바일 ===== */
@@ -102,7 +100,7 @@ body {
     display: block;
   }
 
-  /* 🔥 모바일은 기존처럼 세로 스크롤 */
+  /* 모바일: 이미지 세로 스크롤 */
   .fixed-image {
     display: block;
     height: auto;
@@ -120,10 +118,12 @@ body {
     display: none;
   }
 
-  /* 🔥 썸네일 완전 제거 */
+  /* 모바일: 썸네일 숨김 */
   .scroll-area {
     display: none;
   }
+
+  /* 모바일: 캡션 슬라이드 유지 (기존 구조 유지 가능) */
 }
 </style>
 </head>
@@ -134,7 +134,7 @@ body {
 
   <div class="fixed-image" id="fixedImage">
     <div class="nav prev" id="prevBtn">‹</div>
-    <img id="mainImage" src="" />
+    <img id="mainImage" src="">
     <div class="nav next" id="nextBtn">›</div>
   </div>
 
@@ -142,9 +142,7 @@ body {
     <div class="content" id="gallery"></div>
   </div>
 
-  <div class="slide-box">
-    <div id="captionBox"></div>
-  </div>
+  <div class="slide-box" id="captionBox"></div>
 
 </div>
 
@@ -157,12 +155,13 @@ async function loadData() {
   const data = await res.json();
   const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
   const item = data[idx];
+  if (!item) return;
 
   images = item.images;
 
   const fixed = document.getElementById("fixedImage");
 
-  /* 모바일: 전부 출력 */
+  // 모바일: 전부 세로 출력
   if (window.innerWidth <= 768) {
     fixed.innerHTML = "";
     images.forEach(src => {
@@ -174,19 +173,28 @@ async function loadData() {
     updateImage();
   }
 
-  /* 썸네일 */
+  // 썸네일 (2열 유지)
   const g = document.getElementById("gallery");
+  g.innerHTML = "";
   data.slice().reverse().forEach((d,i)=>{
-    const real = data.length-1-i;
+    const real = data.length - 1 - i;
     g.innerHTML += `
       <a href="/mika/${real+1}/" class="thumbnail">
         <img src="/mika/images/thumb${real+1}.png">
-        <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
+        <div class="caption">
+          ${d.title}<br>${d.category} ${d.year}
+        </div>
       </a>`;
   });
 
-  document.getElementById("captionBox").innerHTML =
-    `<h2>${item.title}</h2>`;
+  // 캡션
+  document.getElementById("captionBox").innerHTML = `
+    <div style="font-size:20px;margin-bottom:6px">${item.captions.caption1}</div>
+    <div>${item.captions.caption2}</div>
+    <div>${item.captions.caption3}</div>
+    <div>${item.captions.caption4}</div>
+    <div>${item.captions.caption5}</div>
+  `;
 }
 
 function updateImage() {
