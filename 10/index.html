@@ -3,14 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Heaven</title>
+<title>1Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
 
-*{ box-sizing:border-box; margin:0; padding:0; }
-body{ font-family:"minion-pro", serif; background:#fff; }
-a{ color:inherit; text-decoration:none; }
+* { box-sizing:border-box; margin:0; padding:0; }
+
+body {
+  font-family:"minion-pro", serif;
+  background:#fff;
+}
+
+a { color:inherit; text-decoration:none; }
 
 /* ===== footer ===== */
 .footer{
@@ -32,7 +37,7 @@ a{ color:inherit; text-decoration:none; }
 .footer .right-link{ left:30px; }
 .footer #listButton{ right:30px; cursor:pointer; }
 
-/* ===== PC layout ===== */
+/* ===== layout ===== */
 @media (min-width:769px){
   html,body{ width:100%; height:100%; overflow:hidden; }
   .gallery-wrap{
@@ -42,7 +47,9 @@ a{ color:inherit; text-decoration:none; }
   }
 }
 
-/* ===== fixed image (PC) ===== */
+::-webkit-scrollbar{ display:none; }
+
+/* ===== fixed image ===== */
 .fixed-image{
   position:relative;
   width:100%;
@@ -83,10 +90,11 @@ a{ color:inherit; text-decoration:none; }
 .thumbnail img{ width:100%; display:block; }
 .caption{
   font-size:12px;
-  margin:6px 0;
+  margin-top:6px;
+  margin-bottom:6px;
 }
 
-/* ===== caption ===== */
+/* ===== caption info ===== */
 .slide-box{
   height:100%;
   padding:20px;
@@ -98,25 +106,22 @@ a{ color:inherit; text-decoration:none; }
   margin-bottom:3px;
 }
 
-/* ================= MOBILE ================= */
+/* ===== mobile ===== */
 @media (max-width:768px){
   .gallery-wrap{ display:block; }
 
-  /* ✅ 핵심: 슬라이드 구조 완전 해제 */
   .fixed-image{
     display:block;
     height:auto;
     border:none;
-    overflow:visible;
   }
   .fixed-image img{
     width:100%;
     max-width:none;
     max-height:none;
-    display:block;
   }
-
   .nav{ display:none; }
+
   .scroll-area{ display:none; }
 
   .slide-box{
@@ -128,7 +133,6 @@ a{ color:inherit; text-decoration:none; }
     transform:translateX(100%);
     transition:.3s;
     z-index:3000;
-    padding:40px 20px;
   }
   .slide-box.active{ transform:translateX(0); }
 }
@@ -140,7 +144,6 @@ a{ color:inherit; text-decoration:none; }
 <div class="gallery-wrap">
 
   <div class="fixed-image" id="fixedImage">
-    <!-- PC 전용 -->
     <div class="nav prev" id="prevBtn">‹</div>
     <img id="mainImage">
     <div class="nav next" id="nextBtn">›</div>
@@ -174,7 +177,6 @@ async function loadData(){
   images=item.images;
   const fixed=document.getElementById("fixedImage");
 
-  /* ✅ 모바일: 이미지 전부 세로로 */
   if(window.innerWidth<=768){
     fixed.innerHTML="";
     images.forEach(src=>{
@@ -213,10 +215,7 @@ nextBtn.onclick=()=>{ if(index<images.length-1){ index++; updateImage(); } }
 
 function toggleSlideBox(){
   if(window.innerWidth<=768){
-    const box=document.getElementById("slideBox");
-    const btn=document.getElementById("listButton");
-    box.classList.toggle("active");
-    btn.textContent = box.classList.contains("active") ? "close" : "info";
+    document.getElementById("slideBox").classList.toggle("active");
   }
 }
 
