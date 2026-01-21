@@ -3,127 +3,138 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Heaven</title>
+<title>ㄴHeaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing:border-box; margin:0; padding:0; }
 
 body {
-  font-family: "minion-pro", serif;
-  background: #fff;
+  font-family:"minion-pro", serif;
+  background:#fff;
 }
 
-a { color: inherit; text-decoration: none; }
-::-webkit-scrollbar { display: none; }
+a { color:inherit; text-decoration:none; }
 
-/* ===== PC 기본 레이아웃 ===== */
-@media (min-width: 769px) {
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+/* ===== footer ===== */
+.footer{
+  position:fixed;
+  bottom:0; left:0;
+  width:100%;
+  height:100px;
+  z-index:1000;
+  color:#a3a3a3;
+  pointer-events:none;
+}
+.footer *{ pointer-events:auto; }
+.footer .right-link,
+.footer #listButton{
+  position:absolute;
+  bottom:10px;
+  font-size:12px;
+}
+.footer .right-link{ left:30px; }
+.footer #listButton{ right:30px; cursor:pointer; }
 
-  .gallery-wrap {
-    display: grid;
-    grid-template-columns: 57.78% 17.55% 24.68%;
-    height: 100%;
+/* ===== layout ===== */
+@media (min-width:769px){
+  html,body{ width:100%; height:100%; overflow:hidden; }
+  .gallery-wrap{
+    display:grid;
+    grid-template-columns:57.78% 17.55% 24.68%;
+    height:100%;
   }
 }
+
+::-webkit-scrollbar{ display:none; }
 
 /* ===== fixed image ===== */
-.fixed-image {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-left: 1px solid #9fa0a0;
-  border-right: 1px solid #9fa0a0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+.fixed-image{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-left:1px solid #9fa0a0;
+  border-right:1px solid #9fa0a0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.fixed-image img{
+  max-width:90%;
+  max-height:90%;
+  object-fit:contain;
+}
+.nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:40px;
+  cursor:pointer;
+  user-select:none;
+}
+.nav.prev{ left:20px; }
+.nav.next{ right:20px; }
+
+/* ===== thumbnails ===== */
+.scroll-area{
+  height:100%;
+  overflow-y:auto;
+  border-right:1px solid #9fa0a0;
+}
+.content{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+}
+.thumbnail img{ width:100%; display:block; }
+.caption{
+  font-size:12px;
+  margin-top:6px;
+  margin-bottom:6px;
 }
 
-.fixed-image img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
+/* ===== caption info ===== */
+.slide-box{
+  height:100%;
+  padding:20px;
+  overflow-y:auto;
+}
+.caption1{ font-size:20px; margin-bottom:3px; }
+.caption2,.caption3,.caption4,.caption5{
+  font-size:12px;
+  margin-bottom:3px;
 }
 
-/* PC 넘김 버튼 */
-.nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 40px;
-  cursor: pointer;
-  user-select: none;
-}
-.nav.prev { left: 20px; }
-.nav.next { right: 20px; }
+/* ===== mobile ===== */
+@media (max-width:768px){
+  .gallery-wrap{ display:block; }
 
-/* ===== 썸네일 ===== */
-.scroll-area {
-  height: 100%;
-  overflow-y: auto;
-  border-right: 1px solid #9fa0a0;
-}
-
-.content {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.thumbnail img {
-  width: 100%;
-  display: block;
-}
-
-.caption {
-  font-size: 12px;
-  margin: 8px 0 16px;
-}
-
-/* ===== 캡션(info) ===== */
-.slide-box {
-  height: 100%;
-  padding: 20px;
-  overflow-y: auto;
-}
-
-/* ===== 모바일 ===== */
-@media (max-width: 768px) {
-
-  .gallery-wrap {
-    display: block;
+  .fixed-image{
+    display:block;
+    height:auto;
+    border:none;
   }
-
-  /* 모바일: 이미지 세로 스크롤 */
-  .fixed-image {
-    display: block;
-    height: auto;
-    border: none;
+  .fixed-image img{
+    width:100%;
+    max-width:none;
+    max-height:none;
   }
+  .nav{ display:none; }
 
-  .fixed-image img {
-    width: 100%;
-    max-width: none;
-    max-height: none;
-    margin-bottom: 0;
+  .scroll-area{ display:none; }
+
+  .slide-box{
+    position:fixed;
+    top:0; right:0;
+    width:100%;
+    height:100%;
+    background:#fff;
+    transform:translateX(100%);
+    transition:.3s;
+    z-index:3000;
   }
-
-  .nav {
-    display: none;
-  }
-
-  /* 모바일: 썸네일 숨김 */
-  .scroll-area {
-    display: none;
-  }
-
-  /* 모바일: 캡션 슬라이드 유지 (기존 구조 유지 가능) */
+  .slide-box.active{ transform:translateX(0); }
 }
 </style>
 </head>
@@ -134,7 +145,7 @@ a { color: inherit; text-decoration: none; }
 
   <div class="fixed-image" id="fixedImage">
     <div class="nav prev" id="prevBtn">‹</div>
-    <img id="mainImage" src="">
+    <img id="mainImage">
     <div class="nav next" id="nextBtn">›</div>
   </div>
 
@@ -142,76 +153,73 @@ a { color: inherit; text-decoration: none; }
     <div class="content" id="gallery"></div>
   </div>
 
-  <div class="slide-box" id="captionBox"></div>
+  <div class="slide-box" id="slideBox">
+    <div id="captionBox"></div>
+  </div>
 
 </div>
 
+<div class="footer">
+  <div class="right-link"><a href="/mika/">back</a></div>
+  <div id="listButton" onclick="toggleSlideBox()">info</div>
+</div>
+
 <script>
-let images = [];
-let index = 0;
+let images=[], index=0;
 
-async function loadData() {
-  const res = await fetch("../data.json");
-  const data = await res.json();
-  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
-  const item = data[idx];
-  if (!item) return;
+async function loadData(){
+  const res=await fetch("../data.json");
+  const data=await res.json();
+  const idx=parseInt(location.pathname.split("/").slice(-2)[0],10)-1;
+  const item=data[idx];
+  if(!item) return;
 
-  images = item.images;
+  images=item.images;
+  const fixed=document.getElementById("fixedImage");
 
-  const fixed = document.getElementById("fixedImage");
-
-  // 모바일: 전부 세로 출력
-  if (window.innerWidth <= 768) {
-    fixed.innerHTML = "";
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
+  if(window.innerWidth<=768){
+    fixed.innerHTML="";
+    images.forEach(src=>{
+      const img=document.createElement("img");
+      img.src=src;
       fixed.appendChild(img);
     });
-  } else {
+  }else{
     updateImage();
   }
 
-  // 썸네일 (2열 유지)
-  const g = document.getElementById("gallery");
-  g.innerHTML = "";
+  const g=document.getElementById("gallery");
+  g.innerHTML="";
   data.slice().reverse().forEach((d,i)=>{
-    const real = data.length - 1 - i;
-    g.innerHTML += `
+    const real=data.length-1-i;
+    g.innerHTML+=`
       <a href="/mika/${real+1}/" class="thumbnail">
         <img src="/mika/images/thumb${real+1}.png">
-        <div class="caption">
-          ${d.title}<br>${d.category} ${d.year}
-        </div>
+        <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
       </a>`;
   });
 
-  // 캡션
-  document.getElementById("captionBox").innerHTML = `
-    <div style="font-size:20px;margin-bottom:6px">${item.captions.caption1}</div>
-    <div>${item.captions.caption2}</div>
-    <div>${item.captions.caption3}</div>
-    <div>${item.captions.caption4}</div>
-    <div>${item.captions.caption5}</div>
-  `;
+  document.getElementById("captionBox").innerHTML=`
+    <div class="caption1">${item.captions.caption1}</div>
+    <div class="caption2">${item.captions.caption2}</div>
+    <div class="caption3">${item.captions.caption3}</div>
+    <div class="caption4">${item.captions.caption4}</div>
+    <div class="caption5">${item.captions.caption5}</div>`;
 }
 
-function updateImage() {
-  document.getElementById("mainImage").src = images[index];
+function updateImage(){
+  document.getElementById("mainImage").src=images[index];
+}
+prevBtn.onclick=()=>{ if(index>0){ index--; updateImage(); } }
+nextBtn.onclick=()=>{ if(index<images.length-1){ index++; updateImage(); } }
+
+function toggleSlideBox(){
+  if(window.innerWidth<=768){
+    document.getElementById("slideBox").classList.toggle("active");
+  }
 }
 
-prevBtn.onclick = () => {
-  if (index > 0) index--;
-  updateImage();
-};
-
-nextBtn.onclick = () => {
-  if (index < images.length - 1) index++;
-  updateImage();
-};
-
-document.addEventListener("DOMContentLoaded", loadData);
+document.addEventListener("DOMContentLoaded",loadData);
 </script>
 
 </body>
