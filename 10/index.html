@@ -1,176 +1,237 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>2Heaven</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hㄴeaven</title>
 
-<style>
-@import url("https://use.typekit.net/zuk4pzv.css");
+  <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
+  <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
+  <meta name="theme-color" content="#ffffff" />
 
-* { box-sizing:border-box; margin:0; padding:0; }
+  <style>
+    @import url("https://use.typekit.net/zuk4pzv.css");
 
-body {
-  font-family:"minion-pro", serif;
-  background:#fff;
-}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-a { color:inherit; text-decoration:none; }
-::-webkit-scrollbar{ display:none; }
+    body {
+      font-family: "minion-pro", serif;
+      background: #fff;
+    }
 
-/* ===== footer ===== */
-.footer{
-  position:fixed;
-  bottom:0; left:0;
-  width:100%;
-  height:100px;
-  z-index:1000;
-  color:#a3a3a3;
-  pointer-events:none;
-}
-.footer *{ pointer-events:auto; }
-.footer .right-link,
-.footer #listButton{
-  position:absolute;
-  bottom:10px;
-  font-size:12px;
-}
-.footer .right-link{ left:30px; }
-.footer #listButton{ right:30px; cursor:pointer; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: #a3a3a3; }
 
-/* ===== PC layout ===== */
-@media (min-width:769px){
-  html,body{ width:100%; height:100%; overflow:hidden; }
-  .gallery-wrap{
-    display:grid;
-    grid-template-columns:57.78% 17.55% 24.68%;
-    height:100%;
-  }
-}
+    /* ===== footer ===== */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      z-index: 1000;
+      color: #a3a3a3;
+    }
 
-/* ===== fixed image ===== */
-.fixed-image{
-  position:relative;
-  width:100%;
-  height:100%;
-  border-left:1px solid #9fa0a0;
-  border-right:1px solid #9fa0a0;
-  overflow:hidden;
-}
+    .footer .right-link {
+      position: absolute;
+      bottom: 10px;
+      left: 30px;
+      font-size: 12px;
+    }
 
-/* PC */
-.fixed-image.pc{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.fixed-image.pc img{
-  max-width:90%;
-  max-height:90%;
-  object-fit:contain;
-}
+    #listButton {
+      position: absolute;
+      bottom: 10px;
+      right: 30px;
+      font-size: 12px;
+      cursor: pointer;
+    }
 
-/* PC nav */
-.nav{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:40px;
-  cursor:pointer;
-  user-select:none;
-}
-.nav.prev{ left:20px; }
-.nav.next{ right:20px; }
+    /* ===== layout ===== */
+    .gallery-wrap {
+      width: 100%;
+      height: 100%;
+    }
 
-/* ===== thumbnails ===== */
-.scroll-area{
-  height:100%;
-  overflow-y:auto;
-  border-right:1px solid #9fa0a0;
-}
-.content{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-}
-.thumbnail img{ width:100%; display:block; }
-.caption{
-  font-size:12px;
-  margin:6px 0;
-}
+    .left-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-/* ===== caption ===== */
-.slide-box{
-  height:100%;
-  padding:20px;
-  overflow-y:auto;
-}
-.caption1{ font-size:20px; margin-bottom:3px; }
-.caption2,.caption3,.caption4,.caption5{
-  font-size:12px;
-  margin-bottom:3px;
-}
+    .fixed-image {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
 
-/* ===== mobile ===== */
-@media (max-width:768px){
+    .fixed-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: pointer;
+    }
 
-  .gallery-wrap{ display:block; }
+    .scroll-area {
+      overflow-y: auto;
+      border-right: 1px solid #9fa0a0;
+    }
 
-  /* 🔥 핵심: 1장 = 1스크린 */
-  .fixed-image{
-    border:none;
-  }
-  .fixed-image img{
-    width:100%;
-    height:100vh;
-    object-fit:contain;
-    display:block;
-  }
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
 
-  .nav{ display:none; }
-  .scroll-area{ display:none; }
+    .thumbnail img {
+      width: 100%;
+      display: block;
+    }
 
-  /* info slide */
-  .slide-box{
-    position:fixed;
-    top:0; right:0;
-    width:100%;
-    height:100%;
-    background:#fff;
-    transform:translateX(100%);
-    transition:.3s;
-    z-index:3000;
-  }
-  .slide-box.active{ transform:translateX(0); }
+    .caption {
+      font-size: 12px;
+      margin-top: 8px;
+    }
 
-  .slide-close{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    font-size:12px;
-    cursor:pointer;
-    color:#a3a3a3;
-  }
-}
-</style>
+    /* ===== slide box (caption) ===== */
+    .slide-box {
+      background: #fff;
+    }
+
+    .caption-group {
+      font-size: 12px;
+    }
+
+    .caption1 { font-size: 20px; margin-bottom: 6px; }
+    .caption2,
+    .caption3,
+    .caption4,
+    .caption5 { margin-bottom: 4px; }
+
+    /* ===== image viewer ===== */
+    .image-viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: .3s;
+      z-index: 5000;
+    }
+
+    .image-viewer.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .image-viewer img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    .image-viewer::after {
+      content: "×";
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      font-size: 28px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* ===== mobile ===== */
+    @media (max-width: 768px) {
+      html, body { overflow: auto; }
+
+      .gallery-wrap {
+        display: block;
+      }
+
+      .left-image,
+      .scroll-area {
+        display: none !important;
+      }
+
+      .fixed-image {
+        overflow: visible;
+      }
+
+      .slide-box {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        transform: translateX(100%);
+        transition: .3s;
+        padding: 40px 20px;
+        z-index: 3000;
+      }
+
+      .slide-box.active {
+        transform: translateX(0);
+      }
+
+      .mobile-close {
+        font-size: 12px;
+        margin-bottom: 20px;
+        cursor: pointer;
+        color: #a3a3a3;
+      }
+    }
+
+    /* ===== pc ===== */
+    @media (min-width: 769px) {
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .gallery-wrap {
+        display: grid;
+        grid-template-columns: 24.68% 33.10% 17.55% 24.68%;
+        height: 100%;
+      }
+
+      .left-image { overflow: hidden; }
+
+      .slide-box {
+        position: relative;
+        transform: none !important;
+        padding: 20px;
+      }
+
+      #listButton {
+        display: none;
+      }
+    }
+
+    ::-webkit-scrollbar { display: none; }
+  </style>
 </head>
 
 <body>
 
 <div class="gallery-wrap">
 
-  <div class="fixed-image pc" id="fixedImage">
-    <div class="nav prev" id="prevBtn">‹</div>
-    <img id="mainImage">
-    <div class="nav next" id="nextBtn">›</div>
+  <div class="left-image">
+    <img src="/alfoze/images/leftimage.png" alt="">
   </div>
+
+  <div class="fixed-image"></div>
 
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
   <div class="slide-box" id="slideBox">
-    <div id="captionBox"></div>
-    <div class="slide-close" onclick="toggleSlideBox()">close</div>
+    <div class="mobile-close" onclick="toggleSlideBox()">close</div>
+    <div class="caption-group" id="captionBox"></div>
   </div>
 
 </div>
@@ -180,63 +241,67 @@ a { color:inherit; text-decoration:none; }
   <div id="listButton" onclick="toggleSlideBox()">info</div>
 </div>
 
+<div class="image-viewer" id="imageViewer">
+  <img src="">
+</div>
+
 <script>
-let images=[], index=0;
+async function loadData() {
+  const res = await fetch("../data.json");
+  const data = await res.json();
 
-async function loadData(){
-  const res=await fetch("../data.json");
-  const data=await res.json();
-  const idx=parseInt(location.pathname.split("/").slice(-2)[0],10)-1;
-  const item=data[idx];
-  if(!item) return;
+  const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10);
+  const item = data[idx - 1];
+  if (!item) return;
 
-  images=item.images;
-  const fixed=document.getElementById("fixedImage");
+  const fixed = document.querySelector(".fixed-image");
+  fixed.innerHTML = "";
+  item.images.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    fixed.appendChild(img);
+  });
 
-  if(window.innerWidth<=768){
-    fixed.classList.remove("pc");
-    fixed.innerHTML="";
-    images.forEach(src=>{
-      const img=document.createElement("img");
-      img.src=src;
-      fixed.appendChild(img);
-    });
-  }else{
-    updateImage();
-  }
-
-  const g=document.getElementById("gallery");
-  g.innerHTML="";
-  data.slice().reverse().forEach((d,i)=>{
-    const real=data.length-1-i;
-    g.innerHTML+=`
-      <a href="/mika/${real+1}/" class="thumbnail">
-        <img src="/mika/images/thumb${real+1}.png">
-        <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+  data.slice().reverse().forEach((d, i) => {
+    gallery.innerHTML += `
+      <a href="/mika/${data.length - i}/" class="thumbnail">
+        <img src="/mika/images/thumb${data.length - i}.png">
+        <div class="caption">
+          <div>${d.title}</div>
+          <div>${d.category} ${d.year}</div>
+        </div>
       </a>`;
   });
 
-  document.getElementById("captionBox").innerHTML=`
+  document.getElementById("captionBox").innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
     <div class="caption2">${item.captions.caption2}</div>
     <div class="caption3">${item.captions.caption3}</div>
     <div class="caption4">${item.captions.caption4}</div>
-    <div class="caption5">${item.captions.caption5}</div>`;
+    <div class="caption5">${item.captions.caption5}</div>
+  `;
+
+  const viewer = document.getElementById("imageViewer");
+  const vimg = viewer.querySelector("img");
+
+  document.querySelectorAll(".fixed-image img").forEach(img => {
+    img.onclick = () => {
+      vimg.src = img.src;
+      viewer.classList.add("active");
+    };
+  });
+
+  viewer.onclick = () => viewer.classList.remove("active");
 }
 
-function updateImage(){
-  document.getElementById("mainImage").src=images[index];
-}
-prevBtn.onclick=()=>{ if(index>0){ index--; updateImage(); } }
-nextBtn.onclick=()=>{ if(index<images.length-1){ index++; updateImage(); } }
-
-function toggleSlideBox(){
-  if(window.innerWidth<=768){
-    document.getElementById("slideBox").classList.toggle("active");
-  }
+function toggleSlideBox() {
+  if (innerWidth > 768) return;
+  document.getElementById("slideBox").classList.toggle("active");
 }
 
-document.addEventListener("DOMContentLoaded",loadData);
+loadData();
 </script>
 
 </body>
