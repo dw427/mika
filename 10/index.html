@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>sㄴDreamscape</title>
+<title>sDreamscape</title>
 
 <link rel="icon" type="image/png" href="/alfoze/images/fav.png" />
 <link rel="apple-touch-icon" href="/alfoze/images/fav.png" />
@@ -22,15 +22,7 @@ body {
 a { color: inherit; text-decoration: none; transition: color .3s; }
 a:hover { color: #a3a3a3; }
 
-/* ===== SCROLLBAR HIDE ===== */
-::-webkit-scrollbar { display: none; }
-.scroll-area,
-.fixed-image {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-/* ===== FOOTER ===== */
+/* ===== footer ===== */
 .footer {
   position: fixed;
   bottom: 0;
@@ -49,80 +41,113 @@ a:hover { color: #a3a3a3; }
 .footer .right-link { left: 30px; }
 .footer #listButton { right: 30px; cursor: pointer; }
 
-/* ===== SLIDE BOX ===== */
+/* ===== slide info ===== */
 .slide-box {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 373px;
+  height: 100%;
   background: #fff;
+  z-index: 3000;
+  transform: translateX(100%);
+  transition: transform .3s;
   overflow-y: auto;
   padding: 10px;
 }
+.slide-box.active { transform: translateX(0); }
 
-/* ===== CAPTION ===== */
+.slide-box .slide-list {
+  position: fixed;
+  bottom: 10px;
+  right: 30px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #a3a3a3;
+}
+
 .caption-group { font-size: 12px; }
-.caption1 { font-size: 20px; margin-bottom: 5px; }
+.caption1 { font-size: 20px; margin-bottom: 4px; }
 
-/* ===== THUMB ===== */
+/* ===== gallery ===== */
 .content {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-/* ===== FIXED IMAGE ===== */
-.fixed-image {
-  width: 100%;
-  height: 100%;
-  border-left: 1px solid #9fa0a0;
-  border-right: 1px solid #9fa0a0;
-  overflow-y: auto;
-}
-
-/* 모바일 기본: 세로 스크롤 */
-.fixed-image img {
+.thumbnail img {
   width: 100%;
   display: block;
 }
 
-/* ===== SLIDER BTN ===== */
-.slide-btn {
+/* ===== FIXED IMAGE (통합 영역) ===== */
+.fixed-image {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-left: 1px solid #9fa0a0;
+  border-right: 1px solid #9fa0a0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.fixed-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* 좌우 버튼 */
+.fixed-nav {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   font-size: 40px;
   cursor: pointer;
   user-select: none;
-  padding: 10px;
-  display: none;
+  color: #000;
+  z-index: 10;
 }
-.slide-btn.prev { left: 20px; }
-.slide-btn.next { right: 20px; }
+.fixed-nav.prev { left: 20px; }
+.fixed-nav.next { right: 20px; }
 
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  .gallery-wrap { display: block; }
+/* ===== image viewer ===== */
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+  z-index: 5000;
+}
+.image-viewer.active {
+  opacity: 1;
+  visibility: visible;
+}
+.image-viewer img {
+  max-width: 90%;
+  max-height: 90%;
+}
 
-  .scroll-area { display: none; }
-
+/* ===== 모바일 ===== */
+@media (max-width:768px) {
+  .fixed-nav { display: none; }
   .fixed-image {
-    border-left: none;
-    border-right: none;
-  }
-
-  .slide-box {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 4000;
-    transform: translateX(100%);
-    transition: transform .3s;
-  }
-
-  .slide-box.active {
-    transform: translateX(0);
+    border: none;
+    flex-direction: column;
+    overflow-y: auto;
   }
 }
 
 /* ===== PC ===== */
-@media (min-width: 769px) {
+@media (min-width:769px) {
   html, body {
     width: 100%;
     height: 100%;
@@ -131,34 +156,8 @@ a:hover { color: #a3a3a3; }
 
   .gallery-wrap {
     display: grid;
+    grid-template-columns: 60% 18% 22%;
     height: 100%;
-    grid-template-columns: 57.77% 17.55% 24.68%;
-  }
-
-  .fixed-image {
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .fixed-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: none;
-  }
-
-  .fixed-image img.active {
-    display: block;
-  }
-
-  .slide-btn { display: block; }
-
-  .scroll-area {
-    overflow-y: auto;
-    border-right: 1px solid #9fa0a0;
   }
 
   .slide-box {
@@ -175,16 +174,21 @@ a:hover { color: #a3a3a3; }
 
 <div class="gallery-wrap">
 
-  <div class="fixed-image" id="fixedImage">
-    <div class="slide-btn prev" onclick="prevImage()">‹</div>
-    <div class="slide-btn next" onclick="nextImage()">›</div>
+  <!-- FIXED IMAGE (통합 영역) -->
+  <div class="fixed-image">
+    <div class="fixed-nav prev" id="prevBtn">‹</div>
+    <img id="fixedImg" src="" alt="">
+    <div class="fixed-nav next" id="nextBtn">›</div>
   </div>
 
+  <!-- THUMB -->
   <div class="scroll-area">
     <div class="content" id="gallery"></div>
   </div>
 
+  <!-- INFO -->
   <div class="slide-box" id="slideBox">
+    <div class="slide-list" onclick="toggleSlideBox()">info</div>
     <div class="caption-group" id="captionBox"></div>
   </div>
 
@@ -195,36 +199,24 @@ a:hover { color: #a3a3a3; }
   <div id="listButton" onclick="toggleSlideBox()">info</div>
 </div>
 
+<div class="image-viewer" id="imageViewer">
+  <img src="">
+</div>
+
 <script>
-let current = 0;
-let imgs = [];
+let images = [];
+let currentIndex = 0;
 
 async function loadData() {
   const res = await fetch("../data.json");
   const data = await res.json();
+
   const idx = parseInt(location.pathname.split("/").slice(-2)[0], 10) - 1;
   const item = data[idx];
   if (!item) return;
 
-  const fixed = document.getElementById("fixedImage");
-
-  item.images.forEach((src, i) => {
-    const img = document.createElement("img");
-    img.src = src;
-    if (i === 0) img.classList.add("active");
-    fixed.appendChild(img);
-    imgs.push(img);
-  });
-
-  const gallery = document.getElementById("gallery");
-  data.slice().reverse().forEach((d, i) => {
-    const real = data.length - 1 - i;
-    gallery.innerHTML += `
-      <a href="/mika/${real+1}/">
-        <img src="/mika/images/thumb${real+1}.png">
-      </a>
-    `;
-  });
+  images = item.images;
+  updateImage();
 
   document.getElementById("captionBox").innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
@@ -233,22 +225,35 @@ async function loadData() {
     <div>${item.captions.caption4}</div>
     <div>${item.captions.caption5}</div>
   `;
+
+  const gallery = document.getElementById("gallery");
+  data.slice().reverse().forEach((d,i)=>{
+    const real = data.length-1-i;
+    gallery.innerHTML += `
+      <a href="/mika/${real+1}/">
+        <img src="/mika/images/thumb${real+1}.png">
+      </a>
+    `;
+  });
 }
 
-function prevImage() {
-  imgs[current].classList.remove("active");
-  current = (current - 1 + imgs.length) % imgs.length;
-  imgs[current].classList.add("active");
+function updateImage() {
+  document.getElementById("fixedImg").src = images[currentIndex];
 }
 
-function nextImage() {
-  imgs[current].classList.remove("active");
-  current = (current + 1) % imgs.length;
-  imgs[current].classList.add("active");
-}
+document.getElementById("prevBtn").onclick = () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImage();
+};
+document.getElementById("nextBtn").onclick = () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
+};
 
 function toggleSlideBox() {
-  document.getElementById("slideBox").classList.toggle("active");
+  if (innerWidth <= 768) {
+    document.getElementById("slideBox").classList.toggle("active");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
