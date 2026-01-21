@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Heavㄴen</title>
+<title>Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
 
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:"minion-pro", serif; background:#fff; }
-a { color:inherit; text-decoration:none; }
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{ font-family:"minion-pro", serif; background:#fff; }
+a{ color:inherit; text-decoration:none; }
 
 /* ===== footer ===== */
 .footer{
@@ -35,7 +35,6 @@ a { color:inherit; text-decoration:none; }
 /* ===== PC layout ===== */
 @media (min-width:769px){
   html,body{ width:100%; height:100%; overflow:hidden; }
-
   .gallery-wrap{
     display:grid;
     grid-template-columns:57.78% 17.55% 24.68%;
@@ -87,7 +86,7 @@ a { color:inherit; text-decoration:none; }
   margin:6px 0;
 }
 
-/* ===== caption info (PC) ===== */
+/* ===== caption ===== */
 .slide-box{
   height:100%;
   padding:20px;
@@ -101,10 +100,9 @@ a { color:inherit; text-decoration:none; }
 
 /* ================= MOBILE ================= */
 @media (max-width:768px){
-
   .gallery-wrap{ display:block; }
 
-  /* ✅ 모바일: 이미지 1열 세로 스크롤 */
+  /* ✅ 핵심: 슬라이드 구조 완전 해제 */
   .fixed-image{
     display:block;
     height:auto;
@@ -118,13 +116,9 @@ a { color:inherit; text-decoration:none; }
     display:block;
   }
 
-  /* ❌ 모바일에 슬라이드 개념 제거 */
   .nav{ display:none; }
-
-  /* ❌ 썸네일 숨김 */
   .scroll-area{ display:none; }
 
-  /* ===== 모바일 캡션 토글 ===== */
   .slide-box{
     position:fixed;
     top:0; right:0;
@@ -146,6 +140,7 @@ a { color:inherit; text-decoration:none; }
 <div class="gallery-wrap">
 
   <div class="fixed-image" id="fixedImage">
+    <!-- PC 전용 -->
     <div class="nav prev" id="prevBtn">‹</div>
     <img id="mainImage">
     <div class="nav next" id="nextBtn">›</div>
@@ -179,7 +174,7 @@ async function loadData(){
   images=item.images;
   const fixed=document.getElementById("fixedImage");
 
-  /* ✅ 모바일: 이미지 전부 세로 출력 */
+  /* ✅ 모바일: 이미지 전부 세로로 */
   if(window.innerWidth<=768){
     fixed.innerHTML="";
     images.forEach(src=>{
@@ -191,7 +186,6 @@ async function loadData(){
     updateImage();
   }
 
-  /* 썸네일 */
   const g=document.getElementById("gallery");
   g.innerHTML="";
   data.slice().reverse().forEach((d,i)=>{
@@ -203,7 +197,6 @@ async function loadData(){
       </a>`;
   });
 
-  /* 캡션 */
   document.getElementById("captionBox").innerHTML=`
     <div class="caption1">${item.captions.caption1}</div>
     <div class="caption2">${item.captions.caption2}</div>
