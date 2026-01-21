@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ㄴHeaven</title>
+<title>2Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
@@ -16,6 +16,7 @@ body {
 }
 
 a { color:inherit; text-decoration:none; }
+::-webkit-scrollbar{ display:none; }
 
 /* ===== footer ===== */
 .footer{
@@ -37,7 +38,7 @@ a { color:inherit; text-decoration:none; }
 .footer .right-link{ left:30px; }
 .footer #listButton{ right:30px; cursor:pointer; }
 
-/* ===== layout ===== */
+/* ===== PC layout ===== */
 @media (min-width:769px){
   html,body{ width:100%; height:100%; overflow:hidden; }
   .gallery-wrap{
@@ -47,8 +48,6 @@ a { color:inherit; text-decoration:none; }
   }
 }
 
-::-webkit-scrollbar{ display:none; }
-
 /* ===== fixed image ===== */
 .fixed-image{
   position:relative;
@@ -56,16 +55,22 @@ a { color:inherit; text-decoration:none; }
   height:100%;
   border-left:1px solid #9fa0a0;
   border-right:1px solid #9fa0a0;
+  overflow:hidden;
+}
+
+/* PC */
+.fixed-image.pc{
   display:flex;
   align-items:center;
   justify-content:center;
-  overflow:hidden;
 }
-.fixed-image img{
+.fixed-image.pc img{
   max-width:90%;
   max-height:90%;
   object-fit:contain;
 }
+
+/* PC nav */
 .nav{
   position:absolute;
   top:50%;
@@ -90,11 +95,10 @@ a { color:inherit; text-decoration:none; }
 .thumbnail img{ width:100%; display:block; }
 .caption{
   font-size:12px;
-  margin-top:6px;
-  margin-bottom:6px;
+  margin:6px 0;
 }
 
-/* ===== caption info ===== */
+/* ===== caption ===== */
 .slide-box{
   height:100%;
   padding:20px;
@@ -108,22 +112,24 @@ a { color:inherit; text-decoration:none; }
 
 /* ===== mobile ===== */
 @media (max-width:768px){
+
   .gallery-wrap{ display:block; }
 
+  /* 🔥 핵심: 1장 = 1스크린 */
   .fixed-image{
-    display:block;
-    height:auto;
     border:none;
   }
   .fixed-image img{
     width:100%;
-    max-width:none;
-    max-height:none;
+    height:100vh;
+    object-fit:contain;
+    display:block;
   }
-  .nav{ display:none; }
 
+  .nav{ display:none; }
   .scroll-area{ display:none; }
 
+  /* info slide */
   .slide-box{
     position:fixed;
     top:0; right:0;
@@ -135,6 +141,15 @@ a { color:inherit; text-decoration:none; }
     z-index:3000;
   }
   .slide-box.active{ transform:translateX(0); }
+
+  .slide-close{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    font-size:12px;
+    cursor:pointer;
+    color:#a3a3a3;
+  }
 }
 </style>
 </head>
@@ -143,7 +158,7 @@ a { color:inherit; text-decoration:none; }
 
 <div class="gallery-wrap">
 
-  <div class="fixed-image" id="fixedImage">
+  <div class="fixed-image pc" id="fixedImage">
     <div class="nav prev" id="prevBtn">‹</div>
     <img id="mainImage">
     <div class="nav next" id="nextBtn">›</div>
@@ -155,6 +170,7 @@ a { color:inherit; text-decoration:none; }
 
   <div class="slide-box" id="slideBox">
     <div id="captionBox"></div>
+    <div class="slide-close" onclick="toggleSlideBox()">close</div>
   </div>
 
 </div>
@@ -178,6 +194,7 @@ async function loadData(){
   const fixed=document.getElementById("fixedImage");
 
   if(window.innerWidth<=768){
+    fixed.classList.remove("pc");
     fixed.innerHTML="";
     images.forEach(src=>{
       const img=document.createElement("img");
