@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>1ㅈHeaven</title>
+<title>1Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
@@ -17,6 +17,7 @@ body {
 
 a { color:inherit; text-decoration:none; }
 
+/* ===== footer ===== */
 .footer{
   position:fixed;
   bottom:0; left:0;
@@ -36,6 +37,7 @@ a { color:inherit; text-decoration:none; }
 .footer .right-link{ left:30px; transition: opacity 0.3s; }
 .footer #listButton{ right:30px; cursor:pointer; }
 
+/* ===== PC Layout (Grid) ===== */
 @media (min-width:769px){
   html,body{ width:100%; height:100%; overflow:hidden; }
   .gallery-wrap{
@@ -94,15 +96,40 @@ a { color:inherit; text-decoration:none; }
   margin-bottom:6px;
 }
 
+/* ===== 정보창 내부 텍스트 스타일 (두 번째 코드 스타일 이식) ===== */
 .slide-box{
   height:100%;
-  padding:20px;
+  padding: 10px; /* PC 기본 패딩 */
   overflow-y:auto;
 }
-.caption1{ font-size:20px; margin-bottom:3px; }
-.caption2,.caption3,.caption4,.caption5{
-  font-size:12px;
-  margin-bottom:3px;
+
+/* 두 번째 코드의 캡션 그룹 스타일 */
+.caption-group {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.caption1 {
+  font-size: 20px;
+  margin-bottom: 3px;
+}
+
+.caption2, .caption3, .caption4, .caption5 {
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+/* 모바일 닫기 버튼용 */
+.slide-list {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #a3a3a3;
+  display: none;
+  z-index: 4001;
 }
 
 @media (max-width:768px){
@@ -125,19 +152,21 @@ a { color:inherit; text-decoration:none; }
   .slide-box{
     position:fixed;
     top:0; right:0;
-    width:100%;
+    width:100% !important;
     height:100%;
     background:#fff;
     transform:translateX(100%);
     transition:.3s;
     z-index:3000;
+    padding: 40px 20px; /* 두 번째 코드 모바일 정보창 패딩 */
   }
   .slide-box.active{ transform:translateX(0); }
+  .slide-box.active .slide-list { display: block; }
 
-  /* 정보창이 열렸을 때 footer 설정 */
   .footer { z-index: 4000; }
+  .footer #listButton { bottom: 20px; right: 20px; }
+  .footer .right-link { bottom: 20px; left: 20px; }
   
-  /* 정보창이 열리면 back 버튼 숨기기 */
   body.info-open .right-link {
     opacity: 0;
     pointer-events: none;
@@ -161,7 +190,8 @@ a { color:inherit; text-decoration:none; }
   </div>
 
   <div class="slide-box" id="slideBox">
-    <div id="captionBox"></div>
+    <div class="caption-group" id="captionBox"></div>
+    <div class="slide-list" onclick="toggleSlideBox()">close</div>
   </div>
 </div>
 
@@ -211,6 +241,7 @@ async function loadData(){
       </a>`;
   });
 
+  // 텍스트 데이터 매핑
   document.getElementById("captionBox").innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
     <div class="caption2">${item.captions.caption2}</div>
@@ -236,15 +267,10 @@ document.getElementById("nextBtn").onclick = () => {
 function toggleSlideBox(){
   if(window.innerWidth <= 768){
     const sb = document.getElementById("slideBox");
-    const lb = document.getElementById("listButton");
-    
     sb.classList.toggle("active");
-    
     if(sb.classList.contains("active")) {
-      lb.textContent = "close";
-      document.body.classList.add("info-open"); // body에 클래스 추가하여 back 숨김
+      document.body.classList.add("info-open");
     } else {
-      lb.textContent = "info";
       document.body.classList.remove("info-open");
     }
   }
