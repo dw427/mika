@@ -3,21 +3,19 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>1Heaven</title>
+<title>Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
 
-*{ box-sizing:border-box; margin:0; padding:0; }
+* { box-sizing:border-box; margin:0; padding:0; }
 
-body{
+body {
   font-family:"minion-pro", serif;
   background:#fff;
 }
 
-a{ color:inherit; text-decoration:none; }
-
-::-webkit-scrollbar{ display:none; }
+a { color:inherit; text-decoration:none; }
 
 /* ===== footer ===== */
 .footer{
@@ -30,7 +28,6 @@ a{ color:inherit; text-decoration:none; }
   pointer-events:none;
 }
 .footer *{ pointer-events:auto; }
-
 .footer .right-link,
 .footer #listButton{
   position:absolute;
@@ -40,139 +37,113 @@ a{ color:inherit; text-decoration:none; }
 .footer .right-link{ left:30px; }
 .footer #listButton{ right:30px; cursor:pointer; }
 
-/* ===== PC ===== */
+/* ===== layout ===== */
 @media (min-width:769px){
-
-  html,body{
-    width:100%;
-    height:100%;
-    overflow:hidden;
-  }
-
+  html,body{ width:100%; height:100%; overflow:hidden; }
   .gallery-wrap{
     display:grid;
     grid-template-columns:57.78% 17.55% 24.68%;
     height:100%;
   }
-
-  .fixed-image{
-    position:relative;
-    width:100%;
-    height:100%;
-    border-left:1px solid #9fa0a0;
-    border-right:1px solid #9fa0a0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
-
-  .fixed-image img{
-    max-width:90%;
-    max-height:90%;
-    object-fit:contain;
-  }
-
-  .nav{
-    position:absolute;
-    top:50%;
-    transform:translateY(-50%);
-    font-size:40px;
-    cursor:pointer;
-    user-select:none;
-  }
-  .nav.prev{ left:20px; }
-  .nav.next{ right:20px; }
-
-  .scroll-area{
-    height:100%;
-    overflow-y:auto;
-    border-right:1px solid #9fa0a0;
-  }
-
-  .content{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .thumbnail img{
-    width:100%;
-    display:block;
-  }
-
-  .caption{
-    font-size:12px;
-    margin-top:6px;
-    margin-bottom:6px;
-  }
-
-  .slide-box{
-    height:100%;
-    padding:20px;
-    overflow-y:auto;
-  }
 }
 
-/* ===== MOBILE ===== */
+::-webkit-scrollbar{ display:none; }
+
+/* ===== fixed image ===== */
+.fixed-image{
+  position:relative;
+  width:100%;
+  height:100%;
+  border-left:1px solid #9fa0a0;
+  border-right:1px solid #9fa0a0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.fixed-image img{
+  max-width:90%;
+  max-height:90%;
+  object-fit:contain;
+}
+.nav{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:40px;
+  cursor:pointer;
+  user-select:none;
+}
+.nav.prev{ left:20px; }
+.nav.next{ right:20px; }
+
+/* ===== thumbnails ===== */
+.scroll-area{
+  height:100%;
+  overflow-y:auto;
+  border-right:1px solid #9fa0a0;
+}
+.content{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+}
+.thumbnail img{ width:100%; display:block; }
+.caption{
+  font-size:12px;
+  margin-top:6px;
+  margin-bottom:6px;
+}
+
+/* ===== caption info ===== */
+.slide-box{
+  height:100%;
+  padding:20px;
+  overflow-y:auto;
+}
+.caption1{ font-size:20px; margin-bottom:3px; }
+.caption2,.caption3,.caption4,.caption5{
+  font-size:12px;
+  margin-bottom:3px;
+}
+
+/* ===== mobile ===== */
 @media (max-width:768px){
 
-  html,body{
-    width:100%;
-    height:auto;
-    overflow:auto;
-  }
-
-  .gallery-wrap{
-    display:block;
-  }
+  .gallery-wrap{ display:block; }
 
   .fixed-image{
-    width:100%;
+    display:block;
     height:auto;
     border:none;
-    display:flex;
-    flex-direction:column;
+    overflow:visible;
   }
 
   .fixed-image img{
-    width:100%;
-    height:auto;
+    width:100% !important;
+    height:auto !important;
+    max-width:none !important;
+    max-height:none !important;
     display:block;
   }
 
-  .nav,
-  #mainImage{
-    display:none;
+  #mainImage,
+  .nav{
+    display:none !important;
   }
 
-  .scroll-area{
-    display:none;
-  }
+  .scroll-area{ display:none; }
 
   .slide-box{
     position:fixed;
-    top:0;
-    right:0;
+    top:0; right:0;
     width:100%;
     height:100%;
     background:#fff;
     transform:translateX(100%);
     transition:.3s;
     z-index:3000;
-    padding:40px 20px;
-    overflow-y:auto;
   }
-
-  .slide-box.active{
-    transform:translateX(0);
-  }
-}
-
-/* ===== caption ===== */
-.caption1{ font-size:20px; margin-bottom:3px; }
-.caption2,.caption3,.caption4,.caption5{
-  font-size:12px;
-  margin-bottom:3px;
+  .slide-box.active{ transform:translateX(0); }
 }
 </style>
 </head>
@@ -209,46 +180,39 @@ async function loadData(){
   const res=await fetch("../data.json");
   const data=await res.json();
 
-  const pathParts = window.location.pathname.split("/");
-  const idx=parseInt(pathParts[pathParts.length-2],10)-1;
+  const idx=parseInt(location.pathname.split("/").slice(-2)[0],10)-1;
   const item=data[idx];
   if(!item) return;
 
   images=item.images;
 
   const fixed=document.getElementById("fixedImage");
+  const mainImage=document.getElementById("mainImage");
 
+  // 모바일이면 mainImage 비우고 전체 이미지 append
   if(window.innerWidth<=768){
 
-    // PC 구조 제거
-    fixed.innerHTML="";
+    mainImage.src="";
 
-    // 이미지 전부 세로 출력
     images.forEach((src,i)=>{
       const img=document.createElement("img");
       img.src=src;
-      img.alt=`${item.title} ${i+1}`;
+      img.alt=item.title+" "+(i+1);
       fixed.appendChild(img);
     });
 
   }else{
-
-    document.getElementById("mainImage").src=images[0];
-
+    updateImage();
   }
 
   const g=document.getElementById("gallery");
   g.innerHTML="";
-
   data.slice().reverse().forEach((d,i)=>{
     const real=data.length-1-i;
-
     g.innerHTML+=`
       <a href="/mika/${real+1}/" class="thumbnail">
         <img src="/mika/images/thumb${real+1}.png">
-        <div class="caption">
-          ${d.title}<br>${d.category} ${d.year}
-        </div>
+        <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
       </a>`;
   });
 
@@ -261,17 +225,19 @@ async function loadData(){
 }
 
 function updateImage(){
-  document.getElementById("mainImage").src=images[index];
+  if(images.length>0){
+    document.getElementById("mainImage").src=images[index];
+  }
 }
 
-document.getElementById("prevBtn").onclick=()=>{
+prevBtn.onclick=()=>{
   if(index>0){
     index--;
     updateImage();
   }
 };
 
-document.getElementById("nextBtn").onclick=()=>{
+nextBtn.onclick=()=>{
   if(index<images.length-1){
     index++;
     updateImage();
