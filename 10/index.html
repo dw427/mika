@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Heaven</title>
+<title>1Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
@@ -37,7 +37,7 @@ a { color:inherit; text-decoration:none; }
 .footer .right-link{ left:30px; }
 .footer #listButton{ right:30px; cursor:pointer; }
 
-/* ===== layout ===== */
+/* ===== layout (PC 유지) ===== */
 @media (min-width:769px){
   html,body{ width:100%; height:100%; overflow:hidden; }
   .gallery-wrap{
@@ -49,7 +49,7 @@ a { color:inherit; text-decoration:none; }
 
 ::-webkit-scrollbar{ display:none; }
 
-/* ===== fixed image ===== */
+/* ===== fixed image (PC: 슬라이드 / Mobile: 스크롤) ===== */
 .fixed-image{
   position:relative;
   width:100%;
@@ -61,11 +61,32 @@ a { color:inherit; text-decoration:none; }
   justify-content:center;
   overflow:hidden;
 }
+
+/* 모바일일 때만 스크롤 방식으로 변경 */
+@media (max-width:768px) {
+  .fixed-image {
+    display: block; /* 세로 나열 */
+    overflow-y: auto;
+    height: auto;
+    border: none;
+  }
+}
+
 .fixed-image img{
   max-width:90%;
   max-height:90%;
   object-fit:contain;
 }
+
+@media (max-width:768px) {
+  .fixed-image img {
+    width: 100%;
+    max-width: none;
+    max-height: none;
+    display: block;
+  }
+}
+
 .nav{
   position:absolute;
   top:50%;
@@ -73,11 +94,12 @@ a { color:inherit; text-decoration:none; }
   font-size:40px;
   cursor:pointer;
   user-select:none;
+  z-index: 10;
 }
 .nav.prev{ left:20px; }
 .nav.next{ right:20px; }
 
-/* ===== thumbnails ===== */
+/* ===== thumbnails (PC 전용) ===== */
 .scroll-area{
   height:100%;
   overflow-y:auto;
@@ -106,32 +128,11 @@ a { color:inherit; text-decoration:none; }
   margin-bottom:3px;
 }
 
-/* ===== mobile ===== */
+/* ===== mobile 전용 스타일 ===== */
 @media (max-width:768px){
-
   .gallery-wrap{ display:block; }
-
-  .fixed-image{
-    display:block;
-    height:auto;
-    border:none;
-    overflow:visible;
-  }
-
-  .fixed-image img{
-    width:100% !important;
-    height:auto !important;
-    max-width:none !important;
-    max-height:none !important;
-    display:block;
-  }
-
-  #mainImage,
-  .nav{
-    display:none !important;
-  }
-
-  .scroll-area{ display:none; }
+  .nav{ display:none; } /* 모바일에서 화살표 숨김 */
+  .scroll-area{ display:none; } /* 모바일에서 썸네일 영역 숨김 */
 
   .slide-box{
     position:fixed;
@@ -155,6 +156,7 @@ a { color:inherit; text-decoration:none; }
   <div class="fixed-image" id="fixedImage">
     <div class="nav prev" id="prevBtn">‹</div>
     <img id="mainImage">
+    <div id="mobileImageContainer"></div>
     <div class="nav next" id="nextBtn">›</div>
   </div>
 
@@ -179,44 +181,50 @@ let images=[], index=0;
 async function loadData(){
   const res=await fetch("../data.json");
   const data=await res.json();
-
-  const idx=parseInt(location.pathname.split("/").slice(-2)[0],10)-1;
+  
+  // URL에서 인덱스 추출
+  const pathParts = window.location.pathname.split("/");
+  const idxStr = pathParts.filter(p => p !== "").pop();
+  const idx = parseInt(idxStr, 10) - 1;
+  
   const item=data[idx];
   if(!item) return;
 
   images=item.images;
+  const mainImg = document.getElementById("mainImage");
+  const mobileContainer = document.getElementById("mobileImageContainer");
 
-  const fixed=document.getElementById("fixedImage");
-  const mainImage=document.getElementById("mainImage");
-
-  // 모바일이면 mainImage 비우고 전체 이미지 append
-  if(window.innerWidth<=768){
-
-    mainImage.src="";
-
-    images.forEach((src,i)=>{
-      const img=document.createElement("img");
-      img.src=src;
-      img.alt=item.title+" "+(i+1);
-      fixed.appendChild(img);
+  // 화면 크기에 따른 초기 셋팅
+  if(window.innerWidth <= 768){
+    // 모바일: 모든 이미지를 나열
+    mainImg.style.display = "none";
+    mobileContainer.innerHTML = "";
+    images.forEach(src => {
+      const img = document.createElement("img");
+      img.src = src;
+      mobileContainer.appendChild(img);
     });
-
-  }else{
+  } else {
+    // PC: 슬라이드 방식 유지
+    mainImg.style.display = "block";
+    mobileContainer.innerHTML = "";
     updateImage();
   }
 
-  const g=document.getElementById("gallery");
-  g.innerHTML="";
-  data.slice().reverse().forEach((d,i)=>{
-    const real=data.length-1-i;
-    g.innerHTML+=`
-      <a href="/mika/${real+1}/" class="thumbnail">
-        <img src="/mika/images/thumb${real+1}.png">
+  // 썸네일 갤러리 생성 (PC용)
+  const g = document.getElementById("gallery");
+  g.innerHTML = "";
+  data.slice().reverse().forEach((d, i) => {
+    const realIdx = data.length - 1 - i;
+    g.innerHTML += `
+      <a href="/mika/${realIdx + 1}/" class="thumbnail">
+        <img src="/mika/images/thumb${realIdx + 1}.png">
         <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
       </a>`;
   });
 
-  document.getElementById("captionBox").innerHTML=`
+  // 캡션 정보 업데이트
+  document.getElementById("captionBox").innerHTML = `
     <div class="caption1">${item.captions.caption1}</div>
     <div class="caption2">${item.captions.caption2}</div>
     <div class="caption3">${item.captions.caption3}</div>
@@ -225,32 +233,40 @@ async function loadData(){
 }
 
 function updateImage(){
-  if(images.length>0){
-    document.getElementById("mainImage").src=images[index];
+  const mainImg = document.getElementById("mainImage");
+  if(mainImg && images[index]) {
+    mainImg.src = images[index];
   }
 }
 
-prevBtn.onclick=()=>{
-  if(index>0){
-    index--;
-    updateImage();
-  }
-};
-
-nextBtn.onclick=()=>{
-  if(index<images.length-1){
-    index++;
-    updateImage();
-  }
-};
+// PC용 슬라이드 버튼
+document.getElementById("prevBtn").onclick = () => { 
+  if(index > 0){ index--; updateImage(); } 
+}
+document.getElementById("nextBtn").onclick = () => { 
+  if(index < images.length - 1){ index++; updateImage(); } 
+}
 
 function toggleSlideBox(){
-  if(window.innerWidth<=768){
+  if(window.innerWidth <= 768){
     document.getElementById("slideBox").classList.toggle("active");
+    const btn = document.getElementById("listButton");
+    btn.textContent = document.getElementById("slideBox").classList.contains("active") ? "close" : "info";
   }
 }
 
-document.addEventListener("DOMContentLoaded",loadData);
+// 창 크기가 바뀔 때 대응 (선택 사항)
+window.onresize = () => {
+  if(window.innerWidth > 768) {
+    document.getElementById("mainImage").style.display = "block";
+    document.getElementById("mobileImageContainer").innerHTML = "";
+    updateImage();
+  } else {
+    loadData(); // 모바일 모드로 재로드
+  }
+};
+
+document.addEventListener("DOMContentLoaded", loadData);
 </script>
 
 </body>
