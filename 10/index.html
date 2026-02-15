@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>1ㅈHeaven</title>
+<title>1Heaven</title>
 
 <style>
 @import url("https://use.typekit.net/zuk4pzv.css");
@@ -34,6 +34,7 @@ a { color:inherit; text-decoration:none; }
   font-size:12px;
 }
 .footer .right-link{ left:30px; }
+/* 모바일에서 위치 고정 및 커서 설정 */
 .footer #listButton{ right:30px; cursor:pointer; }
 
 @media (min-width:769px){
@@ -43,7 +44,7 @@ a { color:inherit; text-decoration:none; }
     grid-template-columns:57.78% 17.55% 24.68%;
     height:100%;
   }
-  /* 웹형에서는 info 버튼 숨김 */
+  /* 웹형(PC)에서는 하단 info 버튼 숨김 */
   #listButton { display: none; }
 }
 
@@ -106,18 +107,6 @@ a { color:inherit; text-decoration:none; }
   margin-bottom:3px;
 }
 
-/* 모바일 닫기 버튼 스타일 */
-.close-btn {
-  display: none;
-  position: fixed;
-  bottom: 20px;
-  right: 30px;
-  font-size: 12px;
-  color: #a3a3a3;
-  cursor: pointer;
-  z-index: 4000;
-}
-
 @media (max-width:768px){
   .gallery-wrap{ display:block; }
   .fixed-image {
@@ -146,8 +135,10 @@ a { color:inherit; text-decoration:none; }
     z-index:3000;
   }
   .slide-box.active{ transform:translateX(0); }
-  .slide-box.active ~ .footer #listButton { display: none; }
-  .slide-box.active .close-btn { display: block; }
+
+  /* info/close 버튼이 slide-box보다 위에 오도록 설정 */
+  .footer { z-index: 4000; }
+  .footer #listButton { right: 30px; bottom: 10px; }
 }
 </style>
 </head>
@@ -168,7 +159,6 @@ a { color:inherit; text-decoration:none; }
 
   <div class="slide-box" id="slideBox">
     <div id="captionBox"></div>
-    <div class="close-btn" onclick="toggleSlideBox()">close</div>
   </div>
 </div>
 
@@ -243,7 +233,16 @@ document.getElementById("nextBtn").onclick = () => {
 function toggleSlideBox(){
   if(window.innerWidth <= 768){
     const sb = document.getElementById("slideBox");
+    const lb = document.getElementById("listButton");
+    
     sb.classList.toggle("active");
+    
+    // 버튼 텍스트 교체 로직
+    if(sb.classList.contains("active")) {
+      lb.textContent = "close";
+    } else {
+      lb.textContent = "info";
+    }
   }
 }
 
@@ -251,6 +250,7 @@ window.onresize = () => {
   if(window.innerWidth > 768) {
     document.getElementById("mainImage").style.display = "block";
     document.getElementById("mobileImageContainer").innerHTML = "";
+    document.getElementById("slideBox").classList.remove("active");
     updateImage();
   } else {
     loadData();
