@@ -50,6 +50,7 @@ a { color:inherit; text-decoration:none; }
 
 ::-webkit-scrollbar{ display:none; }
 
+/* ===== 이미지 영역 정중앙 배치 수정 ===== */
 .fixed-image{
   position:relative;
   width:100%;
@@ -57,15 +58,17 @@ a { color:inherit; text-decoration:none; }
   border-left:1px solid #9fa0a0;
   border-right:1px solid #9fa0a0;
   display:flex;
-  align-items:center;
-  justify-content:center;
+  align-items:center;      /* 세로 중앙 */
+  justify-content:center;   /* 가로 중앙 */
   overflow:hidden;
 }
 
+/* 이미지 가로 500px 고정 */
 .fixed-image img{
-  max-width:90%;
-  max-height:90%;
-  object-fit:contain;
+  width: 500px; 
+  max-width: 90%; /* 화면보다 클 경우 대비 */
+  height: auto;
+  object-fit: contain;
 }
 
 .nav{
@@ -127,10 +130,10 @@ a { color:inherit; text-decoration:none; }
     height: auto;
     border: none;
   }
+  /* 모바일에서는 가로 500px 해제하고 꽉 차게 변경 */
   .fixed-image img {
     width: 100%;
     max-width: none;
-    max-height: none;
     display: block;
   }
   .nav{ display:none; }
@@ -149,7 +152,6 @@ a { color:inherit; text-decoration:none; }
   }
   .slide-box.active{ transform:translateX(0); }
 
-  /* 정보창보다 버튼이 위에 있어야 함 */
   .footer { z-index: 4001; }
   .footer #listButton { bottom: 20px; right: 20px; }
   .footer .right-link { bottom: 20px; left: 20px; }
@@ -257,10 +259,10 @@ function toggleSlideBox(){
     sb.classList.toggle("active");
     
     if(sb.classList.contains("active")) {
-      lb.textContent = "close"; // 버튼 텍스트 변경
+      lb.textContent = "close";
       document.body.classList.add("info-open");
     } else {
-      lb.textContent = "info"; // 다시 info로 변경
+      lb.textContent = "info";
       document.body.classList.remove("info-open");
     }
   }
