@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dreamscape</title>
+  <title>1Dreamscape</title>
 
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
@@ -24,7 +24,6 @@
       text-decoration: none;
     }
 
-    /* ===== Footer ===== */
     .footer {
       position: fixed;
       bottom: 0;
@@ -57,7 +56,6 @@
       cursor: pointer;
     }
 
-    /* ===== Layout ===== */
     @media (min-width: 769px) {
       html, body {
         width: 100%;
@@ -80,7 +78,6 @@
       display: none;
     }
 
-    /* ===== Main Image Area ===== */
     .fixed-image {
       position: relative;
       width: 100%;
@@ -98,9 +95,8 @@
       max-width: 90%;
       height: auto;
       object-fit: contain;
-      /* 0.2초로 극적인 속도 향상 */
-      transition: opacity 0.2s ease-in-out;
       opacity: 1;
+      transition: opacity 0.45s ease-in-out;
     }
 
     .fixed-image img.fade {
@@ -123,10 +119,14 @@
       color: #000;
     }
 
-    .nav.prev { left: 20px; }
-    .nav.next { right: 20px; }
+    .nav.prev {
+      left: 20px;
+    }
 
-    /* ===== Scroll Area ===== */
+    .nav.next {
+      right: 20px;
+    }
+
     .scroll-area {
       height: 100%;
       overflow-y: auto;
@@ -149,7 +149,6 @@
       margin-bottom: 6px;
     }
 
-    /* ===== Info Box ===== */
     .slide-box {
       height: 100%;
       padding: 10px;
@@ -165,9 +164,10 @@
     .caption1 { font-size: 20px; margin-bottom: 3px; }
     .caption2, .caption3, .caption4, .caption5 { font-size: 12px; margin-bottom: 3px; }
 
-    /* ===== Mobile (768px 이하) ===== */
     @media (max-width: 768px) {
-      .gallery-wrap { display: block; }
+      .gallery-wrap {
+        display: block;
+      }
 
       .fixed-image {
         display: block;
@@ -183,7 +183,9 @@
         transition: none;
       }
 
-      .nav, .scroll-area { display: none; }
+      .nav, .scroll-area {
+        display: none;
+      }
 
       .slide-box {
         position: fixed;
@@ -198,7 +200,9 @@
         padding: 40px 20px;
       }
 
-      .slide-box.active { transform: translateX(0); }
+      .slide-box.active {
+        transform: translateX(0);
+      }
 
       .footer { z-index: 4001; }
       .footer #listButton { bottom: 20px; right: 20px; }
@@ -287,7 +291,7 @@
           <div class="caption4">${item.captions.caption4}</div>
           <div class="caption5">${item.captions.caption5}</div>`;
       } catch (e) {
-        console.error("Data load failed", e);
+        console.error(e);
       }
     }
 
@@ -307,7 +311,7 @@
         mainImg.onload = () => {
           mainImg.classList.remove('fade');
         };
-      }, 200); // 0.2초 대기
+      }, 450); 
     }
 
     document.getElementById("prevBtn").onclick = () => {
