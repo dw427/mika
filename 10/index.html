@@ -17,7 +17,6 @@ body {
 
 a { color:inherit; text-decoration:none; }
 
-/* ===== footer ===== */
 .footer{
   position:fixed;
   bottom:0; left:0;
@@ -37,7 +36,6 @@ a { color:inherit; text-decoration:none; }
 .footer .right-link{ left:30px; transition: opacity 0.3s; }
 .footer #listButton{ right:30px; cursor:pointer; }
 
-/* ===== PC Layout (Grid) ===== */
 @media (min-width:769px){
   html,body{ width:100%; height:100%; overflow:hidden; }
   .gallery-wrap{
@@ -67,11 +65,19 @@ a { color:inherit; text-decoration:none; }
   max-width: 90%;
   height: auto;
   object-fit: contain;
-  transition: opacity 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+  transform: translateX(0);
   opacity: 1;
 }
 
-.fixed-image img.fade {
+.fixed-image img.slide-out {
+  transform: translateX(-50px);
+  opacity: 0;
+}
+
+.fixed-image img.slide-in-prepare {
+  transition: none; 
+  transform: translateX(50px);
   opacity: 0;
 }
 
@@ -198,15 +204,15 @@ a { color:inherit; text-decoration:none; }
 let images=[], index=0;
 
 async function loadData(){
-  const res=await fetch("../data.json");
-  const data=await res.json();
+  const res = await fetch("../data.json");
+  const data = await res.json();
   const pathParts = window.location.pathname.split("/");
   const idxStr = pathParts.filter(p => p !== "").pop();
   const idx = parseInt(idxStr, 10) - 1;
-  const item=data[idx];
+  const item = data[idx];
   if(!item) return;
 
-  images=item.images;
+  images = item.images;
   const mainImg = document.getElementById("mainImage");
   const mobileContainer = document.getElementById("mobileImageContainer");
 
@@ -221,7 +227,7 @@ async function loadData(){
   } else {
     mainImg.style.display = "block";
     mobileContainer.innerHTML = "";
-    updateImage();
+    updateImage(true); 
   }
 
   const g = document.getElementById("gallery");
@@ -243,20 +249,28 @@ async function loadData(){
     <div class="caption5">${item.captions.caption5}</div>`;
 }
 
-function updateImage(){
+function updateImage(isInitial = false){
   const mainImg = document.getElementById("mainImage");
-  if(mainImg && images[index]) {
-    mainImg.classList.add('fade');
-    setTimeout(() => {
-      mainImg.src = images[index];
-      mainImg.onload = () => {
-        mainImg.classList.remove('fade');
-      };
-    }, 200);
+  if(!mainImg || !images[index]) return;
+
+  if(isInitial) {
+    mainImg.src = images[index];
+    return;
   }
+
+  mainImg.classList.add('slide-out');
+
+  setTimeout(() => {
+    mainImg.classList.remove('slide-out');
+    mainImg.classList.add('slide-in-prepare');
+    mainImg.src = images[index];
+
+    mainImg.onload = () => {
+      mainImg.classList.remove('slide-in-prepare');
+    };
+  }, 400); 
 }
 
-// 루프(Loop) 기능 적용된 클릭 이벤트
 document.getElementById("prevBtn").onclick = () => { 
   index = (index === 0) ? images.length - 1 : index - 1;
   updateImage(); 
@@ -266,7 +280,6 @@ document.getElementById("nextBtn").onclick = () => {
   updateImage(); 
 }
 
-// 키보드 이벤트에도 루프 적용
 document.addEventListener('keydown', (e) => {
   if (window.innerWidth > 768) {
     if (e.key === 'ArrowLeft') {
@@ -301,7 +314,7 @@ window.onresize = () => {
     document.getElementById("slideBox").classList.remove("active");
     document.body.classList.remove("info-open");
     document.getElementById("listButton").textContent = "info";
-    updateImage();
+    updateImage(true);
   } else {
     loadData();
   }
