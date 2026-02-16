@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1mika</title>
+  <title>mika</title>
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <link rel="apple-touch-icon" href="images/favicon.png" />
   <meta name="theme-color" content="#ffffff" />
@@ -55,6 +55,8 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 0;
+      /* 이 부분을 추가했습니다: 아래 줄과의 간격을 30px 벌립니다 */
+      row-gap: 30px; 
     }
     .thumbnail {
       display: flex; flex-direction: column; color: inherit;
@@ -66,6 +68,7 @@
       display: flex; flex-direction: column;
       margin-top: 8px; font-size: 12px;
       align-items: flex-start;
+      line-height: 1.4;
     }
     .caption .category-year {
       display: flex; align-items: center;
@@ -109,7 +112,7 @@
 
     @media (max-width: 768px) {
       .fixed-image { display: none; }
-      .content { grid-template-columns: repeat(2, 1fr); }
+      .content { grid-template-columns: repeat(2, 1fr); row-gap: 20px; }
       
       .slide-box { 
         width: 100% !important; 
