@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1Dreamscape</title>
+  <title>2Dreamscape</title>
 
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
 
-    /* 기본 리셋 */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -25,7 +24,7 @@
       text-decoration: none;
     }
 
-    /* ===== 하단 푸터 (Footer) ===== */
+    /* ===== Footer ===== */
     .footer {
       position: fixed;
       bottom: 0;
@@ -58,7 +57,7 @@
       cursor: pointer;
     }
 
-    /* ===== PC 레이아웃 (769px 이상) ===== */
+    /* ===== Layout ===== */
     @media (min-width: 769px) {
       html, body {
         width: 100%;
@@ -81,7 +80,7 @@
       display: none;
     }
 
-    /* ===== 메인 이미지 영역 ===== */
+    /* ===== Main Image Area ===== */
     .fixed-image {
       position: relative;
       width: 100%;
@@ -99,16 +98,15 @@
       max-width: 90%;
       height: auto;
       object-fit: contain;
+      /* 속도를 0.4초로 단축 */
       transition: opacity 0.4s ease-in-out;
       opacity: 1;
     }
 
-    /* 페이드 아웃 상태 */
     .fixed-image img.fade {
       opacity: 0 !important;
     }
 
-    /* 네비게이션 화살표 */
     .nav {
       position: absolute;
       top: 50%;
@@ -125,15 +123,10 @@
       color: #000;
     }
 
-    .nav.prev {
-      left: 20px;
-    }
+    .nav.prev { left: 20px; }
+    .nav.next { right: 20px; }
 
-    .nav.next {
-      right: 20px;
-    }
-
-    /* ===== 스크롤 영역 (중앙 리스트) ===== */
+    /* ===== Scroll Area ===== */
     .scroll-area {
       height: 100%;
       overflow-y: auto;
@@ -156,7 +149,7 @@
       margin-bottom: 6px;
     }
 
-    /* ===== 정보 슬라이드 박스 (우측) ===== */
+    /* ===== Info Box ===== */
     .slide-box {
       height: 100%;
       padding: 10px;
@@ -172,11 +165,9 @@
     .caption1 { font-size: 20px; margin-bottom: 3px; }
     .caption2, .caption3, .caption4, .caption5 { font-size: 12px; margin-bottom: 3px; }
 
-    /* ===== 모바일 레이아웃 (768px 이하) ===== */
+    /* ===== Mobile (768px 이하) ===== */
     @media (max-width: 768px) {
-      .gallery-wrap {
-        display: block;
-      }
+      .gallery-wrap { display: block; }
 
       .fixed-image {
         display: block;
@@ -192,9 +183,7 @@
         transition: none;
       }
 
-      .nav, .scroll-area {
-        display: none;
-      }
+      .nav, .scroll-area { display: none; }
 
       .slide-box {
         position: fixed;
@@ -209,9 +198,7 @@
         padding: 40px 20px;
       }
 
-      .slide-box.active {
-        transform: translateX(0);
-      }
+      .slide-box.active { transform: translateX(0); }
 
       .footer { z-index: 4001; }
       .footer #listButton { bottom: 20px; right: 20px; }
@@ -252,7 +239,6 @@
   <script>
     let images = [], index = 0;
 
-    // 데이터 로드 및 초기화
     async function loadData() {
       try {
         const res = await fetch("../data.json");
@@ -283,7 +269,6 @@
           updateImage(true);
         }
 
-        // 썸네일 리스트 생성
         const g = document.getElementById("gallery");
         g.innerHTML = "";
         data.slice().reverse().forEach((d, i) => {
@@ -295,7 +280,6 @@
             </a>`;
         });
 
-        // 캡션 삽입
         document.getElementById("captionBox").innerHTML = `
           <div class="caption1">${item.captions.caption1}</div>
           <div class="caption2">${item.captions.caption2}</div>
@@ -307,7 +291,6 @@
       }
     }
 
-    // 이미지 업데이트 (부드러운 페이드 효과)
     function updateImage(isInitial = false) {
       const mainImg = document.getElementById("mainImage");
       if (!mainImg || !images[index]) return;
@@ -324,10 +307,9 @@
         mainImg.onload = () => {
           mainImg.classList.remove('fade');
         };
-      }, 800);
+      }, 400); // 0.4초 대기
     }
 
-    // 네비게이션 클릭 이벤트
     document.getElementById("prevBtn").onclick = () => {
       index = (index === 0) ? images.length - 1 : index - 1;
       updateImage();
@@ -338,7 +320,6 @@
       updateImage();
     };
 
-    // 키보드 컨트롤 (PC전용)
     document.addEventListener('keydown', (e) => {
       if (window.innerWidth > 768) {
         if (e.key === 'ArrowLeft') {
@@ -351,7 +332,6 @@
       }
     });
 
-    // 모바일 정보창 토글
     function toggleSlideBox() {
       if (window.innerWidth <= 768) {
         const sb = document.getElementById("slideBox");
@@ -368,7 +348,6 @@
       }
     }
 
-    // 창 크기 조절 대응
     window.onresize = () => {
       if (window.innerWidth > 768) {
         document.getElementById("mainImage").style.display = "block";
