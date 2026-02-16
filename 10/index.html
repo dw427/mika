@@ -1,314 +1,389 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>1Dreamscape</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dreamscape</title>
 
-<style>
-@import url("https://use.typekit.net/zuk4pzv.css");
+  <style>
+    @import url("https://use.typekit.net/zuk4pzv.css");
 
-* { box-sizing:border-box; margin:0; padding:0; }
+    /* 기본 리셋 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  font-family:"minion-pro", serif;
-  background:#fff;
-}
+    body {
+      font-family: "minion-pro", serif;
+      background: #fff;
+    }
 
-a { color:inherit; text-decoration:none; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-/* ===== footer ===== */
-.footer{
-  position:fixed;
-  bottom:0; left:0;
-  width:100%;
-  height:100px;
-  z-index:1000;
-  color:#a3a3a3;
-  pointer-events:none;
-}
-.footer *{ pointer-events:auto; }
-.footer .right-link,
-.footer #listButton{
-  position:absolute;
-  bottom:10px;
-  font-size:12px;
-}
-.footer .right-link{ left:30px; transition: opacity 0.3s; }
-.footer #listButton{ right:30px; cursor:pointer; }
+    /* ===== 하단 푸터 (Footer) ===== */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      z-index: 1000;
+      color: #a3a3a3;
+      pointer-events: none;
+    }
 
-/* ===== PC Layout (Grid) ===== */
-@media (min-width:769px){
-  html,body{ width:100%; height:100%; overflow:hidden; }
-  .gallery-wrap{
-    display:grid;
-    grid-template-columns:57.78% 17.55% 24.68%;
-    height:100%;
-  }
-  #listButton { display: none; }
-}
+    .footer * {
+      pointer-events: auto;
+    }
 
-::-webkit-scrollbar{ display:none; }
+    .footer .right-link,
+    .footer #listButton {
+      position: absolute;
+      bottom: 10px;
+      font-size: 12px;
+    }
 
-.fixed-image{
-  position:relative;
-  width:100%;
-  height:100%;
-  border-left:1px solid #9fa0a0;
-  border-right:1px solid #9fa0a0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
+    .footer .right-link {
+      left: 30px;
+      transition: opacity 0.3s;
+    }
 
-.fixed-image img{
-  width: 650px; 
-  max-width: 90%;
-  height: auto;
-  object-fit: contain;
-  transition: opacity 0.7s ease-in-out;
-  opacity: 1;
-}
+    .footer #listButton {
+      right: 30px;
+      cursor: pointer;
+    }
 
-.fixed-image img.fade {
-  opacity: 0;
-}
+    /* ===== PC 레이아웃 (769px 이상) ===== */
+    @media (min-width: 769px) {
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
 
-.nav{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:40px;
-  cursor:pointer;
-  user-select:none;
-  z-index: 10;
-  color: #ccc;
-  transition: color 0.2s;
-}
-.nav:hover { color: #000; }
-.nav.prev{ left:20px; }
-.nav.next{ right:20px; }
+      .gallery-wrap {
+        display: grid;
+        grid-template-columns: 57.78% 17.55% 24.68%;
+        height: 100%;
+      }
 
-.scroll-area{
-  height:100%;
-  overflow-y:auto;
-  border-right:1px solid #9fa0a0;
-}
-.content{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-}
-.thumbnail img{ width:100%; display:block; }
-.caption{
-  font-size:12px;
-  margin-top:6px;
-  margin-bottom:6px;
-}
+      #listButton {
+        display: none;
+      }
+    }
 
-.slide-box{
-  height:100%;
-  padding: 10px;
-  overflow-y:auto;
-}
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
-.caption-group {
-  display: flex;
-  flex-direction: column;
-  font-size: 12px;
-}
+    /* ===== 메인 이미지 영역 ===== */
+    .fixed-image {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-left: 1px solid #9fa0a0;
+      border-right: 1px solid #9fa0a0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-.caption1 {
-  font-size: 20px;
-  margin-bottom: 3px;
-}
+    .fixed-image img {
+      width: 650px;
+      max-width: 90%;
+      height: auto;
+      object-fit: contain;
+      transition: opacity 0.8s ease-in-out;
+      opacity: 1;
+    }
 
-.caption2, .caption3, .caption4, .caption5 {
-  font-size: 12px;
-  margin-bottom: 3px;
-}
+    /* 페이드 아웃 상태 */
+    .fixed-image img.fade {
+      opacity: 0 !important;
+    }
 
-@media (max-width:768px){
-  .gallery-wrap{ display:block; }
-  .fixed-image {
-    display: block;
-    overflow-y: auto;
-    height: auto;
-    border: none;
-  }
-  .fixed-image img {
-    width: 100%;
-    max-width: none;
-    display: block;
-    transition: none;
-  }
-  .nav{ display:none; }
-  .scroll-area{ display:none; }
-  
-  .slide-box{
-    position:fixed;
-    top:0; right:0;
-    width:100% !important;
-    height:100%;
-    background:#fff;
-    transform:translateX(100%);
-    transition:.3s;
-    z-index:3000;
-    padding: 40px 20px;
-  }
-  .slide-box.active{ transform:translateX(0); }
+    /* 네비게이션 화살표 */
+    .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10;
+      color: #ccc;
+      transition: color 0.2s;
+    }
 
-  .footer { z-index: 4001; }
-  .footer #listButton { bottom: 20px; right: 20px; }
-  .footer .right-link { bottom: 20px; left: 20px; }
-  
-  body.info-open .right-link {
-    opacity: 0;
-    pointer-events: none;
-  }
-}
-</style>
+    .nav:hover {
+      color: #000;
+    }
+
+    .nav.prev {
+      left: 20px;
+    }
+
+    .nav.next {
+      right: 20px;
+    }
+
+    /* ===== 스크롤 영역 (중앙 리스트) ===== */
+    .scroll-area {
+      height: 100%;
+      overflow-y: auto;
+      border-right: 1px solid #9fa0a0;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .thumbnail img {
+      width: 100%;
+      display: block;
+    }
+
+    .caption {
+      font-size: 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    /* ===== 정보 슬라이드 박스 (우측) ===== */
+    .slide-box {
+      height: 100%;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .caption-group {
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+    }
+
+    .caption1 { font-size: 20px; margin-bottom: 3px; }
+    .caption2, .caption3, .caption4, .caption5 { font-size: 12px; margin-bottom: 3px; }
+
+    /* ===== 모바일 레이아웃 (768px 이하) ===== */
+    @media (max-width: 768px) {
+      .gallery-wrap {
+        display: block;
+      }
+
+      .fixed-image {
+        display: block;
+        overflow-y: auto;
+        height: auto;
+        border: none;
+      }
+
+      .fixed-image img {
+        width: 100%;
+        max-width: none;
+        display: block;
+        transition: none;
+      }
+
+      .nav, .scroll-area {
+        display: none;
+      }
+
+      .slide-box {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100% !important;
+        height: 100%;
+        background: #fff;
+        transform: translateX(100%);
+        transition: .3s;
+        z-index: 3000;
+        padding: 40px 20px;
+      }
+
+      .slide-box.active {
+        transform: translateX(0);
+      }
+
+      .footer { z-index: 4001; }
+      .footer #listButton { bottom: 20px; right: 20px; }
+      .footer .right-link { bottom: 20px; left: 20px; }
+
+      body.info-open .right-link {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="gallery-wrap">
-  <div class="fixed-image" id="fixedImage">
-    <div class="nav prev" id="prevBtn">‹</div>
-    <img id="mainImage">
-    <div id="mobileImageContainer"></div>
-    <div class="nav next" id="nextBtn">›</div>
+  <div class="gallery-wrap">
+    <div class="fixed-image" id="fixedImage">
+      <div class="nav prev" id="prevBtn">‹</div>
+      <img id="mainImage">
+      <div id="mobileImageContainer"></div>
+      <div class="nav next" id="nextBtn">›</div>
+    </div>
+
+    <div class="scroll-area">
+      <div class="content" id="gallery"></div>
+    </div>
+
+    <div class="slide-box" id="slideBox">
+      <div class="caption-group" id="captionBox"></div>
+    </div>
   </div>
 
-  <div class="scroll-area">
-    <div class="content" id="gallery"></div>
+  <div class="footer">
+    <div class="right-link"><a href="/mika/">back</a></div>
+    <div id="listButton" onclick="toggleSlideBox()">info</div>
   </div>
 
-  <div class="slide-box" id="slideBox">
-    <div class="caption-group" id="captionBox"></div>
-  </div>
-</div>
+  <script>
+    let images = [], index = 0;
 
-<div class="footer">
-  <div class="right-link"><a href="/mika/">back</a></div>
-  <div id="listButton" onclick="toggleSlideBox()">info</div>
-</div>
+    // 데이터 로드 및 초기화
+    async function loadData() {
+      try {
+        const res = await fetch("../data.json");
+        const data = await res.json();
+        
+        const pathParts = window.location.pathname.split("/");
+        const idxStr = pathParts.filter(p => p !== "").pop();
+        const idx = parseInt(idxStr, 10) - 1;
+        const item = data[idx];
 
-<script>
-let images=[], index=0;
+        if (!item) return;
 
-async function loadData(){
-  const res=await fetch("../data.json");
-  const data=await res.json();
-  const pathParts = window.location.pathname.split("/");
-  const idxStr = pathParts.filter(p => p !== "").pop();
-  const idx = parseInt(idxStr, 10) - 1;
-  const item=data[idx];
-  if(!item) return;
+        images = item.images;
+        const mainImg = document.getElementById("mainImage");
+        const mobileContainer = document.getElementById("mobileImageContainer");
 
-  images=item.images;
-  const mainImg = document.getElementById("mainImage");
-  const mobileContainer = document.getElementById("mobileImageContainer");
+        if (window.innerWidth <= 768) {
+          mainImg.style.display = "none";
+          mobileContainer.innerHTML = "";
+          images.forEach(src => {
+            const img = document.createElement("img");
+            img.src = src;
+            mobileContainer.appendChild(img);
+          });
+        } else {
+          mainImg.style.display = "block";
+          mobileContainer.innerHTML = "";
+          updateImage(true);
+        }
 
-  if(window.innerWidth <= 768){
-    mainImg.style.display = "none";
-    mobileContainer.innerHTML = "";
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = src;
-      mobileContainer.appendChild(img);
-    });
-  } else {
-    mainImg.style.display = "block";
-    mobileContainer.innerHTML = "";
-    updateImage();
-  }
+        // 썸네일 리스트 생성
+        const g = document.getElementById("gallery");
+        g.innerHTML = "";
+        data.slice().reverse().forEach((d, i) => {
+          const realIdx = data.length - 1 - i;
+          g.innerHTML += `
+            <a href="/mika/${realIdx + 1}/" class="thumbnail">
+              <img src="/mika/images/thumb${realIdx + 1}.png">
+              <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
+            </a>`;
+        });
 
-  const g = document.getElementById("gallery");
-  g.innerHTML = "";
-  data.slice().reverse().forEach((d, i) => {
-    const realIdx = data.length - 1 - i;
-    g.innerHTML += `
-      <a href="/mika/${realIdx + 1}/" class="thumbnail">
-        <img src="/mika/images/thumb${realIdx + 1}.png">
-        <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
-      </a>`;
-  });
+        // 캡션 삽입
+        document.getElementById("captionBox").innerHTML = `
+          <div class="caption1">${item.captions.caption1}</div>
+          <div class="caption2">${item.captions.caption2}</div>
+          <div class="caption3">${item.captions.caption3}</div>
+          <div class="caption4">${item.captions.caption4}</div>
+          <div class="caption5">${item.captions.caption5}</div>`;
+      } catch (e) {
+        console.error("Data load failed", e);
+      }
+    }
 
-  document.getElementById("captionBox").innerHTML = `
-    <div class="caption1">${item.captions.caption1}</div>
-    <div class="caption2">${item.captions.caption2}</div>
-    <div class="caption3">${item.captions.caption3}</div>
-    <div class="caption4">${item.captions.caption4}</div>
-    <div class="caption5">${item.captions.caption5}</div>`;
-}
+    // 이미지 업데이트 (부드러운 페이드 효과)
+    function updateImage(isInitial = false) {
+      const mainImg = document.getElementById("mainImage");
+      if (!mainImg || !images[index]) return;
 
-function updateImage(){
-  const mainImg = document.getElementById("mainImage");
-  if(mainImg && images[index]) {
-    mainImg.classList.add('fade');
-    setTimeout(() => {
-      mainImg.src = images[index];
-      mainImg.onload = () => {
-        mainImg.classList.remove('fade');
-      };
-    }, 200);
-  }
-}
+      if (isInitial) {
+        mainImg.src = images[index];
+        return;
+      }
 
-// 루프(Loop) 기능 적용된 클릭 이벤트
-document.getElementById("prevBtn").onclick = () => { 
-  index = (index === 0) ? images.length - 1 : index - 1;
-  updateImage(); 
-}
-document.getElementById("nextBtn").onclick = () => { 
-  index = (index === images.length - 1) ? 0 : index + 1;
-  updateImage(); 
-}
+      mainImg.classList.add('fade');
 
-// 키보드 이벤트에도 루프 적용
-document.addEventListener('keydown', (e) => {
-  if (window.innerWidth > 768) {
-    if (e.key === 'ArrowLeft') {
+      setTimeout(() => {
+        mainImg.src = images[index];
+        mainImg.onload = () => {
+          mainImg.classList.remove('fade');
+        };
+      }, 800);
+    }
+
+    // 네비게이션 클릭 이벤트
+    document.getElementById("prevBtn").onclick = () => {
       index = (index === 0) ? images.length - 1 : index - 1;
       updateImage();
-    } else if (e.key === 'ArrowRight') {
+    };
+
+    document.getElementById("nextBtn").onclick = () => {
       index = (index === images.length - 1) ? 0 : index + 1;
       updateImage();
+    };
+
+    // 키보드 컨트롤 (PC전용)
+    document.addEventListener('keydown', (e) => {
+      if (window.innerWidth > 768) {
+        if (e.key === 'ArrowLeft') {
+          index = (index === 0) ? images.length - 1 : index - 1;
+          updateImage();
+        } else if (e.key === 'ArrowRight') {
+          index = (index === images.length - 1) ? 0 : index + 1;
+          updateImage();
+        }
+      }
+    });
+
+    // 모바일 정보창 토글
+    function toggleSlideBox() {
+      if (window.innerWidth <= 768) {
+        const sb = document.getElementById("slideBox");
+        const lb = document.getElementById("listButton");
+        sb.classList.toggle("active");
+
+        if (sb.classList.contains("active")) {
+          lb.textContent = "close";
+          document.body.classList.add("info-open");
+        } else {
+          lb.textContent = "info";
+          document.body.classList.remove("info-open");
+        }
+      }
     }
-  }
-});
 
-function toggleSlideBox(){
-  if(window.innerWidth <= 768){
-    const sb = document.getElementById("slideBox");
-    const lb = document.getElementById("listButton");
-    sb.classList.toggle("active");
-    if(sb.classList.contains("active")) {
-      lb.textContent = "close";
-      document.body.classList.add("info-open");
-    } else {
-      lb.textContent = "info";
-      document.body.classList.remove("info-open");
-    }
-  }
-}
+    // 창 크기 조절 대응
+    window.onresize = () => {
+      if (window.innerWidth > 768) {
+        document.getElementById("mainImage").style.display = "block";
+        document.getElementById("mobileImageContainer").innerHTML = "";
+        document.getElementById("slideBox").classList.remove("active");
+        document.body.classList.remove("info-open");
+        document.getElementById("listButton").textContent = "info";
+        updateImage(true);
+      } else {
+        loadData();
+      }
+    };
 
-window.onresize = () => {
-  if(window.innerWidth > 768) {
-    document.getElementById("mainImage").style.display = "block";
-    document.getElementById("mobileImageContainer").innerHTML = "";
-    document.getElementById("slideBox").classList.remove("active");
-    document.body.classList.remove("info-open");
-    document.getElementById("listButton").textContent = "info";
-    updateImage();
-  } else {
-    loadData();
-  }
-};
-
-document.addEventListener("DOMContentLoaded", loadData);
-</script>
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
 
 </body>
 </html>
