@@ -3,215 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Heaven</title>
+  <title>1Heaven</title>
 
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: "minion-pro", serif;
-      background: #fff;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "minion-pro", serif; background: #fff; }
+    a { color: inherit; text-decoration: none; }
 
     .footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 100px;
-      z-index: 1000;
-      color: #a3a3a3;
-      pointer-events: none;
+      position: fixed; bottom: 0; left: 0; width: 100%; height: 100px;
+      z-index: 1000; color: #a3a3a3; pointer-events: none;
     }
-
-    .footer * {
-      pointer-events: auto;
-    }
-
-    .footer .right-link,
-    .footer #listButton {
-      position: absolute;
-      bottom: 10px;
-      font-size: 12px;
-    }
-
-    .footer .right-link {
-      left: 30px;
-      transition: opacity 0.3s;
-    }
-
-    .footer #listButton {
-      right: 30px;
-      cursor: pointer;
-    }
+    .footer * { pointer-events: auto; }
+    .footer .right-link, .footer #listButton { position: absolute; bottom: 10px; font-size: 12px; }
+    .footer .right-link { left: 30px; transition: opacity 0.3s; }
+    .footer #listButton { right: 30px; cursor: pointer; }
 
     @media (min-width: 769px) {
-      html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      .gallery-wrap {
-        display: grid;
-        grid-template-columns: 57.78% 17.55% 24.68%;
-        height: 100%;
-      }
-
-      #listButton {
-        display: none;
-      }
+      html, body { width: 100%; height: 100%; overflow: hidden; }
+      .gallery-wrap { display: grid; grid-template-columns: 57.78% 17.55% 24.68%; height: 100%; }
+      #listButton { display: none; }
     }
 
-    ::-webkit-scrollbar {
-      display: none;
-    }
+    ::-webkit-scrollbar { display: none; }
 
     .fixed-image {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-left: 1px solid #9fa0a0;
-      border-right: 1px solid #9fa0a0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      position: relative; width: 100%; height: 100%;
+      border-left: 1px solid #9fa0a0; border-right: 1px solid #9fa0a0;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
 
     .fixed-image img {
-      width: 650px;
-      max-width: 90%;
+      width: auto;
+      max-width: 650px;
+      max-height: 85%;
       height: auto;
       object-fit: contain;
       opacity: 1;
       transition: opacity 0.4s ease-in-out;
+      cursor: pointer;
     }
 
-    .fixed-image img.fade {
-      opacity: 0 !important;
+    .fixed-image img.fade { opacity: 0 !important; }
+
+    .image-viewer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0; visibility: hidden;
+      transition: opacity .3s;
+      z-index: 5000;
+      cursor: pointer;
+    }
+
+    .image-viewer.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .image-viewer img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-viewer::after {
+      content: '×';
+      position: fixed;
+      top: 20px; right: 30px;
+      font-size: 28px;
+      color: #fff;
+      cursor: pointer;
+      font-family: sans-serif;
     }
 
     .nav {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 40px;
-      cursor: pointer;
-      user-select: none;
-      z-index: 10;
-      color: #ccc;
-      transition: color 0.2s;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 40px; cursor: pointer; user-select: none;
+      z-index: 10; color: #ccc; transition: color 0.2s;
     }
+    .nav:hover { color: #000; }
+    .nav.prev { left: 20px; }
+    .nav.next { right: 20px; }
 
-    .nav:hover {
-      color: #000;
-    }
+    .scroll-area { height: 100%; overflow-y: auto; border-right: 1px solid #9fa0a0; }
+    .content { display: grid; grid-template-columns: repeat(2, 1fr); }
+    .thumbnail img { width: 100%; display: block; }
+    .caption { font-size: 12px; margin-top: 6px; margin-bottom: 6px; }
 
-    .nav.prev {
-      left: 20px;
-    }
-
-    .nav.next {
-      right: 20px;
-    }
-
-    .scroll-area {
-      height: 100%;
-      overflow-y: auto;
-      border-right: 1px solid #9fa0a0;
-    }
-
-    .content {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .thumbnail img {
-      width: 100%;
-      display: block;
-    }
-
-    .caption {
-      font-size: 12px;
-      margin-top: 6px;
-      margin-bottom: 6px;
-    }
-
-    .slide-box {
-      height: 100%;
-      padding: 10px;
-      overflow-y: auto;
-    }
-
-    .caption-group {
-      display: flex;
-      flex-direction: column;
-      font-size: 12px;
-    }
-
+    .slide-box { height: 100%; padding: 10px; overflow-y: auto; }
+    .caption-group { display: flex; flex-direction: column; font-size: 12px; }
     .caption1 { font-size: 20px; margin-bottom: 3px; }
     .caption2, .caption3, .caption4, .caption5 { font-size: 12px; margin-bottom: 3px; }
 
     @media (max-width: 768px) {
-      .gallery-wrap {
-        display: block;
-      }
-
-      .fixed-image {
-        display: block;
-        overflow-y: auto;
-        height: auto;
-        border: none;
-      }
-
-      .fixed-image img {
-        width: 100%;
-        max-width: none;
-        display: block;
-        transition: none;
-      }
-
-      .nav, .scroll-area {
-        display: none;
-      }
-
+      .gallery-wrap { display: block; }
+      .fixed-image { display: block; height: auto; border: none; }
+      .fixed-image img { width: 100%; max-width: none; max-height: none; display: block; transition: none; }
+      .nav, .scroll-area { display: none; }
       .slide-box {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100% !important;
-        height: 100%;
-        background: #fff;
-        transform: translateX(100%);
-        transition: .3s;
-        z-index: 3000;
-        padding: 40px 20px;
+        position: fixed; top: 0; right: 0; width: 100% !important; height: 100%;
+        background: #fff; transform: translateX(100%); transition: .3s;
+        z-index: 3000; padding: 40px 20px;
       }
-
-      .slide-box.active {
-        transform: translateX(0);
-      }
-
+      .slide-box.active { transform: translateX(0); }
       .footer { z-index: 4001; }
       .footer #listButton { bottom: 20px; right: 20px; }
       .footer .right-link { bottom: 20px; left: 20px; }
-
-      body.info-open .right-link {
-        opacity: 0;
-        pointer-events: none;
-      }
+      body.info-open .right-link { opacity: 0; pointer-events: none; }
     }
   </style>
 </head>
@@ -221,7 +125,7 @@
   <div class="gallery-wrap">
     <div class="fixed-image" id="fixedImage">
       <div class="nav prev" id="prevBtn">‹</div>
-      <img id="mainImage">
+      <img id="mainImage" onclick="openViewer(this.src)">
       <div id="mobileImageContainer"></div>
       <div class="nav next" id="nextBtn">›</div>
     </div>
@@ -240,6 +144,10 @@
     <div id="listButton" onclick="toggleSlideBox()">info</div>
   </div>
 
+  <div class="image-viewer" id="imageViewer">
+    <img src="" alt="viewer image" />
+  </div>
+
   <script>
     let images = [], index = 0;
 
@@ -247,7 +155,6 @@
       try {
         const res = await fetch("../data.json");
         const data = await res.json();
-        
         const pathParts = window.location.pathname.split("/");
         const idxStr = pathParts.filter(p => p !== "").pop();
         const idx = parseInt(idxStr, 10) - 1;
@@ -290,28 +197,26 @@
           <div class="caption3">${item.captions.caption3}</div>
           <div class="caption4">${item.captions.caption4}</div>
           <div class="caption5">${item.captions.caption5}</div>`;
-      } catch (e) {
-        console.error(e);
-      }
+      } catch (e) { console.error(e); }
     }
 
     function updateImage(isInitial = false) {
       const mainImg = document.getElementById("mainImage");
       if (!mainImg || !images[index]) return;
-
-      if (isInitial) {
-        mainImg.src = images[index];
-        return;
-      }
+      if (isInitial) { mainImg.src = images[index]; return; }
 
       mainImg.classList.add('fade');
-
       setTimeout(() => {
         mainImg.src = images[index];
-        mainImg.onload = () => {
-          mainImg.classList.remove('fade');
-        };
+        mainImg.onload = () => { mainImg.classList.remove('fade'); };
       }, 400); 
+    }
+
+    function openViewer(src) {
+      const viewer = document.getElementById("imageViewer");
+      const viewerImg = viewer.querySelector("img");
+      viewerImg.src = src;
+      viewer.classList.add("active");
     }
 
     document.getElementById("prevBtn").onclick = () => {
@@ -324,16 +229,26 @@
       updateImage();
     };
 
-    document.addEventListener('keydown', (e) => {
-      if (window.innerWidth > 768) {
-        if (e.key === 'ArrowLeft') {
-          index = (index === 0) ? images.length - 1 : index - 1;
-          updateImage();
-        } else if (e.key === 'ArrowRight') {
-          index = (index === images.length - 1) ? 0 : index + 1;
-          updateImage();
+    document.addEventListener("DOMContentLoaded", () => {
+      loadData();
+      const viewer = document.getElementById("imageViewer");
+      viewer.addEventListener("click", () => {
+        viewer.classList.remove("active");
+      });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape") {
+          viewer.classList.remove("active");
         }
-      }
+        if (window.innerWidth > 768 && !viewer.classList.contains("active")) {
+          if (e.key === 'ArrowLeft') {
+            index = (index === 0) ? images.length - 1 : index - 1;
+            updateImage();
+          } else if (e.key === 'ArrowRight') {
+            index = (index === images.length - 1) ? 0 : index + 1;
+            updateImage();
+          }
+        }
+      });
     });
 
     function toggleSlideBox() {
@@ -341,7 +256,6 @@
         const sb = document.getElementById("slideBox");
         const lb = document.getElementById("listButton");
         sb.classList.toggle("active");
-
         if (sb.classList.contains("active")) {
           lb.textContent = "close";
           document.body.classList.add("info-open");
@@ -360,12 +274,8 @@
         document.body.classList.remove("info-open");
         document.getElementById("listButton").textContent = "info";
         updateImage(true);
-      } else {
-        loadData();
-      }
+      } else { loadData(); }
     };
-
-    document.addEventListener("DOMContentLoaded", loadData);
   </script>
 
 </body>
