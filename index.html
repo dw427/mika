@@ -3,125 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3mika</title>
+  <title>mika</title>
   <link rel="icon" type="image/png" href="images/favicon.png" />
   <link rel="apple-touch-icon" href="images/favicon.png" />
   <meta name="theme-color" content="#ffffff" />
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "minion-pro", serif; background: #fff; }
 
-    body {
-      font-family: "minion-pro", serif;
-      background: #fff;
-    }
+    a { color: inherit; text-decoration: none; transition: color .3s; }
+    a:hover { color: #a3a3a3; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-      transition: color .3s;
-    }
-
-    a:hover {
-      color: #a3a3a3;
-    }
-
-    /* 레이아웃 구성: 왼쪽(유동) / 중간(265px) / 오른쪽(373px) */
-    @media (min-width: 769px) {
-      html, body {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-
-      .gallery-wrap {
-        display: grid;
-        grid-template-columns: 1fr 265px 373px;
-        height: 100%;
-      }
-    }
-
-    /* 왼쪽 고정 이미지 영역 */
-    .fixed-image {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .fixed-image img {
-      max-width: 90%;
-      height: auto;
-      object-fit: contain;
-    }
-
-    /* 가운데 썸네일 스크롤 영역 */
-    .scroll-area {
-      height: 100%;
-      overflow-y: auto;
-      border-left: 1px solid #9fa0a0;
-      border-right: 1px solid #9fa0a0;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none;  /* IE and Edge */
-    }
-
-    .scroll-area::-webkit-scrollbar {
-      display: none; /* Chrome, Safari, Opera */
-    }
-
-    .content {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0;
-    }
-
-    .thumbnail {
-      display: flex;
-      flex-direction: column;
-      color: inherit;
-    }
-
-    .thumbnail img {
-      width: 100%;
-      display: block;
-    }
-
-    /* Dreamscape와 완전히 동일한 캡션 간격 */
-    .caption {
-      font-size: 12px;
-      margin-top: 6px;
-      margin-bottom: 6px;
-      line-height: 1.2;
-    }
-
-    /* 오른쪽 리스트 박스 고정 */
-    .slide-box {
-      height: 100%;
-      overflow-y: auto;
-      background: #fff;
-    }
-
-    .text-group {
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-      padding: 10px 0;
-      white-space: nowrap;
-    }
-
-    .text1 { margin-left: 10px; }
-    .text2 { margin-left: auto; margin-right: 60px; text-align: right; }
-    .text3 { margin-right: 10px; flex-shrink: 0; }
-
-    /* 푸터 영역 */
     .footer {
       position: fixed;
       bottom: 0;
@@ -137,7 +31,8 @@
     }
 
     .footer .right-link,
-    .footer .contact-link {
+    .footer .contact-link,
+    .footer #listButton {
       position: absolute;
       bottom: 10px;
       font-size: 12px;
@@ -145,56 +40,160 @@
 
     .footer .right-link { left: 30px; }
     .footer .contact-link { left: 170px; }
+    .footer #listButton { right: 30px; cursor: pointer; }
+    .footer #listButton:hover { color: #a3a3a3; }
 
-    /* 모바일 대응 */
-    @media (max-width: 768px) {
+    .slide-box {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 373px !important;
+      height: 100%;
+      background: #fff;
+      z-index: 3000;
+      overflow-y: auto;
+      border-left: 1px solid #9fa0a0;
+    }
+
+    .text-group {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 10px 0;
+      white-space: nowrap;
+    }
+
+    .text1 { margin-left: 10px; }
+    .text2 { margin-left: auto; margin-right: 60px; text-align: right; }
+    .text3 { margin-right: 10px; flex-shrink: 0; }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .thumbnail {
+      display: flex;
+      flex-direction: column;
+      color: inherit;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .caption {
+      font-size: 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+      line-height: 1.2;
+      text-align: left;
+    }
+
+    ::-webkit-scrollbar { display: none; }
+
+    .scroll-area, .fixed-image {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .header { display: none; }
+
+    @media (min-width: 769px) {
+      body, html { width: 100%; height: 100%; overflow: hidden; }
+
       .gallery-wrap {
-        display: block;
+        width: calc(100% - 373px);
+        height: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
       }
 
       .fixed-image {
-        height: auto;
-        padding: 20px 0;
+        flex: 1;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .fixed-image img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
       }
 
       .scroll-area {
-        height: auto;
-        border: none;
-        overflow: visible;
+        width: 265px;
+        height: 100vh;
+        overflow-y: scroll;
+        border-left: 1px solid #9fa0a0;
       }
+
+      #listButton { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .fixed-image { display: none; }
+      .gallery-wrap { width: 100%; }
+      .scroll-area { width: 100%; border: none; }
 
       .slide-box {
-        height: auto;
-        border-top: 1px solid #9fa0a0;
-        margin-top: 20px;
+        width: 100% !important;
+        transform: translateX(100%);
+        transition: transform .3s;
+        border-left: none;
       }
 
-      .footer {
-        position: relative;
-        height: 80px;
+      .slide-box.active { transform: translateX(0); }
+
+      .footer { position: relative; height: 100px; }
+      .footer .right-link { bottom: 20px; left: 20px; }
+      .footer .contact-link { bottom: 20px; left: 160px; }
+      .footer #listButton { display: block; bottom: 20px; right: 20px; }
+
+      .header {
+        width: 100%;
+        height: 60px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
+      .header img { height: 100%; width: auto; }
     }
   </style>
 </head>
 <body>
 
+  <div class="header">
+    <img src="images/header.png" alt="header" />
+  </div>
+
   <div class="gallery-wrap">
     <div class="fixed-image">
       <img src="images/index.png" alt="index" />
     </div>
-
     <div class="scroll-area">
       <div class="content" id="gallery"></div>
-    </div>
-
-    <div class="slide-box">
-      <div id="slideContent"></div>
     </div>
   </div>
 
   <div class="footer">
     <div class="right-link"><a href="https://instagram.com/alfoxze" target="_blank">@alfoxze</a></div>
     <div class="contact-link"><a href="mailto:uxxwd9@gmail.com">contact</a></div>
+    <div id="listButton" onclick="toggleSlideBox()">list</div>
+  </div>
+
+  <div class="slide-box" id="slideBox">
+    <div id="slideContent"></div>
   </div>
 
   <script>
@@ -203,22 +202,21 @@
         const res = await fetch("data.json");
         const data = await res.json();
 
-        // 썸네일 갤러리 생성 (Dreamscape 구조 복제)
         const gallery = document.getElementById('gallery');
         gallery.innerHTML = "";
+
         for (let i = data.length; i >= 1; i--) {
           const d = data[i-1];
           const item = document.createElement('a');
           item.href = `${i}/`;
           item.className = 'thumbnail';
           item.innerHTML = `
-            <img src="images/thumb${i}.png">
+            <img src="images/thumb${i}.png" alt="thumb${i}"/>
             <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
           `;
           gallery.append(item);
         }
 
-        // 오른쪽 리스트 내용 생성
         const slideContent = document.getElementById('slideContent');
         slideContent.innerHTML = "";
         data.forEach((d, idx) => {
@@ -232,7 +230,18 @@
           slideContent.append(g);
         });
       } catch (e) {
-        console.error("데이터 로드 중 오류 발생:", e);
+        console.error("Data load error:", e);
+      }
+    }
+
+    function toggleSlideBox() {
+      const sb = document.getElementById('slideBox');
+      if (sb) {
+        sb.classList.toggle('active');
+        const btn = document.getElementById('listButton');
+        if (btn) {
+          btn.textContent = sb.classList.contains('active') ? 'close' : 'list';
+        }
       }
     }
 
