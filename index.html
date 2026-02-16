@@ -3,18 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>1mika</title>
+  <title>3mika</title>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
+  <link rel="apple-touch-icon" href="images/favicon.png" />
+  <meta name="theme-color" content="#ffffff" />
   <style>
     @import url("https://use.typekit.net/zuk4pzv.css");
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: "minion-pro", serif; background: #fff; }
 
-    a { color: inherit; text-decoration: none; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "minion-pro", serif;
+      background: #fff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color .3s;
+    }
+
+    a:hover {
+      color: #a3a3a3;
+    }
+
+    /* 레이아웃 구성: 왼쪽(유동) / 중간(265px) / 오른쪽(373px) */
+    @media (min-width: 769px) {
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .gallery-wrap {
+        display: grid;
+        grid-template-columns: 1fr 265px 373px;
+        height: 100%;
+      }
+    }
+
+    /* 왼쪽 고정 이미지 영역 */
+    .fixed-image {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .fixed-image img {
+      max-width: 90%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* 가운데 썸네일 스크롤 영역 */
+    .scroll-area {
+      height: 100%;
+      overflow-y: auto;
+      border-left: 1px solid #9fa0a0;
+      border-right: 1px solid #9fa0a0;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+    }
+
+    .scroll-area::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
 
     .content {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 0; /* Dreamscape와 동일하게 0 */
+      gap: 0;
     }
 
     .thumbnail {
@@ -28,31 +94,85 @@
       display: block;
     }
 
-    /* Dreamscape 코드의 .caption 스타일 100% 복사 */
+    /* Dreamscape와 완전히 동일한 캡션 간격 */
     .caption {
       font-size: 12px;
       margin-top: 6px;
       margin-bottom: 6px;
-      line-height: 1.2; /* 줄간격 명시 */
+      line-height: 1.2;
     }
 
-    /* 이하 나머지 스타일 생략 (기존과 동일) */
-    .footer { position: fixed; bottom: 0; width: 100%; height: 100px; z-index: 1000; pointer-events: none; }
-    .footer * { pointer-events: auto; }
-    .footer .right-link { position: absolute; bottom: 10px; left: 30px; font-size: 12px; }
-    .footer #listButton { position: absolute; bottom: 10px; right: 30px; font-size: 12px; cursor: pointer; }
+    /* 오른쪽 리스트 박스 고정 */
+    .slide-box {
+      height: 100%;
+      overflow-y: auto;
+      background: #fff;
+    }
 
-    .slide-box { position: fixed; top: 0; right: 0; width: 373px; height: 100%; background: #fff; z-index: 3000; overflow-y: auto; border-left: 1px solid #9fa0a0; transform: translateX(100%); transition: .3s; }
-    .slide-box.active { transform: translateX(0); }
+    .text-group {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      padding: 10px 0;
+      white-space: nowrap;
+    }
 
-    @media (min-width: 769px) {
-      body, html { width: 100%; height: 100%; overflow: hidden; }
-      .gallery-wrap { display: flex; justify-content: flex-end; height: 100%; width: calc(100% - 373px); }
-      .fixed-image { flex: 1; display: flex; justify-content: center; align-items: center; }
-      .fixed-image img { max-width: 100%; max-height: 100%; object-fit: contain; }
-      .scroll-area { width: 265px; height: 100vh; overflow-y: auto; border-left: 1px solid #9fa0a0; }
-      .slide-box { transform: none; position: static; }
-      #listButton { display: none; }
+    .text1 { margin-left: 10px; }
+    .text2 { margin-left: auto; margin-right: 60px; text-align: right; }
+    .text3 { margin-right: 10px; flex-shrink: 0; }
+
+    /* 푸터 영역 */
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .footer * {
+      pointer-events: auto;
+    }
+
+    .footer .right-link,
+    .footer .contact-link {
+      position: absolute;
+      bottom: 10px;
+      font-size: 12px;
+    }
+
+    .footer .right-link { left: 30px; }
+    .footer .contact-link { left: 170px; }
+
+    /* 모바일 대응 */
+    @media (max-width: 768px) {
+      .gallery-wrap {
+        display: block;
+      }
+
+      .fixed-image {
+        height: auto;
+        padding: 20px 0;
+      }
+
+      .scroll-area {
+        height: auto;
+        border: none;
+        overflow: visible;
+      }
+
+      .slide-box {
+        height: auto;
+        border-top: 1px solid #9fa0a0;
+        margin-top: 20px;
+      }
+
+      .footer {
+        position: relative;
+        height: 80px;
+      }
     }
   </style>
 </head>
@@ -62,18 +182,19 @@
     <div class="fixed-image">
       <img src="images/index.png" alt="index" />
     </div>
+
     <div class="scroll-area">
       <div class="content" id="gallery"></div>
     </div>
-  </div>
 
-  <div class="slide-box" id="slideBox">
-    <div id="slideContent"></div>
+    <div class="slide-box">
+      <div id="slideContent"></div>
+    </div>
   </div>
 
   <div class="footer">
     <div class="right-link"><a href="https://instagram.com/alfoxze" target="_blank">@alfoxze</a></div>
-    <div id="listButton" onclick="toggleSlideBox()">list</div>
+    <div class="contact-link"><a href="mailto:uxxwd9@gmail.com">contact</a></div>
   </div>
 
   <script>
@@ -82,34 +203,37 @@
         const res = await fetch("data.json");
         const data = await res.json();
 
+        // 썸네일 갤러리 생성 (Dreamscape 구조 복제)
         const gallery = document.getElementById('gallery');
         gallery.innerHTML = "";
-
-        // Dreamscape의 HTML 렌더링 방식(<br>)과 100% 일치시킴
         for (let i = data.length; i >= 1; i--) {
           const d = data[i-1];
           const item = document.createElement('a');
           item.href = `${i}/`;
           item.className = 'thumbnail';
           item.innerHTML = `
-            <img src="images/thumb${i}.png" alt="thumbnail"/>
+            <img src="images/thumb${i}.png">
             <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
           `;
           gallery.append(item);
         }
 
-        // 슬라이드 리스트 생성
+        // 오른쪽 리스트 내용 생성
         const slideContent = document.getElementById('slideContent');
+        slideContent.innerHTML = "";
         data.forEach((d, idx) => {
           const g = document.createElement('div');
-          g.innerHTML = `<div style="padding:10px; font-size:12px;">${d.title}</div>`;
+          g.className = 'text-group';
+          g.innerHTML = `
+            <div class="text1"><a href="${idx+1}/">${d.title}</a></div>
+            <div class="text2">${d.category}</div>
+            <div class="text3">${d.year}</div>
+          `;
           slideContent.append(g);
         });
-      } catch (e) { console.error(e); }
-    }
-
-    function toggleSlideBox() {
-      document.getElementById('slideBox').classList.toggle('active');
+      } catch (e) {
+        console.error("데이터 로드 중 오류 발생:", e);
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadData);
