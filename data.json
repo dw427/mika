@@ -213,5 +213,27 @@
       "/test/images/14-dreamscape/dreamscape12.png",
       "/test/images/14-dreamscape/dreamscape11.png"
     ]
+  },
+  {
+    "title": "Sweet rebellion diary",
+    "category": "graphic design",
+    "year": "2026",
+    "thumbnail": "/test/images/thumb10.png",
+    "captions": {
+      "caption1": "hugyourskin 26HS "Sweet rebellion diary"",
+      "caption2": "2026, graphic design",
+      "caption3": "-",
+      "caption4": "interview task",
+      "caption5": "2 types album, outbox, photobook, poster, stuff"
+    },
+    "images": [
+      "/test/images/14-dreamscape/dreamscape4.png",
+      "/test/images/14-dreamscape/dreamscape6.png",
+      "/test/images/14-dreamscape/dreamscape7.png",
+      "/test/images/14-dreamscape/dreamscape8.png",
+      "/test/images/14-dreamscape/dreamscape10.png",
+      "/test/images/14-dreamscape/dreamscape12.png",
+      "/test/images/14-dreamscape/dreamscape11.png"
+    ]
   }
 ]
