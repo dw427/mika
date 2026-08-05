@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dreamscape</title>
+
+  <style>
+    @import url("https://use.typekit.net/zuk4pzv.css");
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "minion-pro", serif;
+      background: #fff;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      z-index: 1000;
+      color: #a3a3a3;
+      pointer-events: none;
+    }
+
+    .footer * {
+      pointer-events: auto;
+    }
+
+    .footer .right-link,
+    .footer #listButton {
+      position: absolute;
+      bottom: 10px;
+      font-size: 12px;
+    }
+
+    .footer .right-link {
+      left: 30px;
+      transition: opacity 0.3s;
+    }
+
+    .footer #listButton {
+      right: 30px;
+      cursor: pointer;
+    }
+
+    @media (min-width: 769px) {
+      html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .gallery-wrap {
+        display: grid;
+        grid-template-columns: 57.78% 17.55% 24.68%;
+        height: 100%;
+      }
+
+      #listButton {
+        display: none;
+      }
+    }
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fixed-image {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-left: 1px solid #9fa0a0;
+      border-right: 1px solid #9fa0a0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .fixed-image img {
+      width: 650px;
+      max-width: 90%;
+      height: auto;
+      object-fit: contain;
+      opacity: 1;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    .fixed-image img.fade {
+      opacity: 0 !important;
+    }
+
+    .nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 40px;
+      cursor: pointer;
+      user-select: none;
+      z-index: 10;
+      color: #ccc;
+      transition: color 0.2s;
+    }
+
+    .nav:hover {
+      color: #000;
+    }
+
+    .nav.prev {
+      left: 20px;
+    }
+
+    .nav.next {
+      right: 20px;
+    }
+
+    .scroll-area {
+      height: 100%;
+      overflow-y: auto;
+      border-right: 1px solid #9fa0a0;
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .thumbnail img {
+      width: 100%;
+      display: block;
+    }
+
+    .caption {
+      font-size: 12px;
+      margin-top: 6px;
+      margin-bottom: 6px;
+    }
+
+    .slide-box {
+      height: 100%;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .caption-group {
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+    }
+
+    .caption1 { font-size: 20px; margin-bottom: 3px; }
+    .caption2, .caption3, .caption4, .caption5 { font-size: 12px; margin-bottom: 3px; }
+
+    @media (max-width: 768px) {
+      .gallery-wrap {
+        display: block;
+      }
+
+      .fixed-image {
+        display: block;
+        overflow-y: auto;
+        height: auto;
+        border: none;
+      }
+
+      .fixed-image img {
+        width: 100%;
+        max-width: none;
+        display: block;
+        transition: none;
+      }
+
+      .nav, .scroll-area {
+        display: none;
+      }
+
+      .slide-box {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100% !important;
+        height: 100%;
+        background: #fff;
+        transform: translateX(100%);
+        transition: .3s;
+        z-index: 3000;
+        padding: 40px 20px;
+      }
+
+      .slide-box.active {
+        transform: translateX(0);
+      }
+
+      .footer { z-index: 4001; }
+      .footer #listButton { bottom: 20px; right: 20px; }
+      .footer .right-link { bottom: 20px; left: 20px; }
+
+      body.info-open .right-link {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="gallery-wrap">
+    <div class="fixed-image" id="fixedImage">
+      <div class="nav prev" id="prevBtn">‹</div>
+      <img id="mainImage">
+      <div id="mobileImageContainer"></div>
+      <div class="nav next" id="nextBtn">›</div>
+    </div>
+
+    <div class="scroll-area">
+      <div class="content" id="gallery"></div>
+    </div>
+
+    <div class="slide-box" id="slideBox">
+      <div class="caption-group" id="captionBox"></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="right-link"><a href="/mika/">back</a></div>
+    <div id="listButton" onclick="toggleSlideBox()">info</div>
+  </div>
+
+  <script>
+    let images = [], index = 0;
+
+    async function loadData() {
+      try {
+        const res = await fetch("../data.json");
+        const data = await res.json();
+        
+        const pathParts = window.location.pathname.split("/");
+        const idxStr = pathParts.filter(p => p !== "").pop();
+        const idx = parseInt(idxStr, 10) - 1;
+        const item = data[idx];
+
+        if (!item) return;
+
+        images = item.images;
+        const mainImg = document.getElementById("mainImage");
+        const mobileContainer = document.getElementById("mobileImageContainer");
+
+        if (window.innerWidth <= 768) {
+          mainImg.style.display = "none";
+          mobileContainer.innerHTML = "";
+          images.forEach(src => {
+            const img = document.createElement("img");
+            img.src = src;
+            mobileContainer.appendChild(img);
+          });
+        } else {
+          mainImg.style.display = "block";
+          mobileContainer.innerHTML = "";
+          updateImage(true);
+        }
+
+        const g = document.getElementById("gallery");
+        g.innerHTML = "";
+        data.slice().reverse().forEach((d, i) => {
+          const realIdx = data.length - 1 - i;
+          g.innerHTML += `
+            <a href="/mika/${realIdx + 1}/" class="thumbnail">
+              <img src="/mika/images/thumb${realIdx + 1}.png">
+              <div class="caption">${d.title}<br>${d.category} ${d.year}</div>
+            </a>`;
+        });
+
+        document.getElementById("captionBox").innerHTML = `
+          <div class="caption1">${item.captions.caption1}</div>
+          <div class="caption2">${item.captions.caption2}</div>
+          <div class="caption3">${item.captions.caption3}</div>
+          <div class="caption4">${item.captions.caption4}</div>
+          <div class="caption5">${item.captions.caption5}</div>`;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function updateImage(isInitial = false) {
+      const mainImg = document.getElementById("mainImage");
+      if (!mainImg || !images[index]) return;
+
+      if (isInitial) {
+        mainImg.src = images[index];
+        return;
+      }
+
+      mainImg.classList.add('fade');
+
+      setTimeout(() => {
+        mainImg.src = images[index];
+        mainImg.onload = () => {
+          mainImg.classList.remove('fade');
+        };
+      }, 400); 
+    }
+
+    document.getElementById("prevBtn").onclick = () => {
+      index = (index === 0) ? images.length - 1 : index - 1;
+      updateImage();
+    };
+
+    document.getElementById("nextBtn").onclick = () => {
+      index = (index === images.length - 1) ? 0 : index + 1;
+      updateImage();
+    };
+
+    document.addEventListener('keydown', (e) => {
+      if (window.innerWidth > 768) {
+        if (e.key === 'ArrowLeft') {
+          index = (index === 0) ? images.length - 1 : index - 1;
+          updateImage();
+        } else if (e.key === 'ArrowRight') {
+          index = (index === images.length - 1) ? 0 : index + 1;
+          updateImage();
+        }
+      }
+    });
+
+    function toggleSlideBox() {
+      if (window.innerWidth <= 768) {
+        const sb = document.getElementById("slideBox");
+        const lb = document.getElementById("listButton");
+        sb.classList.toggle("active");
+
+        if (sb.classList.contains("active")) {
+          lb.textContent = "close";
+          document.body.classList.add("info-open");
+        } else {
+          lb.textContent = "info";
+          document.body.classList.remove("info-open");
+        }
+      }
+    }
+
+    window.onresize = () => {
+      if (window.innerWidth > 768) {
+        document.getElementById("mainImage").style.display = "block";
+        document.getElementById("mobileImageContainer").innerHTML = "";
+        document.getElementById("slideBox").classList.remove("active");
+        document.body.classList.remove("info-open");
+        document.getElementById("listButton").textContent = "info";
+        updateImage(true);
+      } else {
+        loadData();
+      }
+    };
+
+    document.addEventListener("DOMContentLoaded", loadData);
+  </script>
+
+</body>
+</html>
